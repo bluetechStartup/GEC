@@ -1,30 +1,26 @@
 {
-    "name": "gestion_des_courriers",
-    "version": "1.0.0",
-    "description": "Gestions des courriers interne",
-    "main": "server.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon server.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+ssh://git@github.com/bluetechStartup/Gestion_des_courriers.git"
-    },
-    "author": "Bluetec",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/bluetechStartup/Gestion_des_courriers/issues"
-    },
-    "homepage": "https://github.com/bluetechStartup/Gestion_des_courriers#readme",
-    "dependencies": {
-        "colors": "^1.4.0",
-        "concurrently": "^6.2.0",
-        "cors": "^2.8.5",
-        "dotenv": "^10.0.0",
-        "express": "^4.17.1",
-        "express-async-handler": "^1.1.4",
-        "mongoose": "^5.12.13",
-        "nodemon": "^2.0.7"
-    }
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Le courrier est l’ensemble des correspondances permettant d’entrer en communication avec des personnes  et des services: lettre, note, bordereau, circulaire, télégramme,…",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "concurrently": "^6.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.13"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }

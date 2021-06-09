@@ -6,20 +6,29 @@ import '../styles/login.scss';
 
 function LoginPage({history}) {
 
-    const [ email, setEmail] = useState('')
-    const [ password, setPasswod] = useState('')
+    const [ username, setUsername] = useState('')
+    const [ password, setPassword] = useState('')
     const [userInfo,setUserInfo] = useState('')
 
     useEffect(() => {
         if(userInfo) history.push('/home') 
     }, [])
-    const handleSubmit = (e)=>{
+
+    const handleSubmit = async (e)=>{
         e.preventDefault();
-        console.log(email,password)
-        axios.post("http://localhost:3005/api/users/auth",
-            {email,password},
-            {"Content-Type":"application/json"})
+        try {
+            const {data} = await axios.post("http://localhost:3005/api/users/auth",{username,password},
+           )
+           if(data.data) {
+               console.log(data.data)
+               history.push('/home')
+            }
+
+        } catch (error) {
+            console.log(error)
         }
+    }
+
     return (
         <div className="parent_login">
             <div className="login">
@@ -36,9 +45,9 @@ function LoginPage({history}) {
                             <p>Sign in with google</p>
                         </Button>
                         <label>Email adress</label>
-                        <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
+                        <input type="text" value={username} onChange={(e)=>setUsername(e.target.value)} required/>
                         <label>Password</label>
-                        <input type="password" value={password} onChange={(e)=>setPasswod(e.target.value)} required/>
+                        <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
                         <Button type="submit" className="submit">Sign in</Button>
                         <Link><p>Forget password?</p></Link>
                     </form>
