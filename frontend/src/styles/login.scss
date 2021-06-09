@@ -1,0 +1,108 @@
+.parent_login{
+    width: 100%;
+    display: flex;
+    min-height: 100vh;
+
+    .login{
+        width: 60%;
+        margin:10vh auto;
+        background-color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        overflow: visible;
+        height: fit-content;
+        min-height: 70vh;
+        position: relative;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+        &__shape{
+            width: 20%;
+            background-color: #0f66bdea;
+            height: 120%;
+            transform:  translateY(-7%);
+            position: absolute;
+            left: 80px;
+        }
+
+        &__options{
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            justify-content: center;
+            
+            a{
+                display: inline-block;
+                text-decoration: none;
+                color: black;
+                border-left: 3px solid #d8d8d8;
+                padding: 20px 15px;
+                margin: 5px 0;
+
+                &:hover{
+                    background-color: rgb(238, 238, 238);
+                }
+
+                &.active{
+                    border-color: #0f66bd;
+                }
+            }
+        }
+
+        &__form{
+            margin-left: auto;
+            width: 65%;
+            padding: 40px 0;
+
+            .MuiButton-root{
+                font-family: inherit;
+                font-weight: bolder;
+            }
+            form{
+                width: 90%;
+
+                .MuiButton-root.google_login{
+                    width: 100%;
+                    background-color: rgb(255, 255, 255);
+                    font-size: .8em;
+                    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+                    img{
+                        height: 20px;
+                        margin-right: 10px;
+                    }
+                }
+                label{
+                    margin-top: 10px;
+                    display: inline-block;
+                    font-weight: bold;
+                }
+                input{
+                    box-sizing: border-box;
+                    width: 100%;
+                    border:2px solid rgb(238, 238, 238);
+                    padding: 10px 5px;
+                    transition: .3s all;
+
+                    &:focus{
+                        outline-width: 0px;
+                        border-color: lightgray;
+                    }
+
+                }
+                .MuiButton-root.submit{
+                    width: 100%;
+                    background-color: #0f66bd;
+                    color: white;
+                    margin-top: 20px;
+                    text-transform: inherit;
+                    padding: 10px 0;
+                }
+                a{
+                    text-align: center;
+                    text-decoration: none;
+                    color: inherit;
+                } 
+            }
+            
+        }
+    }
+}

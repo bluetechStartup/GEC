@@ -1,0 +1,75 @@
+.parent_home{
+    width: 100%;
+    display: flex;
+    min-height: 100vh;
+
+    .home{
+        width: 60%;
+        margin:10vh auto;
+        background-color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        overflow: visible;
+        height: fit-content;
+        min-height: 70vh;
+        position: relative;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+
+        &__shape{
+            width: 20%;
+            background-color: #0f66bdea;
+            height: 120%;
+            transform:  translateY(-7%);
+            position: absolute;
+            left: 80px;
+        }
+
+        &__options{
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            justify-content: center;
+            
+            a{
+                display: inline-block;
+                text-decoration: none;
+                color: black;
+                border-left: 3px solid #d8d8d8;
+                padding: 20px 15px;
+                margin: 5px 0;
+
+                &:hover{
+                    background-color: rgb(238, 238, 238);
+                }
+
+                &.active{
+                    border-color: #0f66bd;
+                }
+            }
+        }
+
+        &__info{
+            margin-left: auto;
+            width: 65%;
+            padding: 45px 20px;
+
+            .MuiButton-root{
+                font-family: inherit;
+                font-weight: bolder;
+            }
+
+            .MuiButton-root.google_home{
+                color: white;
+                margin-left: auto;
+                display: block;
+                background-color: #0f66bd !important;
+                font-size: .8em;
+            }
+            h2{
+                text-align: center;
+                margin-top: 25%;
+            }
+
+        }
+    }
+}
