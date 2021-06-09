@@ -1,9 +1,25 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React,{ useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import '../styles/login.scss'
+import axios from 'axios';
+import '../styles/login.scss';
 
-function LoginPage() {
+function LoginPage({history}) {
+
+    const [ email, setEmail] = useState('')
+    const [ password, setPasswod] = useState('')
+    const [userInfo,setUserInfo] = useState('')
+
+    useEffect(() => {
+        if(userInfo) history.push('/home') 
+    }, [])
+    const handleSubmit = (e)=>{
+        e.preventDefault();
+        console.log(email,password)
+        axios.post("http://localhost:3005/api/users/auth",
+            {email,password},
+            {"Content-Type":"application/json"})
+        }
     return (
         <div className="parent_login">
             <div className="login">
@@ -13,16 +29,16 @@ function LoginPage() {
                 </div>
                 <div className="login__shape"></div>
                 <div className="login__form">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <h2>Sign in</h2>
                         <Button className="google_login">
                             <img src="./google.svg"/>
                             <p>Sign in with google</p>
                         </Button>
                         <label>Email adress</label>
-                        <input type="text"/>
+                        <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
                         <label>Password</label>
-                        <input type="password"/>
+                        <input type="password" value={password} onChange={(e)=>setPasswod(e.target.value)} required/>
                         <Button type="submit" className="submit">Sign in</Button>
                         <Link><p>Forget password?</p></Link>
                     </form>
