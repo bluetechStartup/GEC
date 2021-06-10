@@ -1,9 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React,{ useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import '../styles/login.scss'
+import { login } from '../redux/user/userActions.js'
+import '../styles/login.scss';
 
-function LoginPage() {
+function LoginPage({history}) {
+
+    const dispatch = useDispatch()
+    const userInfo = useSelector(state => state.user)
+
+    const [ username, setUsername] = useState('')
+    const [ password, setPassword] = useState('')
+    
+
+    useEffect(() => {
+        if(userInfo.data) history.push("/home")
+    }, [userInfo])
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        dispatch(login(username, password))
+    }
+
     return (
         <div className="parent_login">
             <div className="login">
@@ -13,16 +32,16 @@ function LoginPage() {
                 </div>
                 <div className="login__shape"></div>
                 <div className="login__form">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <h2>Sign in</h2>
                         <Button className="google_login">
                             <img src="./google.svg"/>
                             <p>Sign in with google</p>
                         </Button>
                         <label>Email adress</label>
-                        <input type="text"/>
+                        <input type="text" value={username} onChange={(e)=>setUsername(e.target.value)} required/>
                         <label>Password</label>
-                        <input type="password"/>
+                        <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
                         <Button type="submit" className="submit">Sign in</Button>
                         <Link><p>Forget password?</p></Link>
                     </form>
