@@ -1,5 +1,6 @@
 const sql = require('../config/db.js')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const User = function (user) {
  this.FIRST_NAME = user.FIRST_NAME
@@ -38,7 +39,10 @@ User.login = (credentiels, result) => {
   if (!isMatch) {
    return result(null, { success: false, message: 'wrong password..' })
   }
-  return result(null, { success: true, data: data[0] })
+  const token = jwt.sign({ id: data[0].USER_ID }, process.env.JWT_SECRET, {
+   expiresIn: process.env.JWT_EXPIRE,
+  })
+  return result(null, { success: true, data: data[0], token })
  })
 }
 
