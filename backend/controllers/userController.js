@@ -1,55 +1,59 @@
+const User = require('../models/userModel.js')
+const asyncHandler = require('express-async-handler')
 
-const asyncHandler=require("express-async-handler")
-const User =require("../models/userModel.js")
-
-// @desc register user
-// @route  api/register
-// @security public
-const register =asyncHandler(async(req,res,next)=>{
-
-    const {username,password}=req.body
-    const user= new User({username,password})
-    
-    user.save().then(user => {
-        
-        return res.json({success:true,data:{...user._doc,token:user.signWithToken()}})}
-        
-        ).catch(err => console.log(err.message))
-    
-    
+const getAll = asyncHandler(async (req, res, next) => {
+ User.getAll((err, data) => {
+  if (err) throw err
+  console.log(data)
+  res.json(data)
+ })
 })
-// @desc login user
-// @route  api/auth
-// @security public
-const getMe=asyncHandler(async(req,res,next)=>{
+const register = asyncHandler(async (req, res, next) => {
+ const {
+  FIRST_NAME,
+  LAST_NAME,
+  USER_NAME,
+  EMAIL,
+  TELEPHONE,
+  PASSWORD,
+  PROFIL_ID,
+ } = req.body
+ const user = new User({
+  FIRST_NAME,
+  LAST_NAME,
+  USER_NAME,
+  EMAIL,
+  TELEPHONE,
+  PASSWORD,
+  PROFIL_ID,
+ })
+ console.log(user)
 
-    if(!req.user ){
-        return res.json({success:false,message:"login first"})
-    }
-    return res.json({success:true,data:req.user})
+ User.create(user, (err, data) => {
+  if (err) throw err
+  console.log(data)
+  res.json(data)
+ })
 })
-const login =asyncHandler(async(req,res,next)=>{
-    console.log(req.body)
-    const {username,password}=req.body
-     const user=await User.findOne({username})
-     
-     if(!user){
-          return res.status(404).json({success:false,message:"user not found..."})
-}     
- const isMatch=await user.comparePassword(password.trim())
- 
+const login = asyncHandler(async (req, res, next) => {
+ const { email, password } = req.body
 
-     if(!isMatch){return res.status(404).json({success:false,message:"wrong password..."})
+ User.login({ email, password }, (err, data) => {
+  if (err) {
+   throw err
+  }
+  res.json(data)
+ })
+})
+const getUserById = asyncHandler(async (req, res, next) => {
+ User.getById(req.params.id, (err, data) => {
+  if (err) throw err
+  return res.json(data)
+ })
+})
+module.exports = {
+ getAll,
+ register,
+ getUserById,
+ login,
 }
-    return res.json({success:true,data:{...user._doc,token:user.signWithToken()}}) 
-})
-
-
-
-module.exports={
-    register,
-    login
-}
-
-
-
