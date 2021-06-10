@@ -1,32 +1,26 @@
 import React,{ useEffect, useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import axios from 'axios';
+import { login } from '../redux/user/userActions.js'
 import '../styles/login.scss';
 
 function LoginPage({history}) {
 
+    const dispatch = useDispatch()
+    const userInfo = useSelector(state => state.user)
+
     const [ username, setUsername] = useState('')
     const [ password, setPassword] = useState('')
-    const [userInfo,setUserInfo] = useState('')
+    
 
     useEffect(() => {
-        if(userInfo) history.push('/home') 
-    }, [])
+        if(userInfo.data) history.push("/home")
+    }, [userInfo])
 
     const handleSubmit = async (e)=>{
         e.preventDefault();
-        try {
-            const {data} = await axios.post("http://localhost:3005/api/users/auth",{username,password},
-           )
-           if(data.data) {
-               console.log(data.data)
-               history.push('/home')
-            }
-
-        } catch (error) {
-            console.log(error)
-        }
+        dispatch(login(username, password))
     }
 
     return (
