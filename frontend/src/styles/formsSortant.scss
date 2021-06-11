@@ -1,0 +1,85 @@
+.MuiListItem-button{
+    font-family: inherit !important
+}
+
+.MuiSelect-outlined.MuiSelect-outlined {
+    border-width: 0px;
+}
+
+.formsSortant{
+    width: 80%;
+    margin:0 auto;
+
+    .MuiButton-root{
+        font-family: inherit !important;
+        background-color: #0753a0;
+        color: white;
+        margin: 30px auto;
+        display: block;
+        padding: 10px 30px;
+
+        &:hover{
+            background-color: #0753a0a2;
+        }
+    }
+
+    .MuiInputLabel-outlined{
+        font-family: inherit !important;
+    }
+
+    .MuiOutlinedInput-root {
+        padding: 0!important;
+        border-radius: 15px;
+        font-family: inherit;
+    }
+
+    .MuiFormControl-root{
+        width: 47%;
+        font-family: inherit;
+        margin: 10px 0px;
+        
+    }
+
+    .form__bloc1{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        &>.MuiFormControl-root{
+            width: 47%;
+            font-family: inherit;
+            margin: 10px 0px;
+        }
+        
+    }
+    .form__bloc2{
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+
+        .expediteur,.destinataire{
+            display: flex;
+            flex-direction: column;
+            width: 47%;
+            border: 1px solid #cecece;
+            border-radius: 20px;
+            position: relative;
+            padding: 10px;
+            box-sizing: border-box;
+
+            h4{
+                position: absolute;
+                top: -35px;
+                left: 20px;
+                background-color: white;
+                padding: 0 8px;
+            }
+
+            .MuiFormControl-root{
+                width: 100%;
+            }
+        }
+    }
+    
+}

@@ -4,12 +4,15 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import "../styles/forms.scss"
 import { Button } from '@material-ui/core';
+import "../styles/formsSortant.scss"
 
-function FormPage() {
+function CourrierSortantPage() {
     return (
-        <div className="forms">
+        <div className="formsSortant">
+            <div>
+                <h2>Courrier Sortant</h2>
+            </div>
             <TextField label="No de reference" variant="outlined" />
             <div>
                 <FormControl variant="outlined" >
@@ -94,4 +97,4 @@ function FormPage() {
     )
 }
 
-export default FormPage
+export default CourrierSortantPage

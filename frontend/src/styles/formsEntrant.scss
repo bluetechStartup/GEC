@@ -1,14 +1,14 @@
-.MuiListItem-button{
-    font-family: inherit !important
-}
+// .MuiListItem-button{
+//     font-family: inherit !important
+// }
 
-.MuiSelect-outlined.MuiSelect-outlined {
-    border-width: 0px;
-}
+// .MuiSelect-outlined.MuiSelect-outlined {
+//     border-width: 0px;
+// }
 
-.forms{
+.formsEntrant{
     width: 80%;
-    margin:8vh auto;
+    margin:0 auto;
 
     .MuiButton-root{
         font-family: inherit !important;
@@ -39,26 +39,12 @@
         margin: 10px 0px;
         
     }
-
     .form__bloc1{
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-
-        &>.MuiFormControl-root{
-            width: 47%;
-            font-family: inherit;
-            margin: 10px 0px;
-        }
-        
-    }
-    .form__bloc2{
         display: flex;
         justify-content: space-between;
         margin: 10px 0;
 
-        .expediteur,.destinataire{
+        .details,.date,.expediteur{
             display: flex;
             flex-direction: column;
             width: 47%;
@@ -78,6 +64,45 @@
 
             .MuiFormControl-root{
                 width: 100%;
+            }
+        }
+
+        
+    }
+    .form__bloc2{
+        width: 100%;
+        margin-bottom: 20px;
+
+        &>.MuiFormControl-root{
+            width: 47%;
+            font-family: inherit;
+            margin: 10px 0px;
+        }
+        .expediteur,.destinataire,.piece{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border: 1px solid #cecece;
+            border-radius: 20px;
+            position: relative;
+            margin-top: 30px;
+            padding: 10px;
+            box-sizing: border-box;
+
+            h4{
+                position: absolute;
+                top: -35px;
+                left: 20px;
+                background-color: white;
+                padding: 0 8px;
+            }
+        }
+        .piece{
+            .btn{
+                font-size: 50px;
+                margin-right: 42%;
+                margin-top: 10px;
             }
         }
     }
