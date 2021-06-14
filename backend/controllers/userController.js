@@ -24,6 +24,7 @@ const register = asyncHandler(async (req, res, next) => {
   TELEPHONE,
   PASSWORD,
   PROFIL_ID,
+  SERVICE_ID,
  } = req.body
  const user = new User({
   FIRST_NAME,
@@ -33,18 +34,17 @@ const register = asyncHandler(async (req, res, next) => {
   TELEPHONE,
   PASSWORD,
   PROFIL_ID,
+  SERVICE_ID,
  })
 
-
  User.create(user, (err, data) => {
-  if (err){
-      return next(new Error('check if all field a filled...'))
+  if (err) {
+   return next(new Error('check if all field are filled...'))
   }
- 
+
   res.json(data)
  })
 })
-
 
 // @desc    LOGIN USER
 // @route   POST /api/users/auth
@@ -54,8 +54,7 @@ const login = asyncHandler(async (req, res, next) => {
 
  User.login({ email, password }, (err, data) => {
   if (err) {
-    return next(new Error(err.message))
-   
+   return next(new Error(err.message))
   }
   res.json(data)
  })
@@ -67,9 +66,7 @@ const login = asyncHandler(async (req, res, next) => {
 const getUserById = asyncHandler(async (req, res, next) => {
  User.getById(req.params.id, (err, data) => {
   if (err) {
-
-      return next(new Error("no user found.."))
-      
+   return next(new Error('no user found..'))
   }
   return res.json(data)
  })
@@ -79,22 +76,19 @@ const getUserById = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/users/:id
 // @access  Private/admin
 
-const updateUser=asyncHandler(async (req, res, next) => {
-  
-   User.update(req.params.id,req.body.profileId,(err,data)=>{
-       if(err){
-//    console.log("error from user controller",err)
-        return next(new Error("not updated"))
-
-       }
-       res.json(data)
-   })
-
+const updateUser = asyncHandler(async (req, res, next) => {
+ User.update(req.params.id, req.body.profileId, (err, data) => {
+  if (err) {
+   //    console.log("error from user controller",err)
+   return next(new Error('not updated'))
+  }
+  res.json(data)
+ })
 })
 module.exports = {
  getAll,
  register,
  getUserById,
  login,
- updateUser
+ updateUser,
 }
