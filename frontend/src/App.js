@@ -1,16 +1,24 @@
 import { Switch, Route } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
-import FormPage from './pages/FormPage';
+import CourrierSortantPage from './pages/CourrierSortantPage';
+import CourrierEntrantPage from './pages/CourrierEntrantPage';
+import Header from './components/Header'
 import ProtectedRoute from './components/ProtectedRoute';
+import MenuPage from "./pages/MenuPage";
 
 function App() {
   return (
-    <Switch>
-      <Route exact path='/'component={LoginPage} />
-      <Route exact path='/form'component={FormPage} />
-      <ProtectedRoute exact path='/home'component={Home} />
-    </Switch>
+    <div>
+      <Header/>
+      <Switch>
+        <Route exact path='/'component={LoginPage} />
+        <Route exact path='/menu'component={MenuPage} />
+        <Route exact path='/sortant'component={CourrierSortantPage} />
+        <Route exact path='/entrant'component={CourrierEntrantPage} />
+        <ProtectedRoute exact path='/home'component={Home} />
+      </Switch>
+    </div>
   );
 }
 
