@@ -1,10 +1,11 @@
-// .MuiListItem-button{
-//     font-family: inherit !important
-// }
+// customize form control border
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #0957a5 !important;
+}
 
-// .MuiSelect-outlined.MuiSelect-outlined {
-//     border-width: 0px;
-// }
+.MuiFormLabel-root.Mui-focused {
+    color: #0957a5 !important;
+}
 
 .formsEntrant{
     width: 80%;

@@ -1,0 +1,82 @@
+.usersWrapper{
+    width: auto;
+    // padding: 2% 0;
+    color: #01053d;
+
+    .users{
+        width: 80%;
+        margin: auto;
+
+        &__table{
+            margin-top: 30px;
+        }
+
+        .options{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
+            .searchInput{
+                width: 20%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                .MuiIconButton-root{
+                    padding: 10px;
+                }
+
+                input{
+                    border: none;
+                    background-color: transparent;
+                    font-size: 1em;
+                    width: 70%;
+
+                    &:focus{
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+
+
+        table{
+            border-collapse: separate;
+            border-spacing: 0px 14px;
+            width: 100%;
+
+
+            tr{
+                // background-color: rgb(246, 250, 255);
+                border-radius: 10px;
+                box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+                
+                
+                td,th{
+                    padding: 20px 10px;
+                    text-align: center;
+                }
+
+                .user{
+                    border-radius: 30px;
+                    background-color: rgb(245, 245, 245);
+                    padding: 3px 13px;
+                    text-align: center;
+                    width: max-content;
+                    font-size: .8em;
+                    width: 40px;
+                    display: inline-block;
+
+                    &.isAdmin{
+                        background-color: dodgerblue;
+                        color: white;
+                    }
+                    
+                }
+            }
+        }
+
+    }
+}
