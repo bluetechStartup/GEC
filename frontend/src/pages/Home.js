@@ -25,13 +25,14 @@ function Home({history}) {
         <div className="parent_home">
             <div className="home">
                 <div className="home__options">
-                    <Link className="active">Sign in</Link>
-                    <Link>Sign up</Link>
+                    <Link className="active">Courrier entrant</Link>
+                    <Link>Courrier sortant</Link>
+                    <Link>Archive</Link>
                 </div>
-                <div className="home__shape"></div>
+                {/* <div className="home__shape"></div> */}
                 <div className="home__info">
                     <Button className="google_home" onClick={handleLogout}>
-                        Log out Mr {user?.username}
+                        Checkout your profile
                     </Button>
                     <h2>Welcome {user?.username}</h2>                  
                 </div>

@@ -1,4 +1,4 @@
-.createUserWrapper{
+.wrapperUpdate{
 
     width: auto;
     color: #01053d;
@@ -22,7 +22,7 @@
         font-family: inherit;
     }
 
-    .createUser{
+    .updateUser{
         
         display: flex;
         background-color: rgb(248, 248, 248);
@@ -35,7 +35,7 @@
         &__left{
             width: 35%;
             background-color: #3497fa;
-            padding: 0 30px;
+            padding: 30px;
             display: flex;
             align-items: center;       
 
@@ -47,35 +47,11 @@
 
         &__right{
             width: 65%;
-            padding: 16px 40px;
-
-            // h2{
-            //     margin-bottom: 8px;
-            // }
-
-            .alert{
-                padding: 13px;
-                border-radius: 5px;
-                margin-bottom: 10px;
-                margin-top: -15px;
-
-                &.error{
-                    background-color: rgb(255, 188, 188);
-                }
-
-                &.success{
-                    background-color: rgb(232, 255, 230);
-                }
-
-                &.warning{
-                    background-color: rgb(228, 236, 156);
-                }
-            }
-
+            padding: 50px;
 
             .form{
 
-                padding-bottom: 6px;
+                padding-bottom: 30px;
                 border-bottom: 1px solid #e2e2e2;
                 border-top: 1px solid #e2e2e2;
                 box-sizing: border-box;

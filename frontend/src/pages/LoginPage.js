@@ -26,10 +26,10 @@ function LoginPage({history}) {
     return (
         <div className="parent_login">
             <div className="login">
-                <div className="login__options">
+                {/* <div className="login__options">
                     <Link className="active">Sign in</Link>
                     <Link>Sign up</Link>
-                </div>
+                </div> */}
                 <div className="login__shape"></div>
                 <div className="login__form">
                     <form onSubmit={handleSubmit}>

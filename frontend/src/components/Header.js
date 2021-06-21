@@ -10,7 +10,7 @@ function Header({location}) {
         location.pathname !== '/' ?
         <div className="header">
             <Link><SendIcon/></Link>
-            <div><LanguageIcon/><h4>En</h4></div>
+            <div><LanguageIcon/><h3>en</h3></div>
             <div><Avatar/><h4>John Doe</h4></div>
         </div> : null
     )
