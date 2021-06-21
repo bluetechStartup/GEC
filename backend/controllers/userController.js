@@ -5,10 +5,9 @@ const asyncHandler = require('express-async-handler')
 // @route   GET /api/users/
 // @access  Private/admin
 const getAll = asyncHandler(async (req, res, next) => {
- User.getAll((err, data) => {
-  if (err) throw err
-  console.log(data)
-  res.json(data)
+ User.getAll((err, users) => {
+  if (err) throw new Error(err.message)
+  res.json(users)
  })
 })
 
@@ -26,7 +25,7 @@ const register = asyncHandler(async (req, res, next) => {
   PROFIL_ID,
   SERVICE_ID,
  } = req.body
- const user = new User({
+ const newUser = {
   FIRST_NAME,
   LAST_NAME,
   USER_NAME,
@@ -35,14 +34,11 @@ const register = asyncHandler(async (req, res, next) => {
   PASSWORD,
   PROFIL_ID,
   SERVICE_ID,
- })
+ }
 
- User.create(user, (err, data) => {
-  if (err) {
-   return next(new Error('check if all field are filled...'))
-  }
-
-  res.json(data)
+ User.create(newUser, (err, user) => {
+  if (err) return next(new Error(err.message))
+  return res.json(user)
  })
 })
 
@@ -64,11 +60,36 @@ const login = asyncHandler(async (req, res, next) => {
 // @route   GET /api/users/:id
 // @access  Private/admin
 const getUserById = asyncHandler(async (req, res, next) => {
- User.getById(req.params.id, (err, data) => {
-  if (err) {
-   return next(new Error('no user found..'))
-  }
-  return res.json(data)
+ if (req.params.id == '' || req.params.id == undefined) {
+  return res.json({ success: false, message: 'error de parametre' })
+ } else
+  User.findById(req.params.id, (err, user) => {
+   if (err) return next(new Error(err.message))
+   return res.json(user)
+  })
+})
+
+// @desc    Update user profile
+// @route   PATCH /api/users/:id
+// @access  Private
+const updateUser = asyncHandler(async (req, res, next) => {
+ console.log(req.body)
+ // instead of 1 later we will pass a req.user.id
+ User.getMe(1, user => {
+  console.log('user out here ...', user)
+  ;(user.FIRST_NAME = req.body.FIRST_NAME
+   ? req.body.FIRST_NAME
+   : user.FIRST_NAME),
+   (user.LAST_NAME = req.body.LAST_NAME ? req.body.LAST_NAME : user.LAST_NAME),
+   (user.USER_NAME = req.body.USER_NAME ? req.body.USER_NAME : user.USER_NAME),
+   (user.EMAIL = req.body.EMAIL ? req.body.EMAIL : user.EMAIL),
+   (user.TELEPHONE = req.body.TELEPHONE ? req.body.TELEPHONE : user.TELEPHONE),
+   console.log('user out here updated...', user)
+  // instead of 1 later we will pass a req.user.id
+  User.update(user, (err, data) => {
+   if (error) return next(new Error(err.message))
+   res.json(data)
+  })
  })
 })
 
@@ -76,12 +97,9 @@ const getUserById = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/users/:id
 // @access  Private/admin
 
-const updateUser = asyncHandler(async (req, res, next) => {
- User.update(req.params.id, req.body.profileId, (err, data) => {
-  if (err) {
-   //    console.log("error from user controller",err)
-   return next(new Error('not updated'))
-  }
+const updateUserProfile = asyncHandler(async (req, res, next) => {
+ User.updateProfile(req.params.id, req.body.PROFIL_ID, (err, data) => {
+  if (err) return next(new Error(err.message))
   res.json(data)
  })
 })
@@ -91,4 +109,5 @@ module.exports = {
  getUserById,
  login,
  updateUser,
+ updateUserProfile,
 }
