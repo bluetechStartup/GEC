@@ -1,110 +1,100 @@
-const sql = require('../config/db.js')
+const connection = require('../config/db.js')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 
-const User = function (user) {
- this.FIRST_NAME = user.FIRST_NAME
- this.LAST_NAME = user.LAST_NAME
- this.USER_NAME = user.USER_NAME
- this.EMAIL = user.EMAIL
- this.TELEPHONE = user.TELEPHONE
- this.PASSWORD = user.PASSWORD
- this.PROFIL_ID = user.PROFIL_ID
- this.SERVICE_ID = user.SERVICE_ID
-}
+class User {
+ static async create(newUser, cb) {
 
-User.create = async (newUser, result) => {
- const addQuery = 'insert into admin_users set ?'
- if (!newUser.PASSWORD) {
-  result('password please', null)
- } else {
   newUser.PASSWORD = await bcrypt.hash(newUser.PASSWORD, 10)
-  sql.query(addQuery, newUser, (err, data) => {
-   if (err) return result(err, null)
-   return result(null, { id: data.insertId, ...data })
+
+  connection.query('insert into admin_users set ?', newUser, (err, data) => {
+   if (err) return cb(err, null)
+   return cb(null, { success: true, data })
   })
  }
-}
+ static login(credentiels, cb) {
+  const { email, password } = credentiels
 
-User.login = (credentiels, result) => {
- const { email, password } = credentiels
+  connection.query(
+   'select * from admin_users where EMAIL = ?',
+   [email],
+   (err, data) => {
+    if (err) return cb(err, null)
 
- const retrieveQuery = 'select * from admin_users where EMAIL = ?'
+    if (data.length > 0) {
+     const isMatch = bcrypt.compareSync(password, data[0].PASSWORD)
+     if (!isMatch) {
+      return cb(null, { success: false, message: 'wrong password..' })
+     }
+     const token = jwt.sign({ id: data[0].USER_ID }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRE,
+     })
 
- sql.query(retrieveQuery, [email], (err, data) => {
-  if (err) {
-   return result(err, null)
-  }
-  if (data.length > 0) {
-   const isMatch = bcrypt.compareSync(password, data[0].PASSWORD)
-   if (!isMatch) {
-    return result(null, { success: false, message: 'wrong password..' })
+     return cb(null, { success: true, data: data[0], token })
+    } else
+     return cb(null, {
+      success: false,
+      message: 'there is no user with such email',
+     })
    }
-   const token = jwt.sign({ id: data[0].USER_ID }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-   })
-
-   return result(null, { success: true, data: data[0], token })
-  }
-  return result(null, {
-   success: false,
-   message: 'there is no user with such email',
+  )
+ }
+ // THIS IS A SMALL HELPFUL METHODE TO GET ONLY A USER...
+ static getMe = (userId, cb) => {
+  const retrieveQuery = `SELECT user.USER_ID,user.FIRST_NAME,user.LAST_NAME,user.USER_NAME,user.EMAIL ,user.IS_ACTIVE,user.TELEPHONE,prof.PROFIL_CODE from admin_users user ,admin_profil prof  WHERE user.USER_ID=${userId} AND prof.PROFIL_ID=user.PROFIL_ID`
+  connection.query(retrieveQuery, (err, data) => {
+   if (err) return cb(err, null)
+   if (data.length > 0) {
+    return cb(null, data[0])
+   } else
+    return cb(null, { success: false, message: 'error acured retry again !!' })
   })
- })
-}
+ }
+ static getSpecificUserRouteInfo=()=>{
+  // SELECT * FROM `admin_profil_fonctionnalites`WHERE PROFIL_ID = (SELECT PROFIL_ID FROM admin_users WHERE USER_NAME="soso") and FONCTIONNALITE_ID=1
+ }
+ static getAll(cb) {
+  connection.query(
+   'SELECT * FROM admin_users ORDER BY PROFIL_ID DESC',
+   (error, data) => {
+    if (error) return cb(error, null)
+    cb(null, { success: true, count: data.length, data })
+   }
+  )
+ }
 
-User.getAll = (result) => {
- const retrieveQuery = 'select * from admin_users'
- sql.query(retrieveQuery, (err, data) => {
-  if (err) {
-   console.log(err)
-   result(err, null)
-   return
-  }
-  console.log('this are data', data)
-  result(null, { success: true, count: data.length, data: data })
- })
-}
+ static findById(id, cb) {
+  connection.query(
+   'SELECT user.USER_ID,user.FIRST_NAME,user.LAST_NAME ,user.IS_ACTIVE,user.TELEPHONE,prof.PROFIL_CODE from admin_users user ,admin_profil prof  WHERE user.USER_ID=? AND prof.PROFIL_ID=user.PROFIL_ID',
+   [id],
+   (error, data) => {
+    if (error) return cb(error, null)
+    if (data.length > 0) {
+     return cb(null, { success: true, data: data[0] })
+    } else return cb(null, { success: false, message: 'no user found' })
+   }
+  )
+ }
+ static update(newInfo, cb) {
+  const { USER_ID, FIRST_NAME, LAST_NAME, USER_NAME, EMAIL, TELEPHONE } =
+   newInfo
+  const requete = `update admin_users set FIRST_NAME='${FIRST_NAME}', LAST_NAME='${LAST_NAME}', USER_NAME='${USER_NAME}', EMAIL='${EMAIL}', TELEPHONE='${TELEPHONE}' where USER_ID=${USER_ID}`
+  connection.query(requete, (error, data) => {
+   if (error) return cb(error, null)
+   cb(null, { success: true, data })
+  })
+ }
+ static updateProfile(userId, profileiD, cb) {
+  const requete = `UPDATE admin_users SET PROFIL_ID =${profileiD} WHERE USER_ID=${userId}`
+  connection.query(requete, (error, data) => {
+   if (error) return cb(error, null)
+   cb(null, { success: true, data })
+  })
+ }
+ // static updatePassword(){
 
-User.update = (userId, profileiD, result) => {
- const updateQuery = `UPDATE admin_users SET PROFIL_ID =${profileiD} WHERE USER_ID=${userId}`
- sql.query(updateQuery, (err, data) => {
-  if (err) {
-   return result(err, null)
-  }
-  if (data.affectedRows == 0) {
-   return result(null, { success: false, message: 'not updated' })
-  }
-  result(null, { success: true, data: data })
- })
-}
-User.findById = (userId) => {
- const retrieveQuery = `SELECT USER_ID,FIRST_NAME,LAST_NAME ,IS_ACTIVE,TELEPHONE,admin_profil.PROFIL_DESCR from admin_users , admin_profil WHERE admin_users.USER_ID=${userId} AND admin_users.PROFIL_ID=admin_profil.PROFIL_ID`
- let user = null
- sql.query(retrieveQuery, (err, data) => {
-  if (err) return null
-  if (data.length <= 0) {
-   console.log('not user found from userModel')
-   return null
-  }
-  user = data
- })
- return user
-}
-User.getById = async (userId, result) => {
- const retrieveQuery = `SELECT USER_ID,FIRST_NAME,LAST_NAME ,IS_ACTIVE,TELEPHONE,admin_profil.PROFIL_DESCR from admin_users , admin_profil WHERE admin_users.USER_ID=${userId} AND admin_users.PROFIL_ID=admin_profil.PROFIL_ID`
- sql.query(retrieveQuery, (err, data) => {
-  if (err) {
-   console.log(err)
-   result(err, null)
-   return
-  }
-  if (!data.length) {
-   result(null, { success: false, message: 'user not found..' })
-  }
+ // }
+ // static getResetPasswordToken(){
 
-  result(null, { success: true, data: data[0] })
- })
+ // }
 }
-
 module.exports = User

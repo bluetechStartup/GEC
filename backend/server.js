@@ -6,6 +6,7 @@ const cors = require('cors')
 const userRoutes = require('./routes/userRoutes.js')
 const dbConnect = require('./config/db.js')
 const {errorHandler,notFound}=require('./middleware/errorHandler.js')
+const profileRoutes=require('./routes/profileRoutes.js')
 const app = express()
 dotenv.config()
 dbConnect
@@ -17,6 +18,7 @@ app.get('/', (req, res, next) => {
 
 const PORT = process.env.PORT || 3005
 app.use('/api/users', userRoutes)
+app.use('/api/profile',profileRoutes)
 app.use(notFound)
 app.use(errorHandler)
 app.listen(
