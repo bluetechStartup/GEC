@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
@@ -11,7 +12,13 @@ import ListingUsersPage from "./pages/ListingUsersPage";
 import GrantingRights from "./pages/GrantingRights";
 import UpdateUserPage from "./pages/UpdateUserPage";
 
+
 function App() {
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => localStorage.clear());
+  }, [])
+
   return (
     <div>
       <Header/>

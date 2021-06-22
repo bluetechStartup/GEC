@@ -34,6 +34,7 @@ const register = asyncHandler(async (req, res, next) => {
   PASSWORD,
   PROFIL_ID,
  }
+ console.log('THIS IS new user', newUser)
 
  User.create(newUser, (err, user) => {
   if (err) return next(new Error(err.message))

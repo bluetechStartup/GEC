@@ -3,17 +3,26 @@
     border-radius: 3px;
     margin-bottom: 10px;
     margin-top: -15px;
+    display: flex;
+    align-items: center;
+
+    .MuiSvgIcon-root{
+        margin-right: 6px;
+    }
 
     &.error{
-        background-color: rgb(255, 206, 206);
+        background-color: #ffcece;
+        color: rgb(129, 34, 34);
     }
 
     &.success{
-        background-color: rgb(232, 255, 230);
+        background-color: #b8ffb3;
+        color: #15720e;
     }
 
     &.warning{
-        background-color: rgb(228, 236, 156);
+        background-color: #fff170;
+        color: rgb(71, 64, 0);
     }
 }
 
@@ -67,10 +76,6 @@
         &__right{
             width: 65%;
             padding: 16px 40px;
-
-            // h2{
-            //     margin-bottom: 8px;
-            // }
             
             .form{
 
@@ -107,6 +112,7 @@
                     width: 15px !important;
                     height: 15px !important;
                     margin-right: 8px;
+                    padding: 4px 12px;
                 }
             }
             

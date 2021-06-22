@@ -1,12 +1,27 @@
-import React from 'react'
-import UserIllustration from '../assets/undraw_Coding_re_iv62.svg'
+import React,{useEffect, useState} from 'react'
+import { useSelector, useDispatch } from "react-redux";
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import '../styles/update.scss'
 import UpdateProfileSvg from '../assets/undraw_Wall_post_re_y78d.svg'
 
-function UpdateUserPage() {
+function UpdateUserPage({match}) {
+    const dispatch = useDispatch();
+    const {loading, error, data} = useSelector(state => state.singleUser);
+
+    const [warning, setWarning] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [user, setUser] = useState({
+        FIRST_NAME:'',
+        LAST_NAME:'',
+        USER_NAME:'',
+        TELEPHONE:'',
+        EMAIL:'',
+        PASSWORD:'',
+        PROFIL_ID:1,
+    })
+
     return (
         <div className="wrapperUpdate">
             <div className="updateUser">

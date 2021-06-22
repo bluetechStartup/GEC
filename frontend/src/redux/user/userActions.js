@@ -20,7 +20,8 @@ import {
     USER_CREATE_FAILED,
     USER_CREATE_SUCCESS,
     USER_UPDATE_FAILED,
-    USER_UPDATE_SUCCESS
+    USER_UPDATE_SUCCESS,
+    USER_CREATE_OR_UPDATE_FINISH
 
 } from './userTypes';
 
@@ -55,15 +56,14 @@ export const createUser =  (userData) => async dispatch =>{
     dispatch({type:USER_CREATE_OR_UPDATE_REQUEST})
     console.log(userData)
     try {
-        const {data} = await axios.post(`${api.URL}/api/users/register`,{userData, PROFIL_ID:1})
+        const {data} = await axios.post(`${api.URL}/api/users/register`,{...userData})
         console.log(data)
-        // data.success ? 
-        //     dispatch({type:USER_CREATE_SUCCESS, payload: data.data})
-        //     : dispatch({type:USER_CREATE_FAILED, payload: data.message})
+        data.success ? 
+            dispatch({type:USER_CREATE_SUCCESS, payload: {success:data.success, id:data.data.insertId }})
+            : dispatch({type:USER_CREATE_FAILED, payload: data.message})
 
     } catch (error) {
-        // dispatch({type:USER_CREATE_FAILED,payload: error})
-        console.log(error)
+        dispatch({type:USER_CREATE_FAILED,payload: error.message});
     }
     
 }
@@ -112,6 +112,9 @@ export const unableUser =  (id) => async dispatch =>{
     
 }
 
+export const finishRequest =  () =>{
+    return {type:USER_CREATE_OR_UPDATE_FINISH}
+}
 
 
 // actions for user that interracts with riths on routes

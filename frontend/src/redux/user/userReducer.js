@@ -16,7 +16,8 @@ import {
     USER_CREATE_FAILED,
     USER_CREATE_SUCCESS,
     USER_UPDATE_FAILED,
-    USER_UPDATE_SUCCESS
+    USER_UPDATE_SUCCESS,
+    USER_CREATE_OR_UPDATE_FINISH
 
 } from './userTypes';
 
@@ -67,6 +68,9 @@ export const singleUserReducer = (state=singleUserState,action) =>{
         case USER_UPDATE_FAILED:
             return { loading:false, data:null, error:action.payload}
         
+        case USER_CREATE_OR_UPDATE_FINISH:
+            return { loading:false, data:null, error:""}
+    
         default:return { ...state }
     }
 }
