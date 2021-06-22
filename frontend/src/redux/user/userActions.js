@@ -3,6 +3,7 @@
 import axios from 'axios';
 import * as api from '../api';
 import {
+    
     // for user only
     USER_REQUEST,
     USER_REQUEST_SUCCESS,
@@ -12,17 +13,24 @@ import {
     // user with routes
     USER_WITH_ROUTES_REQUEST,
     USER_WITH_ROUTES_SUCCESS,
-    USER_WITH_ROUTES_FAILED
+    USER_WITH_ROUTES_FAILED,
+
+    // create user or update
+    USER_CREATE_OR_UPDATE_REQUEST,
+    USER_CREATE_FAILED,
+    USER_CREATE_SUCCESS,
+    USER_UPDATE_FAILED,
+    USER_UPDATE_SUCCESS
 
 } from './userTypes';
 
 
 // actions for user that is logged in or out only
 
-export const login =  (username, password) => async dispatch =>{
+export const login =  (email, password) => async dispatch =>{
     dispatch({type:USER_REQUEST})
     try {
-        const {data} = await axios.post(`${api.URL}/api/users/auth`,{username, password})
+        const {data} = await axios.post(`${api.URL}/api/users/auth`,{email, password})
         data.success ? 
             dispatch({type:USER_REQUEST_SUCCESS, payload: data.data})
             : dispatch({type:USER_REQUEST_FAILED, payload: data.message})
@@ -39,34 +47,37 @@ export const logout = ()=>{
     return{ type:USER_LOGOUT }
 }
 
+
+
 // actions for user creation and update
 
 export const createUser =  (userData) => async dispatch =>{
-    dispatch({type:USER_REQUEST})
+    dispatch({type:USER_CREATE_OR_UPDATE_REQUEST})
+    console.log(userData)
     try {
-        const {data} = await axios.post(`${api.URL}/api/users/auth`,{userData})
-        data.success ? 
-            dispatch({type:USER_REQUEST_SUCCESS, payload: data.data})
-            : dispatch({type:USER_REQUEST_FAILED, payload: data.message})
+        const {data} = await axios.post(`${api.URL}/api/users/register`,{userData, PROFIL_ID:1})
+        console.log(data)
+        // data.success ? 
+        //     dispatch({type:USER_CREATE_SUCCESS, payload: data.data})
+        //     : dispatch({type:USER_CREATE_FAILED, payload: data.message})
 
-        localStorage.setItem("user",JSON.stringify(data))
     } catch (error) {
-        dispatch({type:USER_REQUEST_FAILED,payload: error})
+        // dispatch({type:USER_CREATE_FAILED,payload: error})
+        console.log(error)
     }
     
 }
 
-export const updateUser =  (userData) => async dispatch =>{
-    dispatch({type:USER_REQUEST})
+export const updateUser =  (userData,id) => async dispatch =>{
+    dispatch({type:USER_CREATE_OR_UPDATE_REQUEST})
     try {
-        const {data} = await axios.post(`${api.URL}/api/users/auth`,{userData})
+        const {data} = await axios.post(`${api.URL}/api/users/${id}`,{userData})
         data.success ? 
-            dispatch({type:USER_REQUEST_SUCCESS, payload: data.data})
-            : dispatch({type:USER_REQUEST_FAILED, payload: data.message})
+            dispatch({type:USER_UPDATE_SUCCESS, payload: data.data})
+            : dispatch({type:USER_UPDATE_FAILED, payload: data.message})
 
-        localStorage.setItem("user",JSON.stringify(data))
     } catch (error) {
-        dispatch({type:USER_REQUEST_FAILED,payload: error})
+        dispatch({type:USER_UPDATE_FAILED,payload: error})
     }
     
 }

@@ -1,5 +1,6 @@
 const connection = require('../config/db.js')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 class User {
  static async create(newUser, cb) {

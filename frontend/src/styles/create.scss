@@ -1,3 +1,22 @@
+.alert{
+    padding: 13px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    margin-top: -15px;
+
+    &.error{
+        background-color: rgb(255, 206, 206);
+    }
+
+    &.success{
+        background-color: rgb(232, 255, 230);
+    }
+
+    &.warning{
+        background-color: rgb(228, 236, 156);
+    }
+}
+
 .createUserWrapper{
 
     width: auto;
@@ -52,27 +71,7 @@
             // h2{
             //     margin-bottom: 8px;
             // }
-
-            .alert{
-                padding: 13px;
-                border-radius: 5px;
-                margin-bottom: 10px;
-                margin-top: -15px;
-
-                &.error{
-                    background-color: rgb(255, 188, 188);
-                }
-
-                &.success{
-                    background-color: rgb(232, 255, 230);
-                }
-
-                &.warning{
-                    background-color: rgb(228, 236, 156);
-                }
-            }
-
-
+            
             .form{
 
                 padding-bottom: 6px;

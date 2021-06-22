@@ -12,10 +12,6 @@ function Home({history}) {
     const userInfo = useSelector(state => state.user)
     const user = userInfo.data
 
-    // useEffect(() => {
-    //     if(!userInfo.data) history.push("/")
-    // }, [userInfo])
-
     const handleLogout = ()=>{ 
         dispatch(logout());
         history.push('/')
@@ -29,12 +25,11 @@ function Home({history}) {
                     <Link>Courrier sortant</Link>
                     <Link>Archive</Link>
                 </div>
-                {/* <div className="home__shape"></div> */}
                 <div className="home__info">
                     <Button className="google_home" onClick={handleLogout}>
-                        Checkout your profile
+                        Logout Mr {user.FIRST_NAME}
                     </Button>
-                    <h2>Welcome {user?.username}</h2>                  
+                    <h2>Welcome {user.FIRST_NAME}</h2>                  
                 </div>
             </div>
         </div>

@@ -1,19 +1,26 @@
-import React,{ useState } from 'react'
+import React,{ useState } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import UserIllustration from '../assets/undraw_Coding_re_iv62.svg'
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { createUser } from '../redux/user/userActions'
 import '../styles/create.scss'
 
 
 function CreateUserPage() {
+    
+    const dispatch = useDispatch();
+    const {loading, error, data} = useSelector(state => state.singleUser);
+
     const [user, setUser] = useState({
-        firstName:'',
-        lastName:'',
-        username:'',
-        phone:null,
-        password:'',
-        confirm_password:''
+        FIRST_NAME:'',
+        LAST_NAME:'',
+        USER_NAME:'',
+        TELEPHONE:null,
+        EMAIL:'',
+        PASSWORD:'',
+        CONFIRM_PASSWORD:''
     })
 
     const handleChange = (e)=>{
@@ -21,7 +28,8 @@ function CreateUserPage() {
     }
     const handleSubmit = (e)=>{
         e.preventDefault();
-        console.log(user)
+        // console.log(user)
+        dispatch(createUser(user))
     }
 
     return (
@@ -32,24 +40,25 @@ function CreateUserPage() {
                 </div>
                 <div className="createUser__right">
                     <h2>Create a user</h2>
-                    {/* <div className="alert warning">This an error alert</div> */}
+                    {error && <div className="alert error">Error</div>}
+                    {data?.success && <div className="alert success">This a succes alert</div>}
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="formGroup">
-                            <TextField name="firstName" label="FirstName" variant="outlined" size="small" onChange={handleChange} required/>
-                            <TextField name="lastName" label="LastName" variant="outlined" size="small" onChange={handleChange} required/>
+                            <TextField name="FIRST_NAME" label="FirstName" variant="outlined" size="small" onChange={handleChange} required/>
+                            <TextField name="LAST_NAME" label="LastName" variant="outlined" size="small" onChange={handleChange} required/>
                         </div>
                         
-                        <TextField name="email" label="Email" variant="outlined" size="small" onChange={handleChange} required/>
+                        <TextField name="EMAIL" label="Email" variant="outlined" size="small" onChange={handleChange} required/>
                         
                         <div className="formGroup">
-                            <TextField name="username" label="Username" variant="outlined" size="small" onChange={handleChange} required/>
-                            <TextField name="phone" label="Telephone" variant="outlined" size="small" onChange={handleChange} required/>
+                            <TextField name="USER_NAME" label="Username" variant="outlined" size="small" onChange={handleChange} required/>
+                            <TextField name="TELEPHONE" label="Telephone" variant="outlined" size="small" onChange={handleChange} required/>
                         </div>
                         <div className="formGroup">
-                            <TextField name="password" label="Password" variant="outlined" size="small" onChange={handleChange} required/>
-                            <TextField name="confirm_password" label="Confirm password" variant="outlined" size="small" onChange={handleChange} required/>
+                            <TextField name="PASSWORD" label="Password" type="password" variant="outlined" size="small" onChange={handleChange} required/>
+                            <TextField name="CONFIRM_PASSWORD" label="Confirm password" type="password" variant="outlined" size="small" onChange={handleChange} required/>
                         </div>
-                        <Button type="submit"><CircularProgress color="inherit"/>Submit</Button>
+                        <Button type="submit">{loading ?<CircularProgress color="inherit"/>: 'Submit'}</Button>
                     </form>
                 </div>   
             </div>

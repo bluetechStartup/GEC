@@ -4,7 +4,7 @@ const con = {
  host: process.env.DB_HOST,
  user: 'root',
  password: '',
- database: 'tadeapp_edutech',
+ database: 'ged',
 }
 
 const dbConnect = mysql.createConnection(con)
