@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
@@ -8,8 +9,16 @@ import ProtectedRoute from './components/ProtectedRoute';
 import MenuPage from "./pages/MenuPage";
 import CreateUserPage from "./pages/CreateUserPage";
 import ListingUsersPage from "./pages/ListingUsersPage";
+import GrantingRights from "./pages/GrantingRights";
+import UpdateUserPage from "./pages/UpdateUserPage";
+
 
 function App() {
+
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", () => localStorage.clear());
+  // }, [])
+
   return (
     <div>
       <Header/>
@@ -20,7 +29,9 @@ function App() {
         <Route exact path='/users'component={ListingUsersPage} />
         <Route exact path='/sortant'component={CourrierSortantPage} />
         <Route exact path='/entrant'component={CourrierEntrantPage} />
-        <ProtectedRoute exact path='/home'component={Home} />
+        <Route exact path='/home'component={Home} />
+        <Route exact path='/granting'component={GrantingRights} />
+        <Route exact path='/update/:id'component={UpdateUserPage} />
       </Switch>
     </div>
   );

@@ -1,4 +1,23 @@
+// for user that is logged in or out only
 export const USER_REQUEST = "USER_REQUEST"
 export const USER_REQUEST_FAILED = "USER_REQUEST_FAILED"
 export const USER_REQUEST_SUCCESS = "USER_REQUEST_SUCCESS"
 export const USER_LOGOUT = "USER_LOGOUT"
+
+// for user that interracts with rights on routes
+export const USER_WITH_ROUTES_REQUEST = "USE_WITH_ROUTES_REQUEST"
+export const USER_WITH_ROUTES_SUCCESS = "USE_WITH_ROUTES_SUCCESS"
+export const USER_WITH_ROUTES_FAILED = "USE_WITH_ROUTES_FAILED"
+
+
+// all about user creation and update
+export const USER_CREATE_OR_UPDATE_REQUEST = "USER_CREATE_OR_UPDATE_REQUEST"
+export const USER_CREATE_OR_UPDATE_FAILED = "USER_CREATE_OR_UPDATE_FAILED"
+export const USER_CREATE_OR_UPDATE_SUCCESS = "USER_CREATE_OR_UPDATE_SUCCESS"
+export const USER_CREATE_OR_UPDATE_FINISH = "USER_CREATE_OR_UPDATE_FINISH"
+
+// all about a single user 
+
+export const GET_USER_BY_ID_REQUEST = "USER_GET_BY_ID_REQUEST"
+export const GET_USER_BY_ID_SUCCESS = "USER_GET_BY_ID_SUCCESS"
+export const GET_USER_BY_ID_FAILED = "USER_GET_BY_ID_FAILED"

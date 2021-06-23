@@ -10,12 +10,12 @@ const {
  login,
 } = require('../controllers/userController.js')
 const router = express.Router()
-router.route('/').get(getAll)
+router.route('/').get(getAll).put(protect,updateUser)
 router
  .route('/:id')
  .get(getUserById)
  .put(updateUserProfile)
- .patch(updateUser)
+ 
 router.route('/register').post(register)
 router.route('/auth').post(login)
 

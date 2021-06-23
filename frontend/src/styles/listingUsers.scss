@@ -44,18 +44,18 @@
 
         table{
             border-collapse: separate;
-            border-spacing: 0px 14px;
+            border-spacing: 0px 8px;
             width: 100%;
 
 
             tr{
                 // background-color: rgb(246, 250, 255);
-                border-radius: 10px;
-                box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+                border-radius: 5px;
+                box-shadow: rgba(0, 0, 0, 0.103) 0px 1px 4px;
                 
                 
                 td,th{
-                    padding: 20px 10px;
+                    padding: 10px 10px;
                     text-align: center;
                 }
 

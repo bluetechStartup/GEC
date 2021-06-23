@@ -1,23 +1,25 @@
-import React,{ useState, useEffect } from 'react';
+import React,{useEffect, useLayoutEffect, useState} from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import UserIllustration from '../assets/undraw_Coding_re_iv62.svg'
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import WarningIcon from '@material-ui/icons/Warning';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import { createUser, finishRequest } from '../redux/user/userActions'
-import '../styles/create.scss'
+import '../styles/update.scss'
+import UpdateProfileSvg from '../assets/undraw_Wall_post_re_y78d.svg'
+import { getSingleUser, updateUser } from '../redux/user/userActions';
 
+function UpdateUserPage({match}) {
 
-function CreateUserPage() {
-    
+    const userId = parseInt(match.params.id)
     const dispatch = useDispatch();
-    const {loading, error, data} = useSelector(state => state.userCreatedOrUpdated);
 
-    const [warning, setWarning] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const {token} = useSelector(state => state.user);
+    const {loading, error, data} = useSelector(state => state.userCreatedOrUpdated);
+    const singleUser = useSelector(state => state.singleUser);
+    const {loading:singleUserload, error:singleUserError, data:singleUserData} = singleUser;
+
     const [user, setUser] = useState({
         FIRST_NAME:'',
         LAST_NAME:'',
@@ -29,22 +31,24 @@ function CreateUserPage() {
     })
 
     useEffect(() => {
-        if (data && data.success){
+        dispatch(getSingleUser(userId))
+    }, [])
+
+    useEffect(() => {
+        
+        if(singleUserData && singleUserData.success){
             setUser({
-                FIRST_NAME:'',
-                LAST_NAME:'',
-                USER_NAME:'',
-                TELEPHONE:'',
-                EMAIL:'',
-                PASSWORD:'',
-                PROFIL_ID:1,
+                FIRST_NAME:singleUserData.FIRST_NAME,
+                LAST_NAME:singleUserData.LAST_NAME,
+                USER_NAME:singleUserData.USER_NAME,
+                TELEPHONE:singleUserData.TELEPHONE,
+                EMAIL:singleUserData.EMAIL,
             })
-            setConfirmPassword('')
-            setTimeout(() => {
-                dispatch(finishRequest())
-            }, 3500);
         }
-    }, [data])
+    }, [singleUser])
+    
+
+    const [warning, setWarning] = useState('')
 
     const handleChange = (e)=>{
         setUser({ ...user,[e.target.name]:e.target.value })
@@ -52,26 +56,22 @@ function CreateUserPage() {
     const handleSubmit = async (e)=>{
         e.preventDefault();
         setWarning('')
-
-        if (user.PASSWORD !== confirmPassword){
-            setWarning('Two passwords must be the same !')
-            return
-        }
-        dispatch(createUser(user))
+        console.log(user)
+        dispatch(updateUser(user,token))
     }
 
     return (
-        <div className="createUserWrapper">
-            <div className="createUser">
-                <div className="createUser__left">
-                    <img src={UserIllustration} alt=''/>
-                </div>
-                <div className="createUser__right">
-                    <h2>Create a user</h2>
-                    
+        <div className="wrapperUpdate">
+            <div className="updateUser">
+                <div className="updateUser__right">
+                    <h2>Update a user</h2>
+                    {error && <div className="alert error"><ErrorOutlineIcon/>{error}</div>}
                     {warning && <div className="alert warning"><WarningIcon/>{warning}</div>}
-                    {error && !warning && <div className="alert error"><ErrorOutlineIcon/>{error}</div>}
                     {data?.success && !warning && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Registered successfully !</div>}
+                    
+                    {singleUserload && <CircularProgress/>}
+                    {singleUserError && <div className="alert error"><ErrorOutlineIcon/>{singleUserError}</div>}
+                    {(singleUserData && singleUserData.success) &&
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="formGroup">
                             <TextField value={user.FIRST_NAME} name="FIRST_NAME" label="FirstName" variant="outlined" size="small" onChange={handleChange} required/>
@@ -84,16 +84,16 @@ function CreateUserPage() {
                             <TextField value={user.USER_NAME} name="USER_NAME" label="Username" variant="outlined" size="small" onChange={handleChange} required/>
                             <TextField value={user.TELEPHONE} name="TELEPHONE" label="Telephone" variant="outlined" size="small" onChange={handleChange} required/>
                         </div>
-                        <div className="formGroup">
-                            <TextField value={user.PASSWORD} name="PASSWORD" label="Password" type="password" variant="outlined" size="small" onChange={handleChange} required/>
-                            <TextField name="CONFIRM_PASSWORD" value={confirmPassword} label="Confirm password" type="password" variant="outlined" size="small" onChange={(e)=>setConfirmPassword(e.target.value)} required/>
-                        </div>
                         <Button type="submit" disabled={loading && true }>{loading ?<CircularProgress color="inherit"/>: 'Submit'}</Button>
-                    </form>
-                </div>   
+                    </form>}
+                    
+                </div> 
+                <div className="updateUser__left">
+                    <img src={UpdateProfileSvg} alt=''/>
+                </div> 
             </div>
         </div>
     )
 }
 
-export default CreateUserPage
+export default UpdateUserPage

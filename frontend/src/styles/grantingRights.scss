@@ -1,0 +1,109 @@
+.wrapperGranting{
+    width: 100%;
+    margin: 10px 0 0 0;
+
+    .granting{
+        width: 80%;
+        margin: auto;
+        display: flex;
+        color: rgb(95, 95, 95);
+        -webkit-user-select: none;
+        user-select: none;
+
+        &__left{
+
+            width: 50%;
+            padding: 30px 20px 0 0;
+            border-right: 1px solid lightgray;
+
+            .forms{
+                display: flex;
+                justify-content: space-between;
+                box-sizing: border-box;
+            }
+            .MuiFormControl-root{
+                width: 48%;
+                font-family: inherit;
+                margin: 10px 0px;
+                
+            }
+
+            .MuiSelect-select:focus{
+                background-color: transparent;
+            }
+            
+            .MuiOutlinedInput-root {
+                border-radius: 15px;
+                font-family: inherit;
+                
+            }
+
+            .MuiOutlinedInput-notchedOutline{
+                border: 2px solid lightgrey;
+            }
+
+            .msgInfo{
+                text-align: center;
+                background-color: rgba(231, 231, 231, 0.671);
+                border-radius: 5px;
+                color: rgb(63, 63, 63);
+                padding: 18px 0;
+                margin-top: 50px;
+            }
+
+            // test 
+            .checks{
+                div{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            }
+
+            .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
+                background-color: rgb(116, 185, 255);
+            }
+
+            .MuiSwitch-colorPrimary.Mui-checked{
+                color: #1e90ff;
+            }
+            
+            .MuiButton-root{
+                font-family: inherit !important;
+                background-color: #3497fa;
+                color: white;
+                margin: 30px auto 0;
+                display: block;
+                padding: 10px 30px;
+        
+                &:hover{
+                    background-color: rgba(7, 113, 218, 0.555)
+                }
+            }
+        }
+
+        &__right{
+            width: 50%;
+            padding: 20px 0 20px 25px;
+
+            table{
+                border-collapse: separate;
+                border-spacing: 0px 0px;
+                width: 100%;
+                text-align: left;
+                
+    
+                tr{
+                    border-radius: 3px;
+                    box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px;
+            
+                    
+                    td,th{
+                        padding: 20px 10px;
+                    }
+                }
+            }
+        }
+    }
+
+}
