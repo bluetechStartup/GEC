@@ -1,6 +1,6 @@
 import {
     
-    // for user only
+    // for user login and logout only
     USER_REQUEST,
     USER_REQUEST_SUCCESS,
     USER_REQUEST_FAILED,
@@ -13,10 +13,14 @@ import {
 
     // create user or update
     USER_CREATE_OR_UPDATE_REQUEST,
-    USER_CREATE_FAILED,
-    USER_CREATE_SUCCESS,
-    USER_UPDATE_FAILED,
-    USER_UPDATE_SUCCESS
+    USER_CREATE_OR_UPDATE_FAILED,
+    USER_CREATE_OR_UPDATE_SUCCESS,
+    USER_CREATE_OR_UPDATE_FINISH,
+
+    // for single user
+    GET_USER_BY_ID_REQUEST,
+    GET_USER_BY_ID_SUCCESS,
+    GET_USER_BY_ID_FAILED,
 
 } from './userTypes';
 
@@ -47,26 +51,43 @@ export const userReducer = (state=userState,action) =>{
 
 
 
-// reducer for user retrieve,creation or update
-const singleUserState = {loading:false, data:null, error:""}
+// reducer for user creation or update
+const UserCreatedOrUpdatedState = {loading:false, data:null, error:""}
 
-export const singleUserReducer = (state=singleUserState,action) =>{
+export const UserCreatedOrUpdatedReducer = (state=UserCreatedOrUpdatedState,action) =>{
     switch (action.type) {
         case USER_CREATE_OR_UPDATE_REQUEST:
             return { loading:true }
         
-        case USER_CREATE_SUCCESS:
+        case USER_CREATE_OR_UPDATE_SUCCESS:
             return { loading:false, data: action.payload }
         
-        case USER_CREATE_FAILED:
+        case USER_CREATE_OR_UPDATE_FAILED :
             return { loading:false, data:null, error:action.payload}
 
-        case USER_UPDATE_SUCCESS:
-            return { loading:false, data: action.payload }
         
-        case USER_UPDATE_FAILED:
-            return { loading:false, data:null, error:action.payload}
-        
+        case USER_CREATE_OR_UPDATE_FINISH:
+            return { loading:false, data:null, error:""}
+    
         default:return { ...state }
     }
 }
+
+// reducer for retrieve a single user 
+const SingleUserState = {loading:false, data:null, error:""}
+
+export const SingleUserReducer = (state=SingleUserState,action) =>{
+    switch (action.type) {
+        case GET_USER_BY_ID_REQUEST:
+            return { loading:true }
+        
+        case GET_USER_BY_ID_SUCCESS:
+            return { loading:false, data: action.payload }
+        
+        case GET_USER_BY_ID_FAILED:
+            return { loading:false, error:action.payload}
+    
+        default:return { ...state }
+    }
+}
+

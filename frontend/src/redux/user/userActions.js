@@ -4,7 +4,7 @@ import axios from 'axios';
 import * as api from '../api';
 import {
     
-    // for user only
+     // for user login and logout only
     USER_REQUEST,
     USER_REQUEST_SUCCESS,
     USER_REQUEST_FAILED,
@@ -17,10 +17,14 @@ import {
 
     // create user or update
     USER_CREATE_OR_UPDATE_REQUEST,
-    USER_CREATE_FAILED,
-    USER_CREATE_SUCCESS,
-    USER_UPDATE_FAILED,
-    USER_UPDATE_SUCCESS
+    USER_CREATE_OR_UPDATE_FAILED,
+    USER_CREATE_OR_UPDATE_SUCCESS,
+    USER_CREATE_OR_UPDATE_FINISH,
+
+    // for single user
+    GET_USER_BY_ID_REQUEST,
+    GET_USER_BY_ID_SUCCESS,
+    GET_USER_BY_ID_FAILED,
 
 } from './userTypes';
 
@@ -55,64 +59,59 @@ export const createUser =  (userData) => async dispatch =>{
     dispatch({type:USER_CREATE_OR_UPDATE_REQUEST})
     console.log(userData)
     try {
-        const {data} = await axios.post(`${api.URL}/api/users/register`,{userData, PROFIL_ID:1})
+        const {data} = await axios.post(`${api.URL}/api/users/register`,{...userData})
         console.log(data)
-        // data.success ? 
-        //     dispatch({type:USER_CREATE_SUCCESS, payload: data.data})
-        //     : dispatch({type:USER_CREATE_FAILED, payload: data.message})
+        data.success ? 
+            dispatch({type:USER_CREATE_OR_UPDATE_SUCCESS, payload: {success:data.success, id:data.data.insertId }})
+            : dispatch({type:USER_CREATE_OR_UPDATE_FAILED, payload: data.message})
 
     } catch (error) {
-        // dispatch({type:USER_CREATE_FAILED,payload: error})
-        console.log(error)
+        dispatch({type:USER_CREATE_OR_UPDATE_FAILED,payload: error.message});
     }
     
 }
 
-export const updateUser =  (userData,id) => async dispatch =>{
+export const updateUser =  (userData, token) => async dispatch =>{
+
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      };
+
     dispatch({type:USER_CREATE_OR_UPDATE_REQUEST})
     try {
-        const {data} = await axios.post(`${api.URL}/api/users/${id}`,{userData})
+        const {data} = await axios.put(`${api.URL}/api/users`, userData , config)
+        
         data.success ? 
-            dispatch({type:USER_UPDATE_SUCCESS, payload: data.data})
-            : dispatch({type:USER_UPDATE_FAILED, payload: data.message})
+            dispatch({type:USER_CREATE_OR_UPDATE_SUCCESS, payload: data.data})
+            : dispatch({type:USER_CREATE_OR_UPDATE_FAILED, payload: data.message})
 
     } catch (error) {
-        dispatch({type:USER_UPDATE_FAILED,payload: error})
+        dispatch({type:USER_CREATE_OR_UPDATE_FAILED,payload: error.message})
     }
     
 }
 
-export const disableUser =  (id) => async dispatch =>{
-    dispatch({type:USER_REQUEST})
+
+export const finishRequest =  () =>{
+    return {type:USER_CREATE_OR_UPDATE_FINISH}
+}
+
+
+// actions for a single user interraction
+
+export const getSingleUser =  (userId) => async dispatch =>{
+    dispatch({type:GET_USER_BY_ID_REQUEST})
+    
     try {
-        const {data} = await axios.post(`${api.URL}/api/users/auth`,{id})
+        const {data} = await axios.get(`${api.URL}/api/users/${userId}`)
         data.success ? 
-            dispatch({type:USER_REQUEST_SUCCESS, payload: data.data})
-            : dispatch({type:USER_REQUEST_FAILED, payload: data.message})
+            dispatch({type:GET_USER_BY_ID_SUCCESS, payload: {success:data.success, ...data.data }})
+            : dispatch({type:GET_USER_BY_ID_FAILED, payload: data.message})
 
-        localStorage.setItem("user",JSON.stringify(data))
     } catch (error) {
-        dispatch({type:USER_REQUEST_FAILED,payload: error})
+        dispatch({type:GET_USER_BY_ID_FAILED,payload: error.message});
     }
     
 }
-
-export const unableUser =  (id) => async dispatch =>{
-    dispatch({type:USER_REQUEST})
-    try {
-        const {data} = await axios.post(`${api.URL}/api/users/auth`,{id})
-        data.success ? 
-            dispatch({type:USER_REQUEST_SUCCESS, payload: data.data})
-            : dispatch({type:USER_REQUEST_FAILED, payload: data.message})
-
-        localStorage.setItem("user",JSON.stringify(data))
-    } catch (error) {
-        dispatch({type:USER_REQUEST_FAILED,payload: error})
-    }
-    
-}
-
-
-
-// actions for user that interracts with riths on routes
-

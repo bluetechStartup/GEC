@@ -65,7 +65,7 @@ class User {
 
  static findById(id, cb) {
   connection.query(
-   'SELECT user.USER_ID,user.FIRST_NAME,user.LAST_NAME ,user.IS_ACTIVE,user.TELEPHONE,prof.PROFIL_CODE from admin_users user ,admin_profil prof  WHERE user.USER_ID=? AND prof.PROFIL_ID=user.PROFIL_ID',
+   'SELECT user.USER_ID,user.FIRST_NAME,user.LAST_NAME , user.USER_NAME, user.EMAIL,user.TELEPHONE,prof.PROFIL_CODE from admin_users user ,admin_profil prof  WHERE user.USER_ID=? AND prof.PROFIL_ID=user.PROFIL_ID',
    [id],
    (error, data) => {
     if (error) return cb(error, null)
