@@ -16,7 +16,7 @@ function LoginPage({history}) {
     
 
     useEffect(() => {
-        if(userInfo.data) history.push("/home")
+        if(userInfo.data) history.push("/")
     }, [userInfo])
 
     const handleSubmit = async (e)=>{

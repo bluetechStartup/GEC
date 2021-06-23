@@ -78,7 +78,7 @@ export const updateUser =  (userData, token) => async dispatch =>{
             Authorization: `Bearer ${token}`,
         },
       };
-
+      console.log("config:",config)
     dispatch({type:USER_CREATE_OR_UPDATE_REQUEST})
     try {
         const {data} = await axios.put(`${api.URL}/api/users`, userData , config)

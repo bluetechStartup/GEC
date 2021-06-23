@@ -14,7 +14,7 @@ class User {
   const { email, password } = credentiels
 
   connection.query(
-   'select adm.USER_NAME,adm.PASSWORD,adm.FIRST_NAME,adm.LAST_NAME,adm.EMAIL,prof.PROFIL_DESCR FROM admin_users adm , admin_profil prof where adm.EMAIL=?',
+   'select adm.USER_ID,adm.USER_NAME,adm.PASSWORD,adm.FIRST_NAME,adm.LAST_NAME,adm.EMAIL,prof.PROFIL_DESCR FROM admin_users adm , admin_profil prof where adm.EMAIL=?',
    [email],
    (err, data) => {
     if (err) return cb(err, null)
@@ -24,6 +24,7 @@ class User {
      if (!isMatch) {
       return cb(null, { success: false, message: 'wrong password..' })
      }
+     console.log("data:",data)
      const token = jwt.sign({ id: data[0].USER_ID }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
      })
@@ -67,7 +68,7 @@ class User {
    [id],
    (error, data) => {
     if (error) return cb(error, null)
-    return cb(null, { success: true, data })
+    return cb(null, { success: true, data:data[0] })
    }
   )
  }
