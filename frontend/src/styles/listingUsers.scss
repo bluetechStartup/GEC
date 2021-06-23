@@ -44,9 +44,15 @@
 
         table{
             border-collapse: separate;
-            border-spacing: 0px 8px;
+            border-spacing: 0px 7px;
             width: 100%;
 
+            thead{
+                th{
+                    padding: 20px 10px;
+                    text-align: center;
+                }
+            }
 
             tr{
                 // background-color: rgb(246, 250, 255);
@@ -54,8 +60,8 @@
                 box-shadow: rgba(0, 0, 0, 0.103) 0px 1px 4px;
                 
                 
-                td,th{
-                    padding: 10px 10px;
+                td{
+                    padding: 6px 10px;
                     text-align: center;
                 }
 
