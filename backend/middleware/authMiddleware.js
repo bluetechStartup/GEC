@@ -6,29 +6,31 @@ const jwt = require('jsonwebtoken')
 // protect route
 exports.protect = asyncHandler(async (req, res, next) => {
  let token
-
  if (
-  req.headers.authorization &&
-  req.headers.authorization.startsWith('Bearer')
- ) {
-  token = req.headers.authorization.split('Bearer ')[1]
-  console.log(req.headers.authorization.split('Bearer '))
- }
-
+   req.headers.authorization &&
+   req.headers.authorization.startsWith('Bearer')
+   ) {
+     token = req.headers.authorization.split('Bearer ')[1]
+    //  console.log(req.headers.authorization.split('Bearer '))
+     console.log(req.headers.authorization)
+    }
+    
+    console.log("THIS IS TOKEN",token)
  if (!token) {
   return res.status(403).json({ success: false, message: ' login first...' })
  }
 
  const decod = jwt.verify(token, process.env.JWT_SECRET)
- console.log(decod)
+ console.log(decod.id)
 
- const retrieveQuery = `SELECT user.USER_ID,user.FIRST_NAME,user.LAST_NAME ,user.IS_ACTIVE,user.TELEPHONE,prof.PROFIL_CODE from admin_users user,admin_profil prof  WHERE user.USER_ID=${decod.id} AND user.PROFIL_ID=prof.PROFIL_ID`
- sql.query(retrieveQuery, (err, user) => {
+ const retrieveQuery = `SELECT user.USER_ID,user.FIRST_NAME,user.LAST_NAME ,user.IS_ACTIVE,user.TELEPHONE,prof.PROFIL_CODE from admin_users user,admin_profil prof  WHERE user.USER_ID=? AND user.PROFIL_ID=prof.PROFIL_ID`
+ sql.query(retrieveQuery,[decod.id], (err, user) => {
   if (err) throw err
 
   if (user.length > 0) {
 
    req.user = user[0]
+   console.log('this is added user :',user[0])
 
   return next()
    

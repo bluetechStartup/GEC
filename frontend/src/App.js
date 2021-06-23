@@ -15,9 +15,9 @@ import UpdateUserPage from "./pages/UpdateUserPage";
 
 function App() {
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", () => localStorage.clear());
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", () => localStorage.clear());
+  // }, [])
 
   return (
     <div>
@@ -31,7 +31,7 @@ function App() {
         <Route exact path='/entrant'component={CourrierEntrantPage} />
         <Route exact path='/home'component={Home} />
         <Route exact path='/granting'component={GrantingRights} />
-        <Route exact path='/update'component={UpdateUserPage} />
+        <Route exact path='/update/:id'component={UpdateUserPage} />
       </Switch>
     </div>
   );

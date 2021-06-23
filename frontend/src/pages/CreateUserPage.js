@@ -14,7 +14,7 @@ import '../styles/create.scss'
 function CreateUserPage() {
     
     const dispatch = useDispatch();
-    const {loading, error, data} = useSelector(state => state.singleUser);
+    const {loading, error, data} = useSelector(state => state.userCreatedOrUpdated);
 
     const [warning, setWarning] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -68,8 +68,9 @@ function CreateUserPage() {
                 </div>
                 <div className="createUser__right">
                     <h2>Create a user</h2>
-                    {error && <div className="alert error"><ErrorOutlineIcon/>{error}</div>}
+                    
                     {warning && <div className="alert warning"><WarningIcon/>{warning}</div>}
+                    {error && !warning && <div className="alert error"><ErrorOutlineIcon/>{error}</div>}
                     {data?.success && !warning && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Registered successfully !</div>}
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="formGroup">

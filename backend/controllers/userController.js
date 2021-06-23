@@ -70,12 +70,13 @@ const getUserById = asyncHandler(async (req, res, next) => {
 })
 
 // @desc    Update user profile
-// @route   PATCH /api/users/:id
+// @route   PUT /api/users
 // @access  Private
 const updateUser = asyncHandler(async (req, res, next) => {
+ console.log('this is update user')
  console.log(req.body)
  // instead of 1 later we will pass a req.user.id
- User.getMe(1, user => {
+ User.getMe(req.user.USER_ID, (err,user) => {
   console.log('user out here ...', user)
   ;(user.FIRST_NAME = req.body.FIRST_NAME
    ? req.body.FIRST_NAME
@@ -87,7 +88,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
    console.log('user out here updated...', user)
   // instead of 1 later we will pass a req.user.id
   User.update(user, (err, data) => {
-   if (error) return next(new Error(err.message))
+   if (err) return next(new Error(err.message))
    res.json(data)
   })
  })
