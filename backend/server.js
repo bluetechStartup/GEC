@@ -5,8 +5,11 @@ const cors = require('cors')
 
 const userRoutes = require('./routes/userRoutes.js')
 const dbConnect = require('./config/db.js')
-const {errorHandler,notFound}=require('./middleware/errorHandler.js')
-const profileRoutes=require('./routes/profileRoutes.js')
+const { errorHandler, notFound } = require('./middleware/errorHandler.js')
+
+const hierarchieRoutes = require('./routes/hierarchieRoutes.js')
+const profileRoutes = require('./routes/profileRoutes.js')
+const servicesRoutes = require('./routes/serviceRoutes.js')
 const app = express()
 dotenv.config()
 dbConnect
@@ -18,7 +21,9 @@ app.get('/', (req, res, next) => {
 
 const PORT = process.env.PORT || 3005
 app.use('/api/users', userRoutes)
-app.use('/api/profile',profileRoutes)
+app.use('/api/profile', profileRoutes)
+app.use('/api/hierarchie', hierarchieRoutes)
+app.use('/api/service', servicesRoutes)
 app.use(notFound)
 app.use(errorHandler)
 app.listen(
