@@ -4,7 +4,7 @@
     min-height: 100vh;
 
     .login{
-        width: 70%;
+        width: 60%;
         margin: auto;
         background-color: #ffffff;
         height: fit-content;
@@ -16,7 +16,7 @@
             height: 120%;
             transform:  translateY(-7%);
             position: absolute;
-            left: -80px;
+            left: -65px;
             z-index: -1000;
         }
 
@@ -45,26 +45,29 @@
                         margin-right: 10px;
                     }
                 }
-                
-                label{
-                    margin-top: 10px;
-                    display: inline-block;
+
+                .MuiFormControl-root{
+                    width: 100%;
+                    margin-bottom: 13px;
                 }
 
-                input{
-                    box-sizing: border-box;
-                    width: 100%;
-                    border:2px solid rgb(238, 238, 238);
-                    padding: 10px 5px;
+                .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+                    border-color: #3497fa !important;
+                }
+            
+                .MuiFormLabel-root.Mui-focused {
+                    color: #3497fa !important;
                     font-family: inherit;
-                    font-size: 1em;
-                    transition: .3s all;
-
-                    &:focus{
-                        outline-width: 0px;
-                        border-color: lightgray;
-                    }
-
+                }
+            
+                .MuiOutlinedInput-root {
+                    padding: 0!important;
+                    border-radius: 10px;
+                    font-family: inherit;
+                }
+            
+                .MuiInputLabel-outlined{
+                    font-family: inherit;
                 }
 
                
