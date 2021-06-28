@@ -16,7 +16,7 @@ import UpdateUserPage from "./pages/UpdateUserPage";
 function App() {
 
   // useEffect(() => {
-  //   window.addEventListener("beforeunload", () => localStorage.clear());
+  //   window.addEventListener("unload", () => localStorage.clear());
   // }, [])
 
   return (
