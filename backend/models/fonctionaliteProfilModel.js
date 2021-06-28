@@ -25,10 +25,11 @@ static getAll(cb) {
  }
 
 //    U HAVE TO PASS PROFIL_CODE FROM FRONTEND
-static getAllFonctionnalitesForSingleProfil(prof_code, cb){
-    console.log("profil_code",prof_code)
-    const requete="SELECT ADP.METHODS_GRANTED,ADP.FONCTIONNALITE_ID ,FN.FONCTIONNALITE_URL FROM admin_fonctionnalites FN, (select AFN.FONCTIONNALITE_ID,AFN.METHODS_GRANTED,AFN.PROFIL_ID FROM admin_profil_fonctionnalites AFN,(select PROFIL_ID FROM admin_profil WHERE PROFIL_CODE=?)pro WHERE pro.PROFIL_ID=AFN.PROFIL_ID)ADP WHERE FN.FONCTIONNALITE_ID=ADP.FONCTIONNALITE_ID GROUP BY FN.FONCTIONNALITE_ID"
-    connection.query(requete,[prof_code.trim()],(err,data)=>{
+static getAllFonctionnalitesForSingleProfil(id, cb){
+    console.log("profil_code",id)
+    const requete="SELECT ADP.METHODS_GRANTED,ADP.FONCTIONNALITE_ID ,FN.FONCTIONNALITE_URL FROM admin_fonctionnalites FN, (select AFN.FONCTIONNALITE_ID,AFN.METHODS_GRANTED,AFN.PROFIL_ID FROM admin_profil_fonctionnalites AFN,(select PROFIL_ID FROM admin_profil WHERE PROFIL_ID=?)pro WHERE pro.PROFIL_ID=AFN.PROFIL_ID)ADP WHERE FN.FONCTIONNALITE_ID=ADP.FONCTIONNALITE_ID GROUP BY FN.FONCTIONNALITE_ID"
+    connection.query(requete,[id],(err,data)=>{
+
         if(err) return cb(err, null)
         console.log("this are data from getAllFonctionnalitesForSingleProfil",data)
         return cb(null,{success:true, data})
