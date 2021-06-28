@@ -15,7 +15,7 @@ const getAll = asyncHandler(async (req, res, next)=>{
 })
 
 const profileFonctionnalites=asyncHandler(async (req, res, next) => {
-    console.log("profilcode controller",req.params.id)
+    // console.log("profilcode controller",req.params.id)
     AdminFonc_Prof.getAllFonctionnalitesForSingleProfil(req.params.id,(err,data)=>{
         if (err) return next(new Error("ressource introuvable"))
         res.json(data)
@@ -30,4 +30,12 @@ const profileFonctionnaliteSpecic= asyncHandler(async (req, res, next) => {
     })
 })
 
-module.exports = {getAll,profileFonctionnaliteSpecic,profileFonctionnalites}
+const updateProfileFonctionnalite= asyncHandler(async (req, res, next) => {
+    const {PROFIL_ID,FONCTIONNALITE_ID,METHODS_GRANTED}=req.body
+    AdminFonc_Prof.update({PROFIL_ID,FONCTIONNALITE_ID,METHODS_GRANTED}, (err, data)=>{
+        if(err) return next(new Error(err.message))
+        res.json(data)
+    })
+    
+})
+module.exports = {getAll,profileFonctionnaliteSpecic,profileFonctionnalites,updateProfileFonctionnalite}

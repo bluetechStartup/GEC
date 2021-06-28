@@ -97,9 +97,21 @@ class User {
    cb(null, { success: true, data })
   })
  }
- // static updatePassword(){
 
- // }
+ static updatePassword(reset, cb){
+   const {PASSWORD,NEW_PASSWORD,USER_ID}=reset
+
+   connection.query("select * from admin_users where USER_ID=?",[USER_ID],(err,data)=>{
+     if (err) return cb(err, null)
+     const isMatch = bcrypt.compareSync(password, data[0].PASSWORD)
+     if(!isMatch)return cb(null,{success:false,message:"wrong password"})
+      connection.query("")
+     
+
+   })
+
+
+ }
  // static getResetPasswordToken(){
 
  // }
