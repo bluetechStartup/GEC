@@ -24,7 +24,7 @@ class Hierarchie{
         connection.query("select * from hierarchie where HIERARCHIE_ID=?",[id],(err,data)=>{
             if(err) return cb(err, null)
 
-            return cb(null,data)
+            return cb(null,{success:true,data:data[0]})
         })
 
     }
@@ -38,9 +38,9 @@ class Hierarchie{
 
     }
     static update(newHieararchie,cb){
-        const {HIERARCHIE_DESCR,HIERARCHIE_CODE}=newHieararchie
-        console.log("hierarchie get byId",newHieararchie)
-        connection.query(`update hierarchie set HIERARCHIE_CODE=${HIERARCHIE_CODE}, HIERARCHIE_DESCR=${HIERARCHIE_DESCR} where HIERARCHIE_ID=${HIERARCHIE_ID}`,(err,data)=>{
+        const {HIERARCHIE_CODE,HIERARCHIE_DESCR,HIERARCHIE_ID}=newHieararchie
+
+        connection.query(`update hierarchie set HIERARCHIE_CODE=?, HIERARCHIE_DESCR=? where HIERARCHIE_ID=?`,[HIERARCHIE_CODE,HIERARCHIE_DESCR,HIERARCHIE_ID],(err,data)=>{
             if(err)return cb(err, null)
             return cb(null,data)
   

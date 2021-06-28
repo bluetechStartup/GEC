@@ -1,5 +1,6 @@
 const connection = require('../config/db.js')
 const Dependancy = require('../models/service_Dependancy.js')
+
 //   data: courriers,
 //   message: `Les courriers`,
 //   type: "success",
@@ -7,8 +8,7 @@ const Dependancy = require('../models/service_Dependancy.js')
 
 class Service {
  static getAll(cb) {
-    
-  connection.query('select * from services', (err, data) => {
+  connection.query('select * from services order by SERVICE_ID DESC', (err, data) => {
    if (err) return cb(err, null)
    if (data.length > 0) {
     return cb(null, data)
@@ -16,12 +16,11 @@ class Service {
   })
  }
  static getById(id, cb) {
-    const request=`select SER.SERVICE_DESCR,SER.HIERARCHIE_ID,SER.SERVICE_ID,dp.PARENT_ID ,dp.PARENT,HE.HIERARCHIE from services SER, (select SE.SERVICE_DESCR AS PARENT,SE.SERVICE_ID,SD.PARENT_ID from services SE, service_dependance SD where SE.SERVICE_ID=${id} and SD.ENFANT_ID=${id})dp,(SELECT H.HIERARCHIE_DESCR AS HIERARCHIE,H.HIERARCHIE_ID  FROM services SE JOIN hierarchie H on SE.HIERARCHIE_ID=H.HIERARCHIE_ID WHERE SE.SERVICE_ID=${id})HE where SER.SERVICE_ID=dp.PARENT_ID`
+//   const requet = `select SER.SERVICE_DESCR,SER.HIERARCHIE_ID,SER.SERVICE_ID,dp.PARENT_ID ,dp.PARENT,HE.HIERARCHIE from services SER, (select SE.SERVICE_DESCR AS PARENT,SE.SERVICE_ID,SD.PARENT_ID from services SE, service_dependance SD where SE.SERVICE_ID=${id} and SD.ENFANT_ID=${id})dp,(SELECT H.HIERARCHIE_DESCR AS HIERARCHIE,H.HIERARCHIE_ID  FROM services SE JOIN hierarchie H on SE.HIERARCHIE_ID=H.HIERARCHIE_ID WHERE SE.SERVICE_ID=${id})HE where SER.SERVICE_ID=dp.PARENT_ID`
   connection.query(
- request,
+   `select * from services  where SERVICE_ID=? order by SERVICE_ID DESC`,[id],
    (err, data) => {
     if (err) return cb(err, null)
-
     return cb(null, data)
    }
   )
@@ -33,10 +32,10 @@ class Service {
    'insert into services set ?',
    { HIERARCHIE_ID, SERVICE_DESCR },
    (err, data) => {
+    console.log('services to be created', err)
     if (err) return cb(err, null)
     console.log('data out here', data)
     if (data.insertId > 0) {
-     console.log('service successfully created and insertI is', data.insertId)
      const depend = {
       ENFANT_ID: data.insertId,
       PARENT_ID: SERVICE_DEPEND,
@@ -70,6 +69,18 @@ class Service {
    [id],
    (err, data) => {
     if (err) return cb(err, null)
+    connection.query(
+     `delete from service_dependance where ENFANT_ID=?`,
+     [id],
+     (err, data) => {
+      if (err) return cb(err, null)
+      if (data.affectedRows > 0) {
+       return cb(null, data)
+      }
+      err.message = 'not deleted succeffly...'
+      return cb(err, null)
+     }
+    )
     return cb(null, data)
    }
   )

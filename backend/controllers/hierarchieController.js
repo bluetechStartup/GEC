@@ -29,18 +29,17 @@ const getHierarchieById=asyncHandler(async (req, res, next) => {
 })
 const updateHierarchie=asyncHandler(async (req, res, next) => {
     console.log("this body",req.body)
-    // if(req.body.HIERARCHIE_CODE = undefined || req.body.HIERARCHIE_DESCR == undefined ){
-    //     return next(new Error("one or more fields are empty or undefined.."))
-    // }
-
-    Hierarchie.getById(req.params.id,(err,data)=>{
-        
+  
+    Hierarchie.getById(req.params.id,(err,result)=>{
+        const {data}=result
         if(err)return next(new Error(err.message))
 
-        if(data.length<0)return res.status(200).json({ data,message:"there is no hierarchie with such id in database",type:"warning",success: false})
-        data[0].HIERARCHIE_CODE=req.body.HIERARCHIE_CODE?req.body.HIERARCHIE_CODE:data[0].HIERARCHIE_CODE
-        data[0].HIERARCHIE_DESCR=req.body.HIERARCHIE_DESCR?req.body.HIERARCHIE_DESCR:data[0].HIERARCHIE_DESCR
-        Hierarchie.update(data[0],(err,data)=>{
+         if(!data)return next(new Error("hierarchie unfounded..."))
+         data.HIERARCHIE_CODE=req.body.HIERARCHIE_CODE?req.body.HIERARCHIE_CODE:data.HIERARCHIE_CODE
+         data.HIERARCHIE_DESCR=req.body.HIERARCHIE_DESCR?req.body.HIERARCHIE_DESCR:data.HIERARCHIE_DESCR
+
+     
+        Hierarchie.update(data,(err,data)=>{
             if(err)return next(new Error(err.message))
             console.log("hierarchie UPDATED",data)
             return res.status(200).json({ data,message:"hierarchie updated",type:"success",success: true,
