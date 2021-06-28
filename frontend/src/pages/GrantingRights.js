@@ -8,16 +8,18 @@ import { Button } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import '../styles/grantingRights.scss'
 import { getAllProfiles } from '../redux/profile/profileActions';
+import { getAllFuncs } from '../redux/functionnalities/functionsActions';
 
 function GrantingRights() {
     
     const dispatch = useDispatch()
-    const { loading, data:profiles, error} = useSelector(state => state.allProfiles)
+    const { data:profiles } = useSelector(state => state.allProfiles)
+    const { data:functions } = useSelector(state => state.allFuncs)
     useEffect(() => {
         dispatch(getAllProfiles())
+        dispatch(getAllFuncs())
     }, [])
 
-    console.log(profiles)
 
     const [profile, setProfile] = useState('')
     const [fonctionnalite, setFonctionnalite] = useState('')
@@ -29,8 +31,14 @@ function GrantingRights() {
     })
 
 
-    const handleChange = (e) =>{
-        e.target.name === 'profile' ? setProfile(e.target.value) : setFonctionnalite(e.target.value)
+    const handleProfileChange = (e) =>{
+        setProfile(e.target.value)
+
+        console.log("profile:", profile, "func:",fonctionnalite)
+    }
+
+    const handleFunctionChange = (e) =>{
+        setFonctionnalite(e.target.value)
         console.log("profile:", profile, "func:",fonctionnalite)
     }
 
@@ -39,29 +47,30 @@ function GrantingRights() {
             <div className="granting">
                 <div className="granting__left">
                     <div className="forms">
-                        { profiles?.data && 
+                        
                         <FormControl variant="outlined" >
                             <InputLabel>Profile</InputLabel>
                             <Select
                             name="profile"
-                            label="Profile" value={profile} onChange={handleChange}
+                            label="Profile" value={profile} onChange={handleProfileChange}
                             >
                             <MenuItem value="">None</MenuItem>
-                            { profiles?.data.map((profile)=>{
+                            { profiles?.data && profiles?.data.map((profile)=>{
                                 return <MenuItem key={profile.PROFIL_ID} value={profile.PROFIL_ID}>{profile.PROFIL_DESCR}</MenuItem>
                             }) }
                             </Select>
                         </FormControl>
-                        }
+                        
                         <FormControl variant="outlined" disabled={ profile ? false : true }>
                             <InputLabel >Functions</InputLabel>
                             <Select
-                            label="Functions" value={fonctionnalite} onChange={handleChange} 
+                            label="Functions" value={fonctionnalite} onChange={handleFunctionChange} 
                             >
                             <MenuItem value="">None</MenuItem>
-                            <MenuItem value={10}>Utilisateurs</MenuItem>
-                            <MenuItem value={20}>Admin</MenuItem>
-                            <MenuItem value={30}>Assistant</MenuItem>
+                            { functions?.funcs && functions?.funcs.map((func)=>{
+                                return <MenuItem key={func.FONCTIONNALITE_ID} value={func.FONCTIONNALITE_ID}>{func.FONCTIONNALITE_URL}</MenuItem>
+                            }) }
+    
                             </Select>
                         </FormControl>
                     </div>

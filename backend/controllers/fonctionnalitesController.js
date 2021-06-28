@@ -31,12 +31,9 @@ let createFonctionnalite=asyncHandler(async (req, res, next) => {
 })
 
 let getAllFonctionnalites=asyncHandler(async (req, res, next) => {
-    Fonctionnalite.getAll((err, fonctionnalites) => {
+    Fonctionnalite.getAll((err, data) => {
         if(err)return next(new Error(err.message))
-        res.status(200).json({
-          data: fonctionnalites,
-          success: true,
-        })
+        res.status(200).json(data)
       })
 
 })
