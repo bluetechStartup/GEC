@@ -15,7 +15,8 @@ const getAll = asyncHandler(async (req, res, next)=>{
 })
 
 const profileFonctionnalites=asyncHandler(async (req, res, next) => {
-    AdminFonc_Prof.getAllFonctionnalitesForSingleProfil(req.body.prof_code,(err,data)=>{
+    console.log("profilcode controller",req.body.PROFIL_CODE)
+    AdminFonc_Prof.getAllFonctionnalitesForSingleProfil(req.body.PROFIL_CODE,(err,data)=>{
         if (err) return next(new Error("ressource introuvable"))
         res.json(data)
     })
