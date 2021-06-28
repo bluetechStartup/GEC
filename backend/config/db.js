@@ -4,7 +4,7 @@ const con = {
  host: process.env.DB_HOST,
  user: 'root',
  password: '',
- database:'tadeapp_edutech',
+ database: 'gestion_courriels',
  connectionLimit: 99,
  queueLimit: 0,
  waitForConnection: true,
