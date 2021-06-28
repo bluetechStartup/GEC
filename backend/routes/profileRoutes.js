@@ -1,12 +1,16 @@
 const express = require('express')
-const profile = require('../controllers/profilControllers.js')
+const {create,
+    getAll,
+    update,
+    deleteProfile,
+    getById} = require('../controllers/profilControllers.js')
 
 //Router
 var router = express.Router()
 
 //Les routes pour le controlleur ProfilesCtl
-router.route('/').get(profile.all).post(profile.add)
-router.route('/:id').get(profile.one).put(profile.edit).delete(profile.remove)
-router.route('/profileGetFonctionnalites/:id').get(profile.fonctionnalites)
+router.route('/').get(getAll).post(create)
+router.route('/:id').get(getById).put(update).delete(deleteProfile)
+// router.route('/profileFonctionnalites/:id').get(fonctionnalites)
 
 module.exports = router

@@ -1,6 +1,7 @@
 const connection = require('../config/db.js')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+
 class User {
  static async create(newUser, cb) {
   newUser.PASSWORD = await bcrypt.hash(newUser.PASSWORD, 10)

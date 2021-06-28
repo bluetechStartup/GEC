@@ -12,13 +12,15 @@ class Profile {
   )
  }
 
- static getOne(id, cb) {
+ static getById(id, cb) {
   connection.query(
    'SELECT * FROM admin_profil WHERE PROFIL_ID = ? ORDER BY PROFIL_ID DESC',
    [id],
-   (error, resultats) => {
+   (error, data) => {
     if (error) return cb(error, null)
-    cb(null, { success: true, data: resultats[0] })
+    if(data<=0)return cb(null,{success:false,message:"no user found with such id..."})
+    
+    cb(null, { success: true, data: data[0]})
    }
   )
  }
@@ -30,14 +32,17 @@ class Profile {
   })
  }
 
- static update(requete, cb) {
-  connection.query(requete, (error, profile) => {
+ static update(updatedProfile, cb) {
+     const {PROFIL_ID,PROFIL_CODE,PROFIL_DESCR}=updatedProfile
+     const requete=`update admin_profil set PROFIL_DESCR=?,PROFIL_CODE=? where PROFIL_ID=?`
+  connection.query(requete,[PROFIL_DESCR,PROFIL_CODE,PROFIL_ID], (error, profile) => {
    if (error) return cb(error, null)
    cb(null, { success: true, profile })
   })
  }
 
- static remove(id, cb) {
+ 
+ static delete(id, cb) {
   connection.query(
    'DELETE FROM admin_profil WHERE PROFIL_ID = ?',
    [id],
@@ -48,15 +53,6 @@ class Profile {
   )
  }
 
- static getFonctionnalites(id, cb) {
-  connection.query(
-   `SELECT fn.FONCTIONNALITE_URL,fn.FONCTIONNALITE_ID FROM admin_fonctionnalites AS fn JOIN admin_profil_fonctionnalites AS pfn ON fn.FONCTIONNALITE_ID = pfn.FONCTIONNALITE_ID WHERE pfn.PROFIL_ID = ${id}`,
-   (error, data) => {
-    if (error) return cb(error, null)
-    cb(null, { success: true, data })
-   }
-  )
- }
 }
 
 module.exports = Profile

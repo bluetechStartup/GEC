@@ -13,9 +13,9 @@ const getById = asyncHandler(async (req, res, next) => {
  Service.getById(req.params.id, (err, data) => {
   if (err) return next(new Error(err.message))
   if (data.length <= 0)
-   return res.status(200).json({
+   return res.status(500).json({
     data,
-    message: 'error accured no user found...',
+    message: 'error accured no service found...',
     type: 'warning',
     success: false,
    })
