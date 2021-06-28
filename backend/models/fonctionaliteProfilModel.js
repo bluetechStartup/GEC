@@ -14,12 +14,19 @@ static getAll(cb) {
       if (error) return cb(error, null)
       cb(null, { success: true, data })
      }
-    )
+    ) 
    }
- static create(newProf_fonct,cb){
+//   PROFIL_ID,FONCTIONNALITE_ID ,STRING
+
+ static update(newProf_fonct,cb){
+     
      const {PROFIL_ID,FONCTIONNALITE_ID,METHODS_GRANTED}=newProf_fonct
 
-     connection.query('insert into admin_profil_fonctionnalites set ?')
+
+     connection.query(' update admin_profil_fonctionnalites set METHODS_GRANTED=? WHERE PROFIL_ID=? AND FONCTIONNALITE_ID=?',[METHODS_GRANTED,PROFIL_ID,FONCTIONNALITE_ID],(err,data)=>{
+         if(err)return cb(err, null)
+         return cb(null,{success: true, data})
+     })
 
      
  }
