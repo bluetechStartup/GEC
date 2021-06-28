@@ -41,7 +41,7 @@ function GrantingRights() {
                     <div className="forms">
                         { profiles?.data && 
                         <FormControl variant="outlined" >
-                            <InputLabel >Profile</InputLabel>
+                            <InputLabel>Profile</InputLabel>
                             <Select
                             name="profile"
                             label="Profile" value={profile} onChange={handleChange}
@@ -66,8 +66,8 @@ function GrantingRights() {
                         </FormControl>
                     </div>
                     <h4 className="msgInfo">Please select a profile and functionality !</h4>
-                    
-                    {/* <div className="checks">
+{/*                     
+                    <div className="checks">
                         <div>
                             <p>Grant a user the right to create</p>
                             <Switch
@@ -93,8 +93,8 @@ function GrantingRights() {
                             name="checkedB"
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /></div>
-                    </div> */}
-                    {/* <Button>Grant rights</Button> */}
+                    </div>
+                    <Button>Grant rights</Button> */}
 
                     
                 </div>
@@ -104,7 +104,7 @@ function GrantingRights() {
                         <h3>Pierre</h3>
                         <table>
                             <tr>
-                                <th>Route</th>
+                                <th>Functionnalities</th>
                                 <th>Rights</th>
                                 
                             </tr>
@@ -113,15 +113,15 @@ function GrantingRights() {
                             </tr> */}
                             <tr>
                                 <td>Utilisateurs</td>
-                                <td>C R U D</td>
+                                <td>R</td>
                             </tr>
                             <tr>
                                 <td>Administration</td>
-                                <td>R C</td>
+                                <td>R</td>
                             </tr>
                             <tr>
                                 <td>Assistant</td>
-                                <td>R C U</td>
+                                <td>R</td>
                             </tr>
                         </table>
                     </div>

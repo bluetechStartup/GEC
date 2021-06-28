@@ -67,7 +67,6 @@ export const updateProfile = (userData) => async (dispatch) =>{
 
 export const deleteProfile = (id) => async (dispatch) =>{
     dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST})
-// console.log(userData)
     try {
         const {data} = await axios.post(`${api.URL}/api/profile/${id}`)
         console.log(data)
@@ -79,10 +78,6 @@ export const deleteProfile = (id) => async (dispatch) =>{
         dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED,payload: error.message});
     }
 }
-
-
-
-
 
 // actions for all profiles
 

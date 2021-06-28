@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import {userReducer, UserCreatedOrUpdatedReducer, SingleUserReducer, allUsersReducer} from './user/userReducer.js';
 import { singleProfileReducer, createdOrUpdateProfileReducer,allProfilesReducer } from "./profile/profileReducer"
+import { functionnalityReducer, allFunctionnalityReducer} from "./functionnalities/functionsReducer"
 
 const rootReducer = combineReducers({
     user:userReducer,
@@ -9,7 +10,9 @@ const rootReducer = combineReducers({
     allUsers:allUsersReducer,
     singleProfile:singleProfileReducer,
     allProfiles:allProfilesReducer,
-    createdOrUpdateProfile:createdOrUpdateProfileReducer
+    createdOrUpdateProfile:createdOrUpdateProfileReducer,
+    singleFunc: functionnalityReducer,
+    allFuncs: allFunctionnalityReducer
 })
 
 export default rootReducer
