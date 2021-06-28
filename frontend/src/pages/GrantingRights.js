@@ -3,12 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import Select from '@material-ui/core/Select';
 import { Button, CircularProgress } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import '../styles/grantingRights.scss'
 import { getAllProfiles } from '../redux/profile/profileActions';
-import { getAllFuncs, getAllFuncsByProfile } from '../redux/functionnalities/functionsActions';
+import { getAllFuncs, getAllFuncsByProfile, updateFuncByProfile, updateFuncFinished } from '../redux/functionnalities/functionsActions';
 
 function GrantingRights() {
     
@@ -16,6 +17,7 @@ function GrantingRights() {
     const { data:profiles } = useSelector(state => state.allProfiles)
     const { data:functions } = useSelector(state => state.allFuncs)
     const { loading, data } = useSelector(state => state.allFuncsByProfile)
+    const { data:profileUpdated } = useSelector(state => state.singleFunc)
 
     useEffect(() => {
         dispatch(getAllProfiles())
@@ -23,14 +25,21 @@ function GrantingRights() {
     }, [])
 
 
+    useEffect(() => {
+        if (profileUpdated){
+            setTimeout(() => {
+                dispatch(updateFuncFinished())
+                setProfile("")
+                setFonctionnalite("")
+            }, 3000);
+        }
+        
+    }, [profileUpdated])
+
     const [profile, setProfile] = useState('')
     const [fonctionnalite, setFonctionnalite] = useState('')
-    // const [rights, setRights] = useState({
-    //     post:false,
-    //     delete:false,
-    //     update:false,
-    //     get:false
-    // })
+
+
 
     const [create, setcreate] = useState(false)
     const [read, setread] = useState(false)
@@ -61,7 +70,6 @@ function GrantingRights() {
         setProfile(e.target.value)
         setFonctionnalite("")
         dispatch(getAllFuncsByProfile(parseInt(e.target.value)))
-        // console.log("profile:", profile, "func:",fonctionnalite)
     }
 
     const handleFunctionChange = (e) =>{
@@ -82,12 +90,19 @@ function GrantingRights() {
 
 
     const handleSubmit = ()=>{
-        let rights = ""
-        if (create) rights += "1,"
-        if (read) rights += "2,"
-        if (update) rights += "3,"
-        if (del) rights += "4"
-        console.log("profilID: ",profile," functionID: ",fonctionnalite, " rights :",rights)
+        let rights = "";
+        if (create) rights += "1,";
+        if (read) rights += "2,";
+        if (update) rights += "3,";
+        if (del) rights += "4";
+
+        const dataInfo = {
+            "PROFIL_ID": profile,
+            "FONCTIONNALITE_ID": fonctionnalite,
+            "METHODS_GRANTED": rights
+        }
+        
+        dispatch(updateFuncByProfile(dataInfo))
     }
 
     return (
@@ -125,7 +140,8 @@ function GrantingRights() {
                     { fonctionnalite ?
                     <>
                     <div className="checks">
-                        <div>
+                        { profileUpdated?.success && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Has updated successfully !</div>}
+                        <div className="checkbox">
                             <p>Grant a user the right to create</p>
                             <Switch
                             color="primary"
@@ -133,21 +149,21 @@ function GrantingRights() {
                             onChange={(e)=>setcreate(e.target.checked)}
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /></div>
-                        <div><p>Grant a user the right to retrieve</p>
+                        <div className="checkbox"><p>Grant a user the right to retrieve</p>
                             <Switch
                             color="primary"
                             checked={read}
                             onChange={(e)=>setread(e.target.checked)}
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /></div>
-                        <div><p>Grant a user the right to update</p>
+                        <div className="checkbox"><p>Grant a user the right to update</p>
                             <Switch
                             color="primary"
                             checked={update}
                             onChange={(e)=>setupdate(e.target.checked)}
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /></div>
-                        <div><p>Grant a user the right to delete</p>
+                        <div className="checkbox"><p>Grant a user the right to delete</p>
                             <Switch
                             color="primary"
                             checked={del}

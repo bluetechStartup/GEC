@@ -5,6 +5,11 @@ import {
     GET_FUNCTION_REQUEST_SUCCESS,
     GET_FUNCTION_REQUEST_FAILED,
 
+    UPDATE_RIGHTS_BY_PROFILE_REQUEST,
+    UPDATE_RIGHTS_BY_PROFILE_REQUEST_SUCCESS,
+    UPDATE_RIGHTS_BY_PROFILE_REQUEST_FAILED,
+    UPDATE_RIGHTS_BY_PROFILE_FINISH,
+
     GET_ALL_FUNCTIONS_REQUEST,
     GET_ALL_FUNCTIONS_REQUEST_SUCCESS,
     GET_ALL_FUNCTIONS_REQUEST_FAILED,
@@ -31,6 +36,21 @@ export const getFunc = (id) => async (dispatch) =>{
     }
 }
 
+export const updateFuncByProfile = (dataInfo) => async (dispatch) =>{
+    dispatch({type:UPDATE_RIGHTS_BY_PROFILE_REQUEST})
+    try {
+        const {data} = await axios.post(`${api.URL}/api/fonctionnaliteprofile`,dataInfo)
+        console.log(data)
+        data.success ? 
+            dispatch({type:UPDATE_RIGHTS_BY_PROFILE_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
+            : dispatch({type:UPDATE_RIGHTS_BY_PROFILE_REQUEST_FAILED, payload: data.message})
+
+    } catch (error) {
+        dispatch({type:UPDATE_RIGHTS_BY_PROFILE_REQUEST_FAILED,payload: error.message});
+    }
+}
+
+export const updateFuncFinished = ()=> {return ({ type: UPDATE_RIGHTS_BY_PROFILE_FINISH })}
 
 // actions for all functionnalities 
 
