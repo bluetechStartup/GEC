@@ -4,17 +4,19 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import '../styles/grantingRights.scss'
 import { getAllProfiles } from '../redux/profile/profileActions';
-import { getAllFuncs } from '../redux/functionnalities/functionsActions';
+import { getAllFuncs, getAllFuncsByProfile } from '../redux/functionnalities/functionsActions';
 
 function GrantingRights() {
     
     const dispatch = useDispatch()
     const { data:profiles } = useSelector(state => state.allProfiles)
     const { data:functions } = useSelector(state => state.allFuncs)
+    const { loading, data } = useSelector(state => state.allFuncsByProfile)
+
     useEffect(() => {
         dispatch(getAllProfiles())
         dispatch(getAllFuncs())
@@ -23,23 +25,69 @@ function GrantingRights() {
 
     const [profile, setProfile] = useState('')
     const [fonctionnalite, setFonctionnalite] = useState('')
-    const [rights, setRights] = useState({
-        post:false,
-        delete:false,
-        update:false,
-        get:false
-    })
+    // const [rights, setRights] = useState({
+    //     post:false,
+    //     delete:false,
+    //     update:false,
+    //     get:false
+    // })
 
+    const [create, setcreate] = useState(false)
+    const [read, setread] = useState(false)
+    const [update, setupdate] = useState(false)
+    const [del, setdelete] = useState(false)
+    
+
+    const initialState = () => {
+        setcreate(false)
+        setread(false)
+        setupdate(false)
+        setdelete(false)
+    }
+
+    const rightsFormatter = (caracts)=>{
+        let rightsformat = "";
+        caracts = caracts.split(",");
+        if (caracts.includes('1')) rightsformat += "C " 
+        if (caracts.includes('2'))  rightsformat += "R "
+        if (caracts.includes('3'))  rightsformat += "U "
+        if (caracts.includes('4'))  rightsformat += "D " 
+
+        return rightsformat
+    } 
 
     const handleProfileChange = (e) =>{
+        initialState()
         setProfile(e.target.value)
-
-        console.log("profile:", profile, "func:",fonctionnalite)
+        setFonctionnalite("")
+        dispatch(getAllFuncsByProfile(parseInt(e.target.value)))
+        // console.log("profile:", profile, "func:",fonctionnalite)
     }
 
     const handleFunctionChange = (e) =>{
         setFonctionnalite(e.target.value)
-        console.log("profile:", profile, "func:",fonctionnalite)
+        initialState()
+        if(data?.profileFuncs){
+            data?.profileFuncs.forEach((x)=>{
+                if(x.FONCTIONNALITE_ID === parseInt(e.target.value)){
+                    let meths = x.METHODS_GRANTED.split(",")
+                    if (meths.includes("1")) setcreate(true)
+                    if (meths.includes("2")) setread(true)
+                    if (meths.includes("3")) setupdate(true)
+                    if (meths.includes("4")) setdelete(true)
+                }
+            })
+        }
+    }
+
+
+    const handleSubmit = ()=>{
+        let rights = ""
+        if (create) rights += "1,"
+        if (read) rights += "2,"
+        if (update) rights += "3,"
+        if (del) rights += "4"
+        console.log("profilID: ",profile," functionID: ",fonctionnalite, " rights :",rights)
     }
 
     return (
@@ -74,65 +122,65 @@ function GrantingRights() {
                             </Select>
                         </FormControl>
                     </div>
-                    <h4 className="msgInfo">Please select a profile and functionality !</h4>
-{/*                     
+                    { fonctionnalite ?
+                    <>
                     <div className="checks">
                         <div>
                             <p>Grant a user the right to create</p>
                             <Switch
                             color="primary"
-                            name="checkedB"
-                            inputProps={{ 'aria-label': 'primary checkbox' }}
-                        /></div>
-                        <div><p>Grant a user the right to update</p>
-                            <Switch
-                            color="primary"
-                            name="checkedB"
-                            inputProps={{ 'aria-label': 'primary checkbox' }}
-                        /></div>
-                        <div><p>Grant a user the right to delete</p>
-                            <Switch
-                            color="primary"
-                            name="checkedB"
+                            checked={create}
+                            onChange={(e)=>setcreate(e.target.checked)}
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /></div>
                         <div><p>Grant a user the right to retrieve</p>
                             <Switch
                             color="primary"
-                            name="checkedB"
+                            checked={read}
+                            onChange={(e)=>setread(e.target.checked)}
+                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                        /></div>
+                        <div><p>Grant a user the right to update</p>
+                            <Switch
+                            color="primary"
+                            checked={update}
+                            onChange={(e)=>setupdate(e.target.checked)}
+                            inputProps={{ 'aria-label': 'primary checkbox' }}
+                        /></div>
+                        <div><p>Grant a user the right to delete</p>
+                            <Switch
+                            color="primary"
+                            checked={del}
+                            onChange={(e)=>setdelete(e.target.checked)}
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /></div>
                     </div>
-                    <Button>Grant rights</Button> */}
+                    <Button onClick={handleSubmit}>Grant rights</Button>
+                    </>
+                    :<h4 className="msgInfo">Please select a profile and functionality !</h4>
+                    }
 
-                    
                 </div>
                 <div className="granting__right">
                     <div className="table">
-                        {/* <h3>There is no user selected</h3> */}
-                        <h3>Pierre</h3>
                         <table>
                             <tr>
                                 <th>Functionnalities</th>
                                 <th>Rights</th>
-                                
                             </tr>
-                            {/* <tr>
-                                <td rowSpan="2">Empty</td>
-                            </tr> */}
-                            <tr>
-                                <td>Utilisateurs</td>
-                                <td>R</td>
-                            </tr>
-                            <tr>
-                                <td>Administration</td>
-                                <td>R</td>
-                            </tr>
-                            <tr>
-                                <td>Assistant</td>
-                                <td>R</td>
-                            </tr>
+                            
+                            { data?.profileFuncs.length > 0 && profile ? data?.profileFuncs.map((x)=>{
+                                return (<tr key={x.FONCTIONNALITE_ID}>
+                                            <td>{x.FONCTIONNALITE_URL}</td>
+                                            <td>{rightsFormatter(x.METHODS_GRANTED)}</td>
+                                        </tr>)
+                            }): <tr>
+                                    <td rowSpan="2">No functionnality !</td>
+                                </tr>
+                            }
+                            
                         </table>
+                        { loading && <CircularProgress/>}
                     </div>
                 </div>
             </div>

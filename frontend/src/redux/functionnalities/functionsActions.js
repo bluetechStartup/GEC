@@ -7,7 +7,11 @@ import {
 
     GET_ALL_FUNCTIONS_REQUEST,
     GET_ALL_FUNCTIONS_REQUEST_SUCCESS,
-    GET_ALL_FUNCTIONS_REQUEST_FAILED
+    GET_ALL_FUNCTIONS_REQUEST_FAILED,
+
+    GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST,
+    GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_SUCCESS,
+    GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_FAILED
 } from "./functionsTypes"
 
 
@@ -34,7 +38,6 @@ export const getAllFuncs = () => async (dispatch) =>{
     dispatch({type:GET_ALL_FUNCTIONS_REQUEST})
     try {
         const {data} = await axios.get(`${api.URL}/api/fonctionnalite`)
-        console.log(data)
         data.success ? 
             dispatch({type:GET_ALL_FUNCTIONS_REQUEST_SUCCESS, payload: {success:data.success, funcs:data.data }})
             : dispatch({type:GET_ALL_FUNCTIONS_REQUEST_FAILED, payload: data.message})
@@ -45,16 +48,17 @@ export const getAllFuncs = () => async (dispatch) =>{
 }
 
 
+// actions for all functionnalities 
+
 export const getAllFuncsByProfile = (id) => async (dispatch) =>{
-    dispatch({type:GET_ALL_FUNCTIONS_REQUEST})
+    dispatch({type:GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST})
     try {
-        const {data} = await axios.get(`${api.URL}/api/fonctionnalite/${id}`)
-        console.log(data)
+        const {data} = await axios.get(`${api.URL}/api/fonctionnaliteprofile/profile/${id}`)
         data.success ? 
-            dispatch({type:GET_ALL_FUNCTIONS_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
-            : dispatch({type:GET_ALL_FUNCTIONS_REQUEST_FAILED, payload: data.message})
+            dispatch({type:GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_SUCCESS, payload: {success:data.success, profileFuncs:data.data }})
+            : dispatch({type:GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_FAILED, payload: data.message})
 
     } catch (error) {
-        dispatch({type:GET_ALL_FUNCTIONS_REQUEST_FAILED,payload: error.message});
+        dispatch({type:GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_FAILED,payload: error.message});
     }
 }

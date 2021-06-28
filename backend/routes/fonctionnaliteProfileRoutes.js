@@ -4,5 +4,5 @@ const router=express.Router()
 const {getAll,profileFonctionnaliteSpecic,profileFonctionnalites}=require('../controllers/fonctionaliteProfilController.js')
 router.route('/').get(getAll)
 router.route('/:id').post(profileFonctionnaliteSpecic)
-router.route('/profile/:id').post(profileFonctionnalites)
+router.route('/profile/:id').get(profileFonctionnalites)
 module.exports = router
