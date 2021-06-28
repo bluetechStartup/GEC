@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from "react-redux";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
@@ -6,8 +8,21 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import CreateIcon from '@material-ui/icons/Create';
 import '../styles/listingUsers.scss'
+import { getAllUsers } from '../redux/user/userActions';
 
 function ListingUsersPage() {
+
+    const dispatch = useDispatch()
+    const { data:allUsers, loading } = useSelector(state => state.allUsers)
+
+    useEffect(() => {
+        dispatch(getAllUsers())  
+    }, [])
+
+    useEffect(() => {
+        console.log(allUsers?.data)
+    }, [])
+
     return (
         <div className="usersWrapper">
             <div className="users">
@@ -22,59 +37,38 @@ function ListingUsersPage() {
                     </div>
                 </div> 
                 <div className="users__table">
+                { loading && <CircularProgress/>}
+                {allUsers?.data && allUsers?.data.length > 0 ?
                     <table>
-                        <tr>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
-                            <th>Age</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        <tr>
-                            <td>Jill lorem ipus</td>
-                            <td>Smith</td>
-                            <td>50</td>
-                            <td><span className="user">User</span></td>
-                            <td>
-                                <IconButton><LockOutlinedIcon/></IconButton>
-                                <IconButton><CreateIcon/></IconButton>
-                                <IconButton><OpenInNewIcon/></IconButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Eve</td>
-                            <td>Jackson</td>
-                            <td>94</td>
-                            <td><span className="user isAdmin">Admin</span></td>
-                            <td>
-                                <IconButton><LockOutlinedIcon/></IconButton>
-                                <IconButton><CreateIcon/></IconButton>
-                                <IconButton><OpenInNewIcon/></IconButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jill</td>
-                            <td>Smith</td>
-                            <td>50</td>
-                            <td><span className="user isAdmin">Admin</span></td>
-                            <td>
-                                <IconButton><LockOutlinedIcon/></IconButton>
-                                <IconButton><CreateIcon/></IconButton>
-                                <IconButton><OpenInNewIcon/></IconButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Eve</td>
-                            <td>Jackson</td>
-                            <td>94</td>
-                            <td><span className="user">User</span></td>
-                            <td>
-                                <IconButton><LockOutlinedIcon/></IconButton>
-                                <IconButton><CreateIcon/></IconButton>
-                                <IconButton><OpenInNewIcon/></IconButton>
-                            </td>
-                        </tr>
-                    </table>
+                        <thead>
+                            <tr>
+                                <th>Firstname</th>
+                                <th>Lastname</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                    
+                        </thead>
+                        
+                        { allUsers?.data.map((user)=>{
+                            return(
+                                <tr key={user.USER_ID}>
+                                    <td>{user.FIRST_NAME}</td>
+                                    <td>{user.LAST_NAME}</td>
+                                    <td><span className="user">{user.PROFIL_ID}</span></td>
+                                    <td>
+                                        {user.IS_ACTIVE === 1 ?
+                                            <IconButton><LockOutlinedIcon/></IconButton>:
+                                            <IconButton><LockOpenOutlinedIcon/></IconButton>
+                                        }
+                                        <IconButton><CreateIcon/></IconButton>
+                                        <IconButton><OpenInNewIcon/></IconButton>
+                                    </td>
+                                </tr>
+                            )
+                        })} 
+                        
+                    </table>:<div>No data</div>}
                 </div>
                 
             </div>

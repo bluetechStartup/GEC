@@ -26,6 +26,11 @@ import {
     GET_USER_BY_ID_SUCCESS,
     GET_USER_BY_ID_FAILED,
 
+    // for all users
+    GET_ALL_USERS_REQUEST,
+    GET_ALL_USERS_SUCCESS,
+    GET_ALL_USERS_FAILED,
+
 } from './userTypes';
 
 
@@ -41,7 +46,7 @@ export const login =  (email, password) => async dispatch =>{
 
         localStorage.setItem("user",JSON.stringify(data))
     } catch (error) {
-        dispatch({type:USER_REQUEST_FAILED,payload: error})
+        dispatch({type:USER_REQUEST_FAILED,payload: error.message})
     }
     
 }
@@ -78,7 +83,7 @@ export const updateUser =  (userData, token) => async dispatch =>{
             Authorization: `Bearer ${token}`,
         },
       };
-
+      console.log("config:",config)
     dispatch({type:USER_CREATE_OR_UPDATE_REQUEST})
     try {
         const {data} = await axios.put(`${api.URL}/api/users`, userData , config)
@@ -112,6 +117,24 @@ export const getSingleUser =  (userId) => async dispatch =>{
 
     } catch (error) {
         dispatch({type:GET_USER_BY_ID_FAILED,payload: error.message});
+    }
+    
+}
+
+// actions for all users 
+
+export const getAllUsers =  () => async dispatch =>{
+    dispatch({type:GET_ALL_USERS_REQUEST})
+    
+    try {
+        const {data} = await axios.get(`${api.URL}/api/users`)
+        console.log(data)
+        data.success ? 
+            dispatch({type:GET_ALL_USERS_SUCCESS, payload: {success:data.success, data:data.data }})
+            : dispatch({type:GET_ALL_USERS_FAILED, payload: data.message})
+
+    } catch (error) {
+        dispatch({type:GET_ALL_USERS_FAILED,payload: error.message});
     }
     
 }

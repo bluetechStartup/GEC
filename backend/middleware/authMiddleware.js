@@ -21,14 +21,14 @@ exports.protect = asyncHandler(async (req, res, next) => {
  }
 
  const decod = jwt.verify(token, process.env.JWT_SECRET)
- console.log(decod.id)
+ console.log("THIS IS DECODE",decod)
 
  const retrieveQuery = `SELECT user.USER_ID,user.FIRST_NAME,user.LAST_NAME ,user.IS_ACTIVE,user.TELEPHONE,prof.PROFIL_CODE from admin_users user,admin_profil prof  WHERE user.USER_ID=? AND user.PROFIL_ID=prof.PROFIL_ID`
  sql.query(retrieveQuery,[decod.id], (err, user) => {
   if (err) throw err
 
   if (user.length > 0) {
-
+      
    req.user = user[0]
    console.log('this is added user :',user[0])
 

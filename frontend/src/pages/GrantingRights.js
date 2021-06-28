@@ -1,4 +1,5 @@
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -6,9 +7,20 @@ import Select from '@material-ui/core/Select';
 import { Button } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import '../styles/grantingRights.scss'
+import { getAllProfiles } from '../redux/profile/profileActions';
 
 function GrantingRights() {
     
+    const dispatch = useDispatch()
+    const { loading, data:profiles, error} = useSelector(state => state.allProfiles)
+    useEffect(() => {
+        dispatch(getAllProfiles())
+    }, [])
+
+    console.log(profiles)
+
+    const [profile, setProfile] = useState('')
+    const [fonctionnalite, setFonctionnalite] = useState('')
     const [rights, setRights] = useState({
         post:false,
         delete:false,
@@ -18,35 +30,33 @@ function GrantingRights() {
 
 
     const handleChange = (e) =>{
-        setRights({
-            ...rights,
-            [e.target.name]: e.target.checked
-        })
-        
+        e.target.name === 'profile' ? setProfile(e.target.value) : setFonctionnalite(e.target.value)
+        console.log("profile:", profile, "func:",fonctionnalite)
     }
+
     return (
         <div className="wrapperGranting">
             <div className="granting">
                 <div className="granting__left">
                     <div className="forms">
+                        { profiles?.data && 
                         <FormControl variant="outlined" >
-                            <InputLabel >User</InputLabel>
+                            <InputLabel >Profile</InputLabel>
                             <Select
-                            labelId="demo-simple-select-outlined-label"
-                            label="User"
+                            name="profile"
+                            label="Profile" value={profile} onChange={handleChange}
                             >
                             <MenuItem value="">None</MenuItem>
-                            <MenuItem value={10}>Pierre</MenuItem>
-                            <MenuItem value={20}>Jean</MenuItem>
-                            <MenuItem value={30}>Francis</MenuItem>
-                            
+                            { profiles?.data.map((profile)=>{
+                                return <MenuItem key={profile.PROFIL_ID} value={profile.PROFIL_ID}>{profile.PROFIL_DESCR}</MenuItem>
+                            }) }
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" >
-                            <InputLabel >Routes</InputLabel>
+                        }
+                        <FormControl variant="outlined" disabled={ profile ? false : true }>
+                            <InputLabel >Functions</InputLabel>
                             <Select
-                            labelId="demo-simple-select-outlined-label"
-                            label="Routes"
+                            label="Functions" value={fonctionnalite} onChange={handleChange} 
                             >
                             <MenuItem value="">None</MenuItem>
                             <MenuItem value={10}>Utilisateurs</MenuItem>
@@ -55,9 +65,9 @@ function GrantingRights() {
                             </Select>
                         </FormControl>
                     </div>
-                    {/* <h4 className="msgInfo">Please select a user</h4> */}
+                    <h4 className="msgInfo">Please select a profile and functionality !</h4>
                     
-                    <div className="checks">
+                    {/* <div className="checks">
                         <div>
                             <p>Grant a user the right to create</p>
                             <Switch
@@ -83,8 +93,8 @@ function GrantingRights() {
                             name="checkedB"
                             inputProps={{ 'aria-label': 'primary checkbox' }}
                         /></div>
-                    </div>
-                    <Button>Grant rights</Button>
+                    </div> */}
+                    {/* <Button>Grant rights</Button> */}
 
                     
                 </div>

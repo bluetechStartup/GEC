@@ -8,7 +8,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import '../styles/update.scss'
 import UpdateProfileSvg from '../assets/undraw_Wall_post_re_y78d.svg'
-import { getSingleUser, updateUser } from '../redux/user/userActions';
+import { finishRequest, getSingleUser, updateUser } from '../redux/user/userActions';
 
 function UpdateUserPage({match}) {
 
@@ -47,6 +47,14 @@ function UpdateUserPage({match}) {
         }
     }, [singleUser])
     
+    useEffect(() => {
+        if (data ){
+            dispatch(getSingleUser(userId))
+            setTimeout(() => {
+                dispatch(finishRequest())
+            }, 3500);
+        }
+    }, [data])
 
     const [warning, setWarning] = useState('')
 
@@ -67,7 +75,7 @@ function UpdateUserPage({match}) {
                     <h2>Update a user</h2>
                     {error && <div className="alert error"><ErrorOutlineIcon/>{error}</div>}
                     {warning && <div className="alert warning"><WarningIcon/>{warning}</div>}
-                    {data?.success && !warning && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Registered successfully !</div>}
+                    {data && !warning && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Registered successfully !</div>}
                     
                     {singleUserload && <CircularProgress/>}
                     {singleUserError && <div className="alert error"><ErrorOutlineIcon/>{singleUserError}</div>}

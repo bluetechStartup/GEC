@@ -22,6 +22,11 @@ import {
     GET_USER_BY_ID_SUCCESS,
     GET_USER_BY_ID_FAILED,
 
+    // for all users
+    GET_ALL_USERS_REQUEST,
+    GET_ALL_USERS_SUCCESS,
+    GET_ALL_USERS_FAILED,
+
 } from './userTypes';
 
 
@@ -91,3 +96,22 @@ export const SingleUserReducer = (state=SingleUserState,action) =>{
     }
 }
 
+
+
+// reducer for retrieve all users 
+const allUsersState = {loading:false, data:null, error:""}
+
+export const allUsersReducer = (state=allUsersState,action) =>{
+    switch (action.type) {
+        case GET_ALL_USERS_REQUEST:
+            return { loading:true }
+        
+        case GET_ALL_USERS_SUCCESS:
+            return { loading:false, data: action.payload }
+        
+        case GET_ALL_USERS_FAILED:
+            return { loading:false, error:action.payload}
+    
+        default:return { ...state }
+    }
+}

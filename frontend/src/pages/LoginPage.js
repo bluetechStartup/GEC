@@ -1,6 +1,8 @@
 import React,{ useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import TextField from '@material-ui/core/TextField';
 import { Link } from 'react-router-dom';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Button from '@material-ui/core/Button';
 import { login } from '../redux/user/userActions.js'
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -16,7 +18,7 @@ function LoginPage({history}) {
     
 
     useEffect(() => {
-        if(userInfo.data) history.push("/home")
+        if(userInfo.data) history.push("/")
     }, [userInfo])
 
     const handleSubmit = async (e)=>{
@@ -34,15 +36,17 @@ function LoginPage({history}) {
                         <h2>Sign in</h2>
 
                         {userInfo.loading && <CircularProgress/>}
-                        {userInfo.error &&<div className="alert error">{userInfo.error}</div>}
+                        {userInfo.error &&<div className="alert error"><ErrorOutlineIcon/> {userInfo.error}</div>}
                         {/* <Button className="google_login">
                             <img src="./google.svg"/>
                             <p>Sign in with google</p>
                         </Button> */}
-                        <label>Email adress</label>
-                        <input type="text" value={email} onChange={(e)=>setEmail(e.target.value)} required/>
-                        <label>Password</label>
-                        <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
+                        {/* <label>Email adress</label> */}
+                        <TextField  value={email} name="email" label="Email" variant="outlined" size="small"  onChange={(e)=>setEmail(e.target.value)} required/>
+                        <TextField  value={password} name="password" label="Pssword" variant="outlined" size="small"  onChange={(e)=>setPassword(e.target.value)} required/>
+                        {/* <input type="text" onChange={(e)=>setEmail(e.target.value)} required/> */}
+                        {/* <label>Password</label> */}
+                        {/* <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required/> */}
                         <Button type="submit" className="submit">Sign in</Button>
                         <Link><p>Forget password?</p></Link>
                     </form>
