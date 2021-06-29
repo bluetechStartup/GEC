@@ -1,15 +1,12 @@
-const multer = require('multer')
+
 const asyncHandler = require('express-async-handler')
 const Courrier = require('../models/courierModel.js')
-
+const fs=require('fs')
 let getCouriers = asyncHandler(async (req, res, next) => {
- Courrier.getAll((err, courriers) => {
-  response.status(200).send({
-   data: courriers,
-   message: `Les courriers`,
-   type: 'success',
-   success: true,
-  })
+ Courrier.getAll((err, data) => {
+   if(err) return next(new Error(err.message))
+
+  res.status(200).send(data)
  })
 })
 
@@ -97,17 +94,17 @@ let update = asyncHandler(async (req, res, next) => {
  }
  Courrier.update(newCourrier, req.params.id, (err, data) => {
   if (err) return next(new Error(err.message))
+  if(data.data.changedRows<=0){
+    return res.json({success:false,message:"not updated"})
+  }
   return res.json(data)
  })
 })
 
 // A REVOIR ET METTRE MULTER
-let createAnnexe = (req, res) => {
- const { COURRIER_ID, NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID } =
+let createAnnexe =asyncHandler(async (req, res, next) => {
+  const { NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID } =
   req.body
-
- console.log('file out here', req.file)
-
  const annexeFormats = [
   'audio/midi',
   'audio / mpeg',
@@ -118,48 +115,66 @@ let createAnnexe = (req, res) => {
   'video/x-msvideo',
   'video/ogg',
  ]
- if (annexeFormats.includes(req.file.mimetype.trim())) {
+ if (annexeFormats.includes(req.file.mimetype)) {
+      fs.unlink(req.file.path,(err,data)=>{
+     if(err)throw err
+    console.log("successfully deleted..");
+   }
+   )
+
   return res
    .status(404)
    .json({ success: false, message: 'seule le document peuvent etre choisi!!' })
  }
+ 
  PATH = `${process.env.BASE_URL}/${req.file.path}`
- console.log('the path:', PATH)
-}
-
-let getAnnexes = (req, res) => {
- let id = req.params.id
- Courrier.getAnnexes(id, (error, courrier) => {
-  if (error) return next(new Error(error.message))
-  res.status(200).send(courrier)
- })
-}
-let getById = asyncHandler(async (req, res, next) => {
- Courrier.getById(req.params.id, (err, data) => {
-  if (err) return cb(error, null)
-
-  res.status(200).json(data)
+ const newAnnexe={ COURRIER_ID:req.params.id, NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID,PATH }
+ Courrier.createAnnexe(newAnnexe,(err,data)=>{
+   if(err){
+    fs.unlink(req.file.path,(err,data)=>{
+      if(err)throw err
+     console.log("successfully deleted..");
+    })
+     return next(new Error(err.message))
+    }
+   return res.json(data)
  })
 })
 
-let removeAnnexe = (req, res) => {
- let id = req.params.id
- Courrier.removeAnnexe(id, (error, annexe) => {
-  res.status(200).send({
-   data: annexe,
-   message: `L'annexe du courrier a été supprimé.`,
-   type: 'success',
-   success: true,
+let getAnnexes=asyncHandler(async (req, res, next) => {
+
+  Courrier.getAnnexes(req.params.id, (error, courrier) => {
+   if (error) return next(new Error(error.message))
+   res.status(200).send(courrier)
   })
+})
+
+let getById = asyncHandler(async (req, res, next) => {
+ Courrier.getById(req.params.id, (err, data) => {
+   
+  if (err) return cb(error, null)
+     if(!data.data){return res.json({success:false,message:"courrier introuvable"})}
+  res.status(200).json(data)
  })
-}
+})
+let removeAnnexe=asyncHandler(async (req, res, next) => {
+  Courrier.removeAnnexe(req.params.id, (error, annexe) => {
+    if(error) return next(new Error(error.message))
+    if(annexe.data.affectedRows<=0)return res.json({success:false,message:"not deleted..."})
+  
+   res.status(200).send(annexe)
+  })
+
+})
+
 let removeCourrier = asyncHandler(async (req, res, next) => {
  Courrier.removeCourrier(req.params.id, (error, courrier) => {
   const { data } = courrier
+  console.log("this is courrier",courrier)
   if (error) return next(new Error(error.message))
 
   if (data.affectedRows > 0) {
-   Courrier.removeAnnexes(id, (error, annexes) => {
+   Courrier.removeAnnexes(req.params.id, (error, annexes) => {
     if (error) return next(new Error(error.message))
    })
    return res.json(courrier)

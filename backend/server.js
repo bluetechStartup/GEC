@@ -27,11 +27,6 @@ app.get('/', (req, res, next) => {
 
 const PORT = process.env.PORT || 3005
 
-const theUrl = path.join(__dirname, 'uploads')
-
-console.log('the url', theUrl)
-app.use('/uploads',express.static(path.join(__dirname, '/backend/uploads')))
-
 app.use('/api/users', userRoutes)
 app.use('/api/profile', profileRoutes)
 app.use('/api/hierarchie', hierarchieRoutes)
@@ -40,6 +35,11 @@ app.use('/api/fonctionnalite', fonctionnaliteRoutes)
 app.use('/api/fonctionnaliteprofile', fonctionnaliteprofileRoute)
 app.use('/api/courrier', uploadAnnexe, courrierRoutes)
 // app.use(notFound)
+
+const theUrl = path.join(__dirname, 'uploads')
+
+console.log('the url', theUrl)
+app.use('/uploads',express.static(path.join(__dirname, '/backend/uploads')))
 app.use(errorHandler)
 app.listen(
  PORT,

@@ -10,9 +10,9 @@ class Courrier {
       JOIN cr_statut AS st ON st.STATUT_ID = cr.STATUT_ID 
       JOIN cr_priorite AS pr ON pr.PRIORITE_ID = cr.PRIORITE_ID 
       ORDER BY cr.COURRIER_ID DESC`,
-   (error, methodes) => {
-    if (error) throw error
-    cb(error, methodes)
+   (error, data) => {
+    if (error)return cb(error, null)
+    cb(error, {success:true,count: data.length,data})
    }
   )
  }
@@ -22,9 +22,9 @@ class Courrier {
   connection.query(
    `SELECT * FROM cr_courriers WHERE COURRIER_ID =?  ORDER BY COURRIER_ID DESC`,
    [id],
-   (error, methodes) => {
+   (error, data) => {
     if (error) throw error
-    cb(error, methodes)
+    cb(error, {success:true,data:data[0]})
    }
   )
  }
@@ -34,8 +34,8 @@ class Courrier {
    `UPDATE cr_courriers SET ? WHERE COURRIER_ID =?`,
    [data, id],
    (error, courrier) => {
-    if (error) throw error
-    cb(error, courrier)
+    if (error) return cb(error, null)
+    cb(null, {success: true, data:courrier})
    }
   )
  }
@@ -43,7 +43,7 @@ class Courrier {
  static create(data, cb) {
   connection.query('INSERT cr_courriers SET ?', [data], (err, data) => {
    if (err) return cb(err, null)
-   cb(error, { success: true, data })
+   cb(null, { success: true, data })
   })
  }
 
@@ -51,9 +51,9 @@ class Courrier {
   connection.query(
    'INSERT cr_courrier_annexe SET ?',
    [data],
-   (error, courrier_annexe) => {
-    if (error) throw error
-    cb(error, courrier_annexe)
+   (error, data) => {
+    if (error) return cb(error, null)
+    cb(error, {success: true, data})
    }
   )
  }
@@ -76,10 +76,10 @@ class Courrier {
   connection.query(
    'DELETE FROM cr_courriers WHERE COURRIER_ID = ?',
    [id],
-   (error, courrier) => {
+   (error, data) => {
     if (error) return cb(error, null)
 
-    cb(error, courrier)
+    cb(null, { success: true,data})
    }
   )
  }
@@ -99,9 +99,9 @@ class Courrier {
   connection.query(
    'DELETE FROM cr_courrier_annexe WHERE COURRIER_ANNEXE_ID = ?',
    [id],
-   (error, annexe) => {
-    if (error) throw error
-    cb(error, annexe)
+   (error, data) => {
+    if (error) return cb(error, null)
+    cb(null, { success: true, data})
    }
   )
  }
