@@ -30,7 +30,7 @@
     display: inline;
     width: 116px;
     height: 2px;
-    background-color:black; 
+    background-color:#e7e7e7; 
 }
 
 .indicator__info{
@@ -53,7 +53,7 @@
     display: flex;
     align-items: center;
     justify-content:center;
-    border: 2px solid black;
+    border: 2px solid rgb(235, 235, 235);
     border-radius: 50%;
     z-index: 10;
     transition: .1s all;
@@ -66,6 +66,7 @@
 
 .indicator__icon .MuiSvgIcon-root{
     font-size:22px;
+    color: #ffffff;
 }
 
 
@@ -77,7 +78,7 @@
 
     .MuiButton-root{
         font-family: inherit !important;
-        background-color: #0753a0;
+        background-color: #1e90ff;
         color: white;
         margin: 30px auto;
         display: block;
@@ -85,6 +86,26 @@
 
         &:hover{
             background-color: #0753a0a2;
+        }
+    }
+
+    .loader{
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+
+        .MuiCircularProgress-root{
+            height: 30px !important;
+            width: 30px !important;
+        }
+
+        .MuiCircularProgress-svg{
+            color: #1f8fff;
+        }
+
+        .MuiCircularProgress-circle{
+            stroke-width: 2;
+            
         }
     }
 
@@ -104,72 +125,98 @@
         margin: 10px 0px;
         
     }
-    .form__bloc1{
+
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: #3497fa !important;
+      }
+
+    .MuiSelect-select:focus{
+        background-color: transparent;
+    }
+
+    .form_group{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn_prev{
+        float: left;
+    }
+    .btn_next{
+        float: right;
+    }
+
+    .form__bloc{
         display: flex;
         justify-content: space-between;
         margin: 10px 0;
 
-        .details,.date,.expediteur{
+        .left,.right{
             display: flex;
             flex-direction: column;
             width: 47%;
-            border: 1px solid #cecece;
             border-radius: 20px;
-            position: relative;
-            padding: 10px;
             box-sizing: border-box;
-
-            h4{
-                position: absolute;
-                top: -35px;
-                left: 20px;
-                background-color: white;
-                padding: 0 8px;
-            }
 
             .MuiFormControl-root{
                 width: 100%;
             }
+
+            >div{
+                border: 1px solid #cecece;
+                border-radius: 20px;
+                position: relative;
+                padding: 20px;
+                margin: 15px 0;
+                h4{
+                    position: absolute;
+                    top: -35px;
+                    left: 20px;
+                    background-color: white;
+                    padding: 0 8px;
+                }
+            }
+
         }
 
         
     }
-    .form__bloc2{
-        width: 100%;
-        margin-bottom: 20px;
+    // .form__bloc2{
+    //     width: 100%;
+    //     margin-bottom: 20px;
 
-        &>.MuiFormControl-root{
-            width: 47%;
-            font-family: inherit;
-            margin: 10px 0px;
-        }
-        .expediteur,.destinataire,.piece{
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            border: 1px solid #cecece;
-            border-radius: 20px;
-            position: relative;
-            margin-top: 30px;
-            padding: 10px;
-            box-sizing: border-box;
+    //     &>.MuiFormControl-root{
+    //         width: 47%;
+    //         font-family: inherit;
+    //         margin: 10px 0px;
+    //     }
+    //     .expediteur,.destinataire,.piece{
+    //         width: 100%;
+    //         display: flex;
+    //         justify-content: space-between;
+    //         flex-wrap: wrap;
+    //         border: 1px solid #cecece;
+    //         border-radius: 20px;
+    //         position: relative;
+    //         margin-top: 30px;
+    //         padding: 10px;
+    //         box-sizing: border-box;
 
-            h4{
-                position: absolute;
-                top: -35px;
-                left: 20px;
-                background-color: white;
-                padding: 0 8px;
-            }
-        }
-        .piece{
-            .btn{
-                font-size: 50px;
-                margin-right: 42%;
-                margin-top: 10px;
-            }
-        }
-    }
+    //         h4{
+    //             position: absolute;
+    //             top: -35px;
+    //             left: 20px;
+    //             background-color: white;
+    //             padding: 0 8px;
+    //         }
+    //     }
+    //     .piece{
+    //         .btn{
+    //             font-size: 50px;
+    //             margin-right: 42%;
+    //             margin-top: 10px;
+    //         }
+    //     }
+    // }
     
 }

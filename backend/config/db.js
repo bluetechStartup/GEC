@@ -4,7 +4,7 @@ const con = {
  host: process.env.DB_HOST,
  user: 'root',
  password: '',
- database: 'gestion_courriels',
+ database: 'ged',
  connectionLimit: 99,
  queueLimit: 0,
  waitForConnection: true,
