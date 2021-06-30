@@ -39,7 +39,8 @@ app.use('/api/courrier', uploadAnnexe, courrierRoutes)
 const theUrl = path.join(__dirname, 'uploads')
 
 console.log('the url', theUrl)
-app.use('/uploads',express.static(path.join(__dirname, '/backend/uploads')))
+// app.use('/uploads',express.static(path.join(__dirname, '/backend/uploads')))
+app.use('/uploads',express.static('uploads'))
 app.use(errorHandler)
 app.listen(
  PORT,
