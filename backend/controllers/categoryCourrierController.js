@@ -1,6 +1,6 @@
 
 const asyncHandler = require('express-async-handler')
-const CategoryCourrier = require('../models/courrierCategories.js')
+const CategoryCourrier = require('../models/courrierCategoriesModel.js')
 
 
 const getAllCategoriesCourrier=asyncHandler(async (req, res, next) => {

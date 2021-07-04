@@ -1,4 +1,5 @@
-import React,{ useState } from 'react'
+import React,{ useState, useEffect } from 'react'
+import { useSelector, useDispatch } from "react-redux";
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
@@ -6,20 +7,32 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon  from '@material-ui/icons/AddRounded';
 import CheckIcon from "@material-ui/icons/Check";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import moment from 'moment';
+import { addCourrier } from "../redux/courrierReducer"
 import "../styles/formsEntrant.scss"
+import { addAnnexe, getAnnex, removeAnnexe } from '../redux/annexeReducer';
 
 
 function CourrierEntrantPage() {
 
-    // fields states
+    const dispatch = useDispatch()
+    const { data:{ USER_ID }} = useSelector(state => state.user)
+    const {data: courrier, error:errorCourrier} = useSelector(state => state.courrier)
+    const {data: annexe, error:errorAnnexe} = useSelector(state => state.annexe)
+    const {data: allAnnex, error:errorAllAnnex} = useSelector(state => state.allAnnex)
+    const {data: removedAnnex, error:errorRmovedAnnex} = useSelector(state => state.removedAnnex)
+
+    // fields states for mail
     const [MOUVEMENT_ID, setMOUVEMENT_ID] = useState(' ')
     const [REFERENCE, setREFERENCE] = useState(' ')
     const [DATE_RECEPTION, setDATE_RECEPTION] = useState('2021-01-01')
     const [DATE_COURRIER, setDATE_COURRIER] = useState('2021-01-01')
-    const [DATE_ENREGISTREMENT, setDATE_ENREGISTREMENT] = useState(moment().format("yyyy-MM-DD"))
+    const [DATE_ENREGISTREMENT] = useState(moment().format("yyyy-MM-DD"))
     const [OBJET, setOBJET] = useState(' ')
     const [CATEGORIE_COURRIER_ID, setCATEGORIE_COURRIER_ID] = useState(' ')
     const [PRIORITE_ID, setPRIORITE_ID] = useState(' ')
@@ -30,9 +43,15 @@ function CourrierEntrantPage() {
     const [SERVICE_ID, setSERVICE_ID] = useState(' ')
     const [REFERENT_USER_ID, setREFERENT_USER_ID] = useState(' ')
     const [ACTION_ID, setACTION_ID] = useState(' ')
-    const [USER_ID, setUSER_ID] = useState(' ')
     const [STATUT_ID, setSTATUT_ID] = useState(' ')
 
+    // fiels states for annexe 
+    const [ANNEXE, setANNEXE] = useState(null)
+    const [CATEGORIE_ANNEXE_ID, setCATEGORIE_ANNEXE_ID] = useState(null)
+    const [TYPE_ANNEXE_ID, setTYPE_ANNEXE_ID] = useState(null)
+    const [NOM_PIECE, setNOM_PIECE] = useState(null)
+    const [COURRIER_ID, setCOURRIER_ID] = useState(null)
+    
     const data = {
         MOUVEMENT_ID,
         REFERENCE,
@@ -49,11 +68,41 @@ function CourrierEntrantPage() {
         SERVICE_ID,
         REFERENT_USER_ID,
         ACTION_ID,
-        STATUT_ID
+        STATUT_ID,
+        USER_ID
     }
 
+    // side effects functions
+
+    useEffect(() => {
+        if(courrier?.insertId){
+            toRegister()
+            setCOURRIER_ID(courrier?.insertId)
+        }
+    }, [courrier])
+
+    useEffect(() => {
+        if(annexe || removedAnnex){
+            dispatch(getAnnex(COURRIER_ID))
+            setCATEGORIE_ANNEXE_ID(null)
+            setTYPE_ANNEXE_ID(null)
+            setNOM_PIECE("")
+        }
+    }, [annexe,removedAnnex])
+
+
     const handleFirstStep = ()=>{
-        console.log(data)
+        dispatch(addCourrier(data))
+    }
+
+    const submitAnnexe = (e)=>{
+        e.preventDefault()
+        const dataAnnexe = new FormData(e.target)
+        dispatch(addAnnexe(COURRIER_ID,dataAnnexe))
+    }
+
+    const removeAnnex = (id) =>{
+        dispatch(removeAnnexe(id))
     }
 
     const [steps, setSteps] = useState({
@@ -125,8 +174,8 @@ function CourrierEntrantPage() {
             </div>
 
             {forms.id && ( <>
-            
-            <div className="loader"><CircularProgress/></div>
+            {courrier?.loading && <div className="loader"><CircularProgress/></div>}
+            { errorCourrier && <div className="alert error">{errorCourrier}</div> }
             <div className="form_group">
                 <TextField label="No de reference" variant="outlined" value={REFERENCE} onChange={(e)=>setREFERENCE(e.target.value)} />
                 <FormControl variant="outlined">
@@ -237,8 +286,6 @@ function CourrierEntrantPage() {
                             </Select>
                         </FormControl>
                     </div>
-                    
-                    
                 </div>
             </div> 
             <Button onClick={handleFirstStep} className="btn_next">Submit</Button>
@@ -246,40 +293,84 @@ function CourrierEntrantPage() {
 
             {forms.register && (
             <div>
-                <div>
+                <div className="pieceJoint">
+                    {errorAnnexe && <div className="alert error"><ErrorOutlineIcon/>{errorAnnexe}</div>}
+                    {/* {annexe && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>File has joined successfully</div>} */}
                     <h4>Pièce joint</h4>
-                    <div className="form_group">
-                        <FormControl variant="outlined" >
-                            <InputLabel>Categorie d'annexe</InputLabel>
-                            <Select label="Categorie d'annexe">
-                            <MenuItem value=" ">---------</MenuItem>
-                            <MenuItem value={10}>Annexe 1</MenuItem>
-                            <MenuItem value={20}>Annexe 2</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl variant="outlined">
-                            <InputLabel>Type d'annexe</InputLabel>
-                            <Select
-                            label="Type de piece"
-                            >
-                            <MenuItem value=" ">---------</MenuItem>
-                            <MenuItem value={10}>Directeur generale</MenuItem>
-                            <MenuItem value={20}>Directeur AF</MenuItem>
-                            <MenuItem value={30}>Directeur Com</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
-                    
-                    <TextField label="Nom de pièce" variant="outlined" />
+                    <form onSubmit={submitAnnexe} encType="multipart/form-data">
+                        <div className="form_group">
+                            
+                            <FormControl variant="outlined" >
+                                <InputLabel>Categorie d'annexe</InputLabel>
+                                <Select label="Categorie d'annexe"
+                                name="CATEGORIE_ANNEXE_ID"
+                                value={CATEGORIE_ANNEXE_ID}
+                                onChange={(e)=>setCATEGORIE_ANNEXE_ID(e.target.value)
+                                }>
+                                <MenuItem value="  ">---------</MenuItem>
+                                <MenuItem value={1}>Category annexe 1</MenuItem>
+                                <MenuItem value={2}>Category annexe 2</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormControl variant="outlined">
+                                <InputLabel>Type d'annexe</InputLabel>
+                                <Select
+                                name="TYPE_ANNEXE_ID"
+                                label="Type de piece"
+                                value={TYPE_ANNEXE_ID}
+                                onChange={e=>setTYPE_ANNEXE_ID(e.target.value)}
+                                >
+                                <MenuItem value=" ">---------</MenuItem>
+                                <MenuItem value={1}>Type annexe 1</MenuItem>
+                                <MenuItem value={2}>Type annexe 2</MenuItem>
+                                
+                                </Select>
+                            </FormControl>
+                            
+                        </div>
+                        <TextField label="Nom de pièce" variant="outlined" className="lastTextField"
+                        name="NOM_PIECE"
+                        value={NOM_PIECE}
+                        onChange={e=>setNOM_PIECE(e.target.value)}
+                        />
+                        <div className="fileWrapper">
+                            <div className="file">
+                                <label htmlFor="annexe"><AddCircleIcon/></label>
+                                <input id="annexe" name="annexe" type="file" onChange={e=>setANNEXE(e.target.files[0])}/>
+                                <p>{ANNEXE ? "File selected" :"Please select file" }</p>
+                                <Button type="submit">Join annexe</Button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
+                { allAnnex && allAnnex.length > 0 &&
+                <div className="annexTable">
+                <h3>Pieces joints</h3>
+                <table>
+                    {allAnnex.map((x)=>{
+                    return(
+                        <tr>
+                            <td>{x.NOM_PIECE}</td>
+                            <td><RemoveCircleOutlineIcon onClick={()=>removeAnnex(x.COURRIER_ANNEXE_ID)}/></td>
+                        </tr>)
+                    })}
+                </table>
+                </div>}
+                
                 <div className="group_btn">
-                    <Button onClick={toId} className="btn_prev">prev</Button>
-                    <Button onClick={toValidation} className="btn_next">next</Button>
+                    {/* <Button onClick={toId} className="btn_prev">prev</Button> */}
+                    <Button className="btn_next" onClick={toValidation}>NEXT</Button>
                 </div>                
                 
             </div>)}
 
-            { forms.validation && <Button onClick={toRegister}>prev</Button>}
+            { forms.validation && 
+            
+            <div className="validation">
+                <h2>You have registred the mail successfully</h2>
+                {/* <Button onClick={toRegister}>HOME</Button> */}
+            </div>
+            }
             
         </div>
     )

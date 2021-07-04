@@ -44,14 +44,6 @@ app.use('/api/service', servicesRoutes)
 app.use('/api/fonctionnalite', fonctionnaliteRoutes)
 app.use('/api/fonctionnaliteprofile', fonctionnaliteprofileRoute)
 app.use('/api/courrier', uploadAnnexe, courrierRoutes)
-<<<<<<< HEAD
-// app.use(notFound)
-
-const theUrl = path.join(__dirname, 'uploads')
-
-console.log('the url', theUrl)
-app.use('/uploads',express.static(path.join(__dirname, '/backend/uploads')))
-=======
 app.use('/api/courierAction',courierAction)
 app.use('/api/courierCategory',courierCategory)
 app.use('/api/courrierCivilite',courrierCivilite)
@@ -64,7 +56,6 @@ app.use('/api/ville',ville)
 // app.use(notFound)
 
 app.use('/uploads',express.static('uploads'))
->>>>>>> ffb8249ecbbc675bb65e3fde031f3b9d5a20fb45
 app.use(errorHandler)
 app.listen(
  PORT,
