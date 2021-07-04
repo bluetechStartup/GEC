@@ -19,13 +19,19 @@ class User {
    [email],
    (err, data) => {
     if (err) return cb(err, null)
-    if(data[0].IS_ACTIVE<=0)return cb(null,{success:false,message:`${data[0].USER_NAME} IS CURRENTLY DEACTIVATED....`})
+    if (data.length <= 0)
+     return cb(null, { success: false, message: 'email invalid..' })
+    if (data[0].IS_ACTIVE <= 0)
+     return cb(null, {
+      success: false,
+      message: `${data[0].USER_NAME} IS CURRENTLY DEACTIVATED....`,
+     })
     if (data.length > 0) {
      const isMatch = bcrypt.compareSync(password, data[0].PASSWORD)
      if (!isMatch) {
       return cb(null, { success: false, message: 'wrong password..' })
      }
-     console.log("data:",data)
+     console.log('data:', data)
      const token = jwt.sign({ id: data[0].USER_ID }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
      })
@@ -69,7 +75,7 @@ class User {
    [id],
    (error, data) => {
     if (error) return cb(error, null)
-    return cb(null, { success: true, data:data[0] })
+    return cb(null, { success: true, data: data[0] })
    }
   )
  }
@@ -98,19 +104,19 @@ class User {
   })
  }
 
- static updatePassword(reset, cb){
-   const {PASSWORD,NEW_PASSWORD,USER_ID}=reset
+ static updatePassword(reset, cb) {
+  const { PASSWORD, NEW_PASSWORD, USER_ID } = reset
 
-   connection.query("select * from admin_users where USER_ID=?",[USER_ID],(err,data)=>{
-     if (err) return cb(err, null)
-     const isMatch = bcrypt.compareSync(password, data[0].PASSWORD)
-     if(!isMatch)return cb(null,{success:false,message:"wrong password"})
-      connection.query("")
-     
-
-   })
-
-
+  connection.query(
+   'select * from admin_users where USER_ID=?',
+   [USER_ID],
+   (err, data) => {
+    if (err) return cb(err, null)
+    const isMatch = bcrypt.compareSync(password, data[0].PASSWORD)
+    if (!isMatch) return cb(null, { success: false, message: 'wrong password' })
+    connection.query('')
+   }
+  )
  }
  // static getResetPasswordToken(){
 

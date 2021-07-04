@@ -1,10 +1,9 @@
-
 const asyncHandler = require('express-async-handler')
 const Courrier = require('../models/courierModel.js')
-const fs=require('fs')
+const fs = require('fs')
 let getCouriers = asyncHandler(async (req, res, next) => {
  Courrier.getAll((err, data) => {
-   if(err) return next(new Error(err.message))
+  if (err) return next(new Error(err.message))
 
   res.status(200).send(data)
  })
@@ -94,17 +93,20 @@ let update = asyncHandler(async (req, res, next) => {
  }
  Courrier.update(newCourrier, req.params.id, (err, data) => {
   if (err) return next(new Error(err.message))
-  if(data.data.changedRows<=0){
-    return res.json({success:false,message:"not updated"})
+  if (data.data.changedRows <= 0) {
+   return res.json({ success: false, message: 'not updated' })
   }
   return res.json(data)
  })
 })
 
 // A REVOIR ET METTRE MULTER
-let createAnnexe =asyncHandler(async (req, res, next) => {
-  const { NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID } =
-  req.body
+// formadata({NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID})
+// file nayo ni uyigire keyName kuri input yayo yitwe annexe
+// kurungika naho ni kuri http://localhost:3005/api/courrier/courrierAnnexe/:id
+
+let createAnnexe = asyncHandler(async (req, res, next) => {
+ const { NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID } = req.body
  const annexeFormats = [
   'audio/midi',
   'audio / mpeg',
@@ -116,61 +118,67 @@ let createAnnexe =asyncHandler(async (req, res, next) => {
   'video/ogg',
  ]
  if (annexeFormats.includes(req.file.mimetype)) {
-      fs.unlink(req.file.path,(err,data)=>{
-     if(err)throw err
-    console.log("successfully deleted..");
-   }
-   )
+  fs.unlink(req.file.path, (err, data) => {
+   if (err) throw err
+   console.log('successfully deleted..')
+  })
 
-  return res
-   .status(404)
-   .json({ success: false, message: 'seule le document peuvent etre choisi!!' })
+  return res.status(404).json({
+   success: false,
+   message: 'seule les documents peuvent etre choisi!!',
+  })
  }
- 
+
  PATH = `${process.env.BASE_URL}/${req.file.path}`
- const newAnnexe={ COURRIER_ID:req.params.id, NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID,PATH }
- Courrier.createAnnexe(newAnnexe,(err,data)=>{
-   if(err){
-    fs.unlink(req.file.path,(err,data)=>{
-      if(err)throw err
-     console.log("successfully deleted..");
-    })
-     return next(new Error(err.message))
-    }
-   return res.json(data)
+ const newAnnexe = {
+  COURRIER_ID: req.params.id,
+  NOM_PIECE,
+  TYPE_ANNEXE_ID,
+  CATEGORIE_ANNEXE_ID,
+  PATH,
+ }
+ Courrier.createAnnexe(newAnnexe, (err, data) => {
+  if (err) {
+   fs.unlink(req.file.path, (err, data) => {
+    if (err) throw err
+    console.log('successfully deleted..')
+   })
+   return next(new Error(err.message))
+  }
+  return res.json(data)
  })
 })
 
-let getAnnexes=asyncHandler(async (req, res, next) => {
-
-  Courrier.getAnnexes(req.params.id, (error, courrier) => {
-   if (error) return next(new Error(error.message))
-   res.status(200).send(courrier)
-  })
+let getAnnexes = asyncHandler(async (req, res, next) => {
+ Courrier.getAnnexes(req.params.id, (error, courrier) => {
+  if (error) return next(new Error(error.message))
+  res.status(200).send(courrier)
+ })
 })
 
 let getById = asyncHandler(async (req, res, next) => {
  Courrier.getById(req.params.id, (err, data) => {
-   
   if (err) return cb(error, null)
-     if(!data.data){return res.json({success:false,message:"courrier introuvable"})}
+  if (!data.data) {
+   return res.json({ success: false, message: 'courrier introuvable' })
+  }
   res.status(200).json(data)
  })
 })
-let removeAnnexe=asyncHandler(async (req, res, next) => {
-  Courrier.removeAnnexe(req.params.id, (error, annexe) => {
-    if(error) return next(new Error(error.message))
-    if(annexe.data.affectedRows<=0)return res.json({success:false,message:"not deleted..."})
-  
-   res.status(200).send(annexe)
-  })
+let removeAnnexe = asyncHandler(async (req, res, next) => {
+ Courrier.removeAnnexe(req.params.id, (error, annexe) => {
+  if (error) return next(new Error(error.message))
+  if (annexe.data.affectedRows <= 0)
+   return res.json({ success: false, message: 'not deleted...' })
 
+  res.status(200).send(annexe)
+ })
 })
 
 let removeCourrier = asyncHandler(async (req, res, next) => {
  Courrier.removeCourrier(req.params.id, (error, courrier) => {
   const { data } = courrier
-  console.log("this is courrier",courrier)
+  console.log('this is courrier', courrier)
   if (error) return next(new Error(error.message))
 
   if (data.affectedRows > 0) {
