@@ -130,22 +130,18 @@ let createAnnexe = asyncHandler(async (req, res, next) => {
  }
 
  PATH = `${process.env.BASE_URL}/${req.file.path}`
- const newAnnexe = {
-  COURRIER_ID: req.params.id,
-  NOM_PIECE,
-  TYPE_ANNEXE_ID,
-  CATEGORIE_ANNEXE_ID,
-  PATH,
- }
- Courrier.createAnnexe(newAnnexe, (err, data) => {
-  if (err) {
-   fs.unlink(req.file.path, (err, data) => {
-    if (err) throw err
-    console.log('successfully deleted..')
-   })
-   return next(new Error(err.message))
-  }
-  return res.json(data)
+ const newAnnexe={ COURRIER_ID:req.params.id, NOM_PIECE, TYPE_ANNEXE_ID, CATEGORIE_ANNEXE_ID,PATH }
+ console.log(newAnnexe)
+ console.log(req.file)
+ Courrier.createAnnexe(newAnnexe,(err,data)=>{
+   if(err){
+    fs.unlink(req.file.path,(err,data)=>{
+      if(err)throw err
+     console.log("successfully deleted..");
+    })
+     return next(new Error(err.message))
+    }
+   return res.json(data)
  })
 })
 
