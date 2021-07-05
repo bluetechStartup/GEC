@@ -15,7 +15,8 @@ router.route('/').get(getCouriers).post(createCourier)
 router.route('/:id').get(getById).put(update).delete(removeCourrier)
 router
  .route('/courrierAnnexe/:id')
- .get(getAnnexes)
+//  api/courrier/courrierAnnexe/:id
+.get(getAnnexes)
  .post(createAnnexe)
  .delete(removeAnnexe)
 
