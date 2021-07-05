@@ -23,6 +23,8 @@ const courrierPriorite = require('./routes/courrierPrioriteRoutes.js')
 const courrierStatus = require('./routes/courrierStatusRoutes.js')
 const annexeType = require('./routes/annexeTypeRoutes.js')
 const ville = require('./routes/villeRoutes.js')
+const annexeCategoriesRoutes = require('./routes/annexeCategoriesRoutes.js')
+
 
 const uploadAnnexe = require('./utils/fileHandler.js')
 
@@ -52,8 +54,8 @@ app.use('/api/courrierPriorite',courrierPriorite)
 app.use('/api/courrierStatus',courrierStatus)
 app.use('/api/annexeType',annexeType)
 app.use('/api/ville',ville)
+app.use('/api/annexeCategories',annexeCategoriesRoutes)
 
-// app.use(notFound)
 
 app.use('/uploads',express.static('uploads'))
 app.use(errorHandler)

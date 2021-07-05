@@ -1,3 +1,6 @@
+import axios from "axios"
+import * as api from "./api"
+
 // priority types
 const GET_PRIORITIES_REQUEST = "GET_PRIORITIES_REQUEST"
 const GET_PRIORITIES_REQUEST_SUCCESS = "GET_PRIORITIES_REQUEST_SUCCESS"
@@ -5,10 +8,10 @@ const GET_PRIORITIES_REQUEST_FAILED = "GET_PRIORITIES_REQUEST_FAILED"
 
 
 // priorities actions
-const getPriorities = () => async dispatch =>{
+export const getPriorities = () => async dispatch =>{
     dispatch({type:GET_PRIORITIES_REQUEST})
     try {
-        const {data} = await axios.get(`${api.URL}/api/users/auth`)
+        const {data} = await axios.get(`${api.URL}/api/courrierPriorite`)
         data.success ? 
             dispatch({type:GET_PRIORITIES_REQUEST_SUCCESS, payload: data.data})
             : dispatch({type:GET_PRIORITIES_REQUEST_FAILED, payload: data.message})
@@ -19,9 +22,9 @@ const getPriorities = () => async dispatch =>{
 
 
 // priorities reducer
-const prioritiesReducer = (state={}, action) =>{
+export const prioritiesReducer = (state={}, action) =>{
     switch (action.type) {
-        case GET_USER_BY_ID_REQUEST:
+        case GET_PRIORITIES_REQUEST:
             return { loading:true }
         
         case GET_PRIORITIES_REQUEST_SUCCESS:
@@ -33,5 +36,3 @@ const prioritiesReducer = (state={}, action) =>{
         default:return { ...state }
     }
 }
-
-export default prioritiesReducer
