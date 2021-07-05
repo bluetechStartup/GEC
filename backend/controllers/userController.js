@@ -1,6 +1,8 @@
 const User = require('../models/userModel.js')
 const asyncHandler = require('express-async-handler')
 
+const sendEmail = require('../utils/sendEmail.js')
+
 // @desc    GET ALL USERS
 // @route   GET /api/users/
 // @access  Private/admin
@@ -103,6 +105,71 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   res.json(data)
  })
 })
+const updatePassword = asyncHandler(async (req, res, next) => {
+ const { OLD_PASSWORD, NEW_PASSWORD } = req.body
+ console.log('the body out here', req.body)
+ if (
+  (OLD_PASSWORD && OLD_PASSWORD.trim() == '') ||
+  OLD_PASSWORD == undefined ||
+  (NEW_PASSWORD && NEW_PASSWORD.trim() == '') ||
+  NEW_PASSWORD == undefined
+ ) {
+  return res.json({
+   success: false,
+   message: 'un ou plusieurs champs sont vide....',
+  })
+ }
+ // const newPass={OLD_PASSWORD,NEW_PASSWORD,req.params.id}
+ User.updatePassword(
+  { OLD_PASSWORD, NEW_PASSWORD, USER_ID: req.params.id },
+  (err, data) => {
+   if (err) return next(new Error(err.message))
+   return res.json(data)
+  }
+ )
+})
+const forgetPassword = asyncHandler(async (req, res, next) => {
+ const { EMAIL } = req.body
+ if ((EMAIL && EMAIL.trim() == '') || EMAIL == undefined) {
+  return res.json({ success: false, message: 'votre email...!!' })
+ }
+ User.findByEmail(EMAIL, (err, user) => {
+  if (err) return next(new Error(err.message))
+  const { success, data } = user
+  if (success) {
+   const resetPassword = User.getResetPasswordToken(EMAIL)
+   const url = `${req.protocol}://${req.get(
+    'host'
+   )}/api/users/resetpassword/${resetPassword}`
+
+   const message = `nous vous avons envoyer cette email car peut etre vous ou quelqu'un d'autre a demmande de reinitialiser le mot de pass confirm en clickant ici ${url}`
+
+   try {
+    sendEmail({
+     email: EMAIL,
+     subject: 'token du mot de pass ',
+     message,
+    })
+   } catch (error) {
+    User.initiateToNull(EMAIL)
+    return res.json({ success: false, message: "email hasn't been sent!!" })
+   }
+  } else res.json(data)
+ })
+})
+
+const resetPassword = asyncHandler(async (req, res, next) => {
+ // Get hashed token
+ const resetPassordToken = crypto
+  .createHash('sha256')
+  .update(req.params.resettoken)
+  .digest('hex')
+ User.finByToken(resetPassordToken, req.body.newPassword, (err, data) => {
+  if (data && data.length <= 0)
+   return res.json({ success: false, message: 'le temps est ecoulE...!!' })
+ })
+})
+
 module.exports = {
  getAll,
  register,
@@ -110,4 +177,7 @@ module.exports = {
  login,
  updateUser,
  updateUserProfile,
+ updatePassword,
+ forgetPassword,
+ resetPassword,
 }
