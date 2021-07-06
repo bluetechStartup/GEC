@@ -138,9 +138,9 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   const { success, data } = user
   if (success) {
    const resetPassword = User.getResetPasswordToken(EMAIL)
-   const url = `${req.protocol}://${req.get(
-    'host'
-   )}/api/users/resetpassword/${resetPassword}`
+   
+   const url=`localhost:3000/reset_password/${resetPassword}`
+  //  localhost:3000/reset_password/:token
 
    const message = `nous vous avons envoyer cette email car peut etre vous ou quelqu'un d'autre a demmande de reinitialiser le mot de pass confirm en clickant ici ${url}`
 
