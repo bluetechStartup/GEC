@@ -11,6 +11,7 @@ import CreateUserPage from "./pages/CreateUserPage";
 import ListingUsersPage from "./pages/ListingUsersPage";
 import GrantingRights from "./pages/GrantingRights";
 import UpdateUserPage from "./pages/UpdateUserPage";
+import PasswordReset from "./pages/PasswordReset";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Header/>
       <Switch>
         <Route exact path='/login'component={LoginPage} />
+        <Route exact path='/reset_password'component={PasswordReset} />
         <ProtectedRoute exact path='/menu'component={MenuPage} />
         <ProtectedRoute exact path='/create'component={CreateUserPage} />
         <ProtectedRoute exact path='/users'component={ListingUsersPage} />
