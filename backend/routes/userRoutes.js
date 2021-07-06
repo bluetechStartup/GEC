@@ -17,7 +17,8 @@ router.route('/').get(getAll).put(protect, updateUser)
 router.route('/:id').get(getUserById).put(updateUserProfile)
 router.route('/:id/updatepassword').put(updatePassword)
 router.route('/forgetPassword').post(forgetPassword)
-router.route('/resetpassword/:resettoken', resetPassword)
+router.route('/resetpassword/:resettoken').post(resetPassword)
+// POST /api/users/resetpassword/:resettoken
 
 router.route('/register').post(register)
 router.route('/auth').post(login)
