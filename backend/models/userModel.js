@@ -2,6 +2,8 @@ const connection = require('../config/db.js')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
+const CryptoJS = require('crypto-js')
+const { v4: uuidv4 } = require('uuid')
 
 class User {
  static async create(newUser, cb) {
@@ -148,7 +150,7 @@ class User {
    [EMAIL],
    (err, data) => {
     if (err) return cb(err, null)
-    console.log('this is data length',data.length)
+    console.log('this is data length', data.length)
     if (data.length <= 0)
      return cb(null, { success: false, message: 'wrong email' })
     return cb(null, { success: true, data: data[0] })
@@ -158,7 +160,7 @@ class User {
 
  static finByToken(resetToken, newPassword) {
   connection.query(
-   `select * from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE>${Date.now()}`,
+   `select * from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE >${Date.now()}`,
    [resetToken],
    (err, data) => {
     if (err) throw err
@@ -173,7 +175,6 @@ class User {
       if (err) throw err
       return data
      }
-
     )
 
     return data
@@ -182,13 +183,16 @@ class User {
  }
  static getResetPasswordToken(EMAIL) {
   // Generate token
-  const resetToken = crypto.randomBytes(20).toString('hex')
 
-  // Hash token and set to resetPasswordToken field
-  const resetPassordToken = crypto
-   .createHash('sha256')
-   .update(resetToken)
-   .digest('hex')
+  const resetToken = uuidv4()
+
+  console.log('this is token before hashing', resetToken)
+  // ENCRYPT
+  const resetPassordToken = CryptoJS.AES.encrypt(
+   resetToken,
+   process.env.JWT_SECRET
+  ).toString()
+  console.log('this is resetPassordToken', resetPassordToken)
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(

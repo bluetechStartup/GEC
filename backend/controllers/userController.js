@@ -1,7 +1,7 @@
 const User = require('../models/userModel.js')
 const asyncHandler = require('express-async-handler')
-
 const sendEmail = require('../utils/sendEmail.js')
+const CryptoJS = require('crypto-js')
 
 // @desc    GET ALL USERS
 // @route   GET /api/users/
@@ -139,9 +139,9 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   const { success, data } = user
   if (success) {
    const resetPassword = User.getResetPasswordToken(EMAIL)
-   
-   const url=`http://localhost:3000/reset_password/${resetPassword}`
-  //  localhost:3000/reset_password/:token
+
+   const url = `http://localhost:3000/reset_password/${resetPassword}`
+   //  localhost:3000/reset_password/:token
 
    const message = `nous vous avons envoyer cette email car peut etre vous ou quelqu'un d'autre a demmande de reinitialiser le mot de pass confirm en clickant ici ${url}`
 
@@ -161,14 +161,17 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 })
 
 const resetPassword = asyncHandler(async (req, res, next) => {
- // Get hashed token
- const resetPassordToken = crypto
-  .createHash('sha256')
-  .update(req.params.resettoken)
-  .digest('hex')
+ // decrypt
+ var Decrypt = CryptoJS.AES.decrypt(
+  req.params.resettoken,
+  process.env.JWT_SECRET
+ )
+ const resetPassordToken = Decrypt.toString(CryptoJS.enc.Utf8)
+ // console.log('this is token after hashing', plainToken)
  User.finByToken(resetPassordToken, req.body.newPassword, (err, data) => {
   if (data && data.length <= 0)
    return res.json({ success: false, message: 'le temps est ecoulE...!!' })
+  return res.json(data)
  })
  return res.json(data)
 
