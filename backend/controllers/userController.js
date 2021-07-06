@@ -170,6 +170,8 @@ const resetPassword = asyncHandler(async (req, res, next) => {
   if (data && data.length <= 0)
    return res.json({ success: false, message: 'le temps est ecoulE...!!' })
  })
+ return res.json(data)
+
 })
 
 module.exports = {

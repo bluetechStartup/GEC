@@ -3,13 +3,14 @@ import { useDispatch,useSelector } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import "../styles/passwordReset.scss"
 import { passwordReset, submitToken } from '../redux/passwordResetReducer';
 
 function PasswordReset({match}) {
 
     const dispatch = useDispatch()
-    const {loading, data, error} = useSelector(state => state.passwordReset)
+    const {loading, successEmail, error} = useSelector(state => state.passwordReset)
     const [EMAIL, setEMAIL] = useState("")
     const [PASSWORD, setPASSWORD] = useState("")
     const [ConfirmPassword, setConfirmPassword] = useState("")
@@ -38,7 +39,7 @@ function PasswordReset({match}) {
                 <>
                 { loading && <CircularProgress/>}
                 { error && <div className="alert error">{error}</div> }
-                { data && <div>Data sended</div>}
+                { successEmail && <div className="alert success"><CheckCircleOutlineOutlinedIcon/> check your email</div>}
                 <h3>Plese enter your email adress</h3>
                 <form onSubmit={handleSubmit}>
                     <TextField  value={EMAIL} name="EMAIL" label="Email" variant="outlined" size="small" onChange={(e)=>setEMAIL(e.target.value.trim())}
