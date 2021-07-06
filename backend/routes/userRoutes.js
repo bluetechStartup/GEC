@@ -9,12 +9,14 @@ const {
  updateUser,
  login,
  updatePassword,
+ forgetPassword,
  resetPassword,
 } = require('../controllers/userController.js')
 const router = express.Router()
 router.route('/').get(getAll).put(protect, updateUser)
 router.route('/:id').get(getUserById).put(updateUserProfile)
 router.route('/:id/updatepassword').put(updatePassword)
+router.route('/forgetPassword').post(forgetPassword)
 router.route('/resetpassword/:resettoken', resetPassword)
 
 router.route('/register').post(register)

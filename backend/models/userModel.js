@@ -144,7 +144,7 @@ class User {
 
  static findByEmail(EMAIL, cb) {
   connection.query(
-   'select from admin_users where EMAIL=?',
+   'select * from admin_users where EMAIL=?',
    [EMAIL],
    (err, data) => {
     if (err) return cb(err, null)

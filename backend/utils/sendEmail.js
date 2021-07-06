@@ -2,24 +2,50 @@ const nodemailer = require('nodemailer')
 
 const sendEmail = async options => {
  const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
+  service: "gmail",
   auth: {
-   user: process.env.SMTP_EMAIL,
-   pass: process.env.SMTP_PASSWORD,
+   user: process.env.FROM_EMAIL,
+   pass: process.env.PASSWORD,
   },
  })
 
  const message = {
-  from: `${process.env.FROM_NAME} <${process.env.FROM_EMAIL}>`,
+  from: `${process.env.FROM_EMAIL}`,
   to: options.email,
   subject: options.subject,
   text: options.message,
  }
 
- const info = await transporter.sendMail(message)
+ transporter.sendMail(message, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
 
- console.log('Message sent: %s', info.messageId)
+
 }
 
+
+/** /
+ * const nodemailer = require("nodemailer");
+
+var sender = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "bluetechstartup007@gmail.com",
+    pass: "March_2021",
+  },
+});
+
+var mailInfo = {
+  from: "bluetechstartup007@gmail.com",
+  to: "bluetechtest007@gmail.com",
+  subject: "Sending email using NodeJS",
+  text: `Please check new client on pending...`,
+};
+
+
+*/ 
 module.exports = sendEmail

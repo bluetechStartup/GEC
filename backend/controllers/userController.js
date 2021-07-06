@@ -147,14 +147,15 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
    try {
     sendEmail({
      email: EMAIL,
-     subject: 'token du mot de pass ',
+     subject: 'token du motdepass ',
      message,
     })
+    return res.json({ success: true, message: 'email sent..' })
    } catch (error) {
     User.initiateToNull(EMAIL)
     return res.json({ success: false, message: "email hasn't been sent!!" })
    }
-  } else res.json(data)
+  } else res.json(user)
  })
 })
 
