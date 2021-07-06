@@ -116,7 +116,7 @@ class User {
    [USER_ID],
    (err, data) => {
     if (err) return cb(err, null)
-    console.log('this is data from userModel ', data[0])
+
 
     const isMatch = bcrypt.compareSync(OLD_PASSWORD, data[0].PASSWORD)
     if (!isMatch) return cb(null, { success: false, message: 'wrong password' })
@@ -158,22 +158,30 @@ class User {
   )
  }
 
- static finByToken(resetToken, newPassword) {
+ static async finByToken(resetToken, newPassword,cb) {
+   console.log("le resetToken from userModel line 162",resetToken)
+   const hashedPassword = await bcrypt.hash(newPassword, 10)
   connection.query(
    `select * from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE >${Date.now()}`,
    [resetToken],
    (err, data) => {
-    if (err) throw err
+     console.log("DATA LENGTH FROM userModel and data line 168",data,data.length)
+    if (err) return cb(err, null)
     if (data && data.length <= 0) {
-     return cb(null, { success: false, message: 'user not found' })
+      return cb(null,{ success: false, message: 'le token est expirE...' }) 
     }
-    const hashedPassword = bcrypt.hash(newPassword, 10)
+    data[0].PASSWORD=hashedPassword
     connection.query(
-     'update admin_users set PASSWORD=? where USER_ID=?',
-     [hashedPassword, data.USER_ID],
-     (err, data) => {
-      if (err) throw err
-      return data
+      `update admin_users set ? where USER_ID=?`,
+      [data[0], data[0].USER_ID],
+      (err, response) => {
+        if (err) {
+          console.log(err)
+          return cb(err,null)
+        }
+        console.log("DATA  response line 178",response)
+      if(response.effectedRows<=0)console.log("not updated line 178 from userModel")
+      return cb(null,{success: true,message:"welcome...."})
      }
     )
 
@@ -181,17 +189,15 @@ class User {
    }
   )
  }
- static getResetPasswordToken(EMAIL) {
+ static async getResetPasswordToken(EMAIL) {
   // Generate token
 
   const resetToken = uuidv4()
 
   console.log('this is token before hashing', resetToken)
   // ENCRYPT
-  const resetPassordToken = CryptoJS.AES.encrypt(
-   resetToken,
-   process.env.JWT_SECRET
-  ).toString()
+  const resetPassordToken = await bcrypt.hash(resetToken, 10)
+
   console.log('this is resetPassordToken', resetPassordToken)
 
   const expireTime = Date.now() + 30 * 60 * 1000
@@ -200,10 +206,14 @@ class User {
    [resetPassordToken, expireTime, EMAIL],
    (err, data) => {
     if (err) throw err
+    if(data.affectedRows<=0){
+      console.log("not updated userModel line 206")
+
+    }
     console.log(data)
    }
   )
-  return resetToken
+  return resetPassordToken
  }
 }
 module.exports = User

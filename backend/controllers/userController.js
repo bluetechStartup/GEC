@@ -145,11 +145,11 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
    const message = `nous vous avons envoyer cette email car peut etre vous ou quelqu'un d'autre a demmande de reinitialiser le mot de pass confirm en clickant ici ${url}`
 
    try {
-    sendEmail({
-     email: EMAIL,
-     subject: 'token du motdepass ',
-     message,
-    })
+    // sendEmail({
+    //  email: EMAIL,
+    //  subject: 'token du motdepass ',
+    //  message,
+    // })
     return res.json({ success: true, message: 'email sent..' })
    } catch (error) {
     User.initiateToNull(EMAIL)
@@ -161,16 +161,16 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 
 const resetPassword = asyncHandler(async (req, res, next) => {
  // decrypt
- var Decrypt = CryptoJS.AES.decrypt(
-  req.params.resettoken,
-  process.env.JWT_SECRET
- )
- const resetPassordToken = Decrypt.toString(CryptoJS.enc.Utf8)
+ 
+
+
  // console.log('this is token after hashing', plainToken)
- User.finByToken(resetPassordToken, req.body.newPassword, (err, data) => {
-  if (data && data.length <= 0)
+ User.finByToken(req.params.resettoken, req.body.newPassword, (err, data) => {
+   if(err)return next(new Error(err.message))
+   console.log("data success here userController 170",data)
+  if (!data)
    return res.json({ success: false, message: 'le temps est ecoulE...!!' })
-  return res.json(data)
+  return res.json({success:true, message:"welcom.."})
  })
 })
 
