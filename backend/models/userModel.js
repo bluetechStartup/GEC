@@ -148,6 +148,7 @@ class User {
    [EMAIL],
    (err, data) => {
     if (err) return cb(err, null)
+    console.log('this is data length',data.length)
     if (data.length <= 0)
      return cb(null, { success: false, message: 'wrong email' })
     return cb(null, { success: true, data: data[0] })

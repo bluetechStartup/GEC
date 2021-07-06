@@ -130,8 +130,9 @@ const updatePassword = asyncHandler(async (req, res, next) => {
 })
 const forgetPassword = asyncHandler(async (req, res, next) => {
  const { EMAIL } = req.body
- if ((EMAIL && EMAIL.trim() == '') || EMAIL == undefined) {
-  return res.json({ success: false, message: 'votre email...!!' })
+ console.log(EMAIL)
+ if (EMAIL === "") {
+  return res.json({ success: false, message: 'Votre email est incorrect !' })
  }
  User.findByEmail(EMAIL, (err, user) => {
   if (err) return next(new Error(err.message))

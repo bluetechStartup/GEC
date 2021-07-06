@@ -9,21 +9,23 @@
         background-color: #ffffff;
         height: fit-content;
         position: relative;
-        box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
-        &__shape{
-            width: 35%;
-            background-color: #1e90ff;
-            height: 120%;
-            transform:  translateY(-7%);
-            position: absolute;
-            left: -65px;
-            z-index: -1000;
-        }
+        border-radius: 10px;
+        // box-shadow: rgba(211, 215, 226, 0.27) 0px 0px 0.5em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+        // &__shape{
+        //     width: 35%;
+        //     background-color: #1e90ff;
+        //     height: 120%;
+        //     transform:  translateY(-7%);
+        //     position: absolute;
+        //     left: -65px;
+        //     z-index: -1000;
+        //     border-radius: 10px 5px 5px 10px;
+        // }
 
 
         &__form{
 
-            width: 48%;
+            width: 60%;
             margin: auto;
             padding: 40px 0;
 
@@ -74,9 +76,10 @@
 
                 .MuiButton-root.submit{
                     width: 100%;
+                    display: block;
                     background-color: #1e90ff;
                     color: white;
-                    margin-top: 20px;
+                    margin: 20px auto;
                     text-transform: inherit;
                     padding: 10px 0;
                 }
