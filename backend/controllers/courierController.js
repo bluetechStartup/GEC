@@ -123,6 +123,8 @@ let createAnnexe = asyncHandler(async (req, res, next) => {
    console.log('successfully deleted..')
   })
 
+  console.log('this is file', req.file)
+
   return res.status(404).json({
    success: false,
    message: 'seule les documents peuvent etre choisi!!',

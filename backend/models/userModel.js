@@ -1,6 +1,7 @@
 const connection = require('../config/db.js')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 
 class User {
  static async create(newUser, cb) {
@@ -104,22 +105,99 @@ class User {
   })
  }
 
- static updatePassword(reset, cb) {
-  const { PASSWORD, NEW_PASSWORD, USER_ID } = reset
+ static updatePassword(newUpdate, cb) {
+  const { OLD_PASSWORD, NEW_PASSWORD, USER_ID } = newUpdate
+  // console.log('this is data from body from userModel ', newUpdate)
 
   connection.query(
    'select * from admin_users where USER_ID=?',
    [USER_ID],
    (err, data) => {
     if (err) return cb(err, null)
-    const isMatch = bcrypt.compareSync(password, data[0].PASSWORD)
+    console.log('this is data from userModel ', data[0])
+
+    const isMatch = bcrypt.compareSync(OLD_PASSWORD, data[0].PASSWORD)
     if (!isMatch) return cb(null, { success: false, message: 'wrong password' })
-    connection.query('')
+    const hashedPassword = bcrypt.hash(NEW_PASSWORD, 10)
+    connection.query(
+     'update admin_users set PASSWORD=? WHERE USER_ID=?',
+     [hashedPassword, USER_ID],
+     (err, data) => {
+      if (err) return cb(err, null)
+      return cb(null, { success: true, message: 'password updated' })
+     }
+    )
    }
   )
  }
- // static getResetPasswordToken(){
+ static initiateToNull(EMAIL) {
+  connection.query(
+   'update admin_users set PASSWORD_RESET_TOKEN=null,RESET_PASSWORD_EXPIRE=null where EMAIL=? '[
+    EMAIL
+   ],
+   (err, data) => {
+    if (err) throw err
+    console.log('succeffully set to null...')
+   }
+  )
+ }
 
- // }
+ static findByEmail(EMAIL, cb) {
+  connection.query(
+   'select * from admin_users where EMAIL=?',
+   [EMAIL],
+   (err, data) => {
+    if (err) return cb(err, null)
+    if (data.length <= 0)
+     return cb(null, { success: false, message: 'wrong email' })
+    return cb(null, { success: true, data: data[0] })
+   }
+  )
+ }
+
+ static finByToken(resetToken, newPassword) {
+  connection.query(
+   `select from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE>${Date.now()}`,
+   [resetToken],
+   (err, data) => {
+    if (err) throw err
+    if (data && data.length <= 0) {
+     return cb(null, { success: false, message: 'user not found' })
+    }
+    const hashedPassword = bcrypt.hash(newPassword, 10)
+    connection.query(
+     'update admin_users set PASSWORD=? where USER_ID=?',
+     [hashedPassword, USER_ID],
+     (err, data) => {
+      if (err) throw err
+      return data
+     }
+    )
+
+    return data
+   }
+  )
+ }
+ static getResetPasswordToken(EMAIL) {
+  // Generate token
+  const resetToken = crypto.randomBytes(20).toString('hex')
+
+  // Hash token and set to resetPasswordToken field
+  const resetPassordToken = crypto
+   .createHash('sha256')
+   .update(resetToken)
+   .digest('hex')
+
+  const expireTime = Date.now() + 10 * 60 * 1000
+  connection.query(
+   'update admin_users set PASSWORD_RESET_TOKEN=?,RESET_PASSWORD_EXPIRE=? where EMAIL=?',
+   [resetPassordToken, expireTime, EMAIL],
+   (err, data) => {
+    if (err) throw err
+    console.log(data)
+   }
+  )
+  return resetToken
+ }
 }
 module.exports = User
