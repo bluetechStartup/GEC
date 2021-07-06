@@ -26,6 +26,7 @@ function App() {
       <Switch>
         <Route exact path='/login'component={LoginPage} />
         <Route exact path='/reset_password'component={PasswordReset} />
+        <Route exact path='/reset_password/:token'component={PasswordReset} />
         <ProtectedRoute exact path='/menu'component={MenuPage} />
         <ProtectedRoute exact path='/create'component={CreateUserPage} />
         <ProtectedRoute exact path='/users'component={ListingUsersPage} />
