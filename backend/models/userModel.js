@@ -158,7 +158,7 @@ class User {
 
  static finByToken(resetToken, newPassword) {
   connection.query(
-   `select from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE>${Date.now()}`,
+   `select * from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE>${Date.now()}`,
    [resetToken],
    (err, data) => {
     if (err) throw err
@@ -168,11 +168,12 @@ class User {
     const hashedPassword = bcrypt.hash(newPassword, 10)
     connection.query(
      'update admin_users set PASSWORD=? where USER_ID=?',
-     [hashedPassword, USER_ID],
+     [hashedPassword, data.USER_ID],
      (err, data) => {
       if (err) throw err
       return data
      }
+
     )
 
     return data
@@ -189,7 +190,7 @@ class User {
    .update(resetToken)
    .digest('hex')
 
-  const expireTime = Date.now() + 10 * 60 * 1000
+  const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
    'update admin_users set PASSWORD_RESET_TOKEN=?,RESET_PASSWORD_EXPIRE=? where EMAIL=?',
    [resetPassordToken, expireTime, EMAIL],
