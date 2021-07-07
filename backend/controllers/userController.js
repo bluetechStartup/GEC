@@ -84,12 +84,11 @@ const updateUser = asyncHandler(async (req, res, next) => {
    (user.USER_NAME = req.body.USER_NAME ? req.body.USER_NAME : user.USER_NAME),
    (user.EMAIL = req.body.EMAIL ? req.body.EMAIL : user.EMAIL),
    (user.TELEPHONE = req.body.TELEPHONE ? req.body.TELEPHONE : user.TELEPHONE),
-
-  // instead of 1 later we will pass a req.user.id
-  User.update(user, (err, data) => {
-   if (err) return next(new Error(err.message))
-   res.json(data)
-  })
+   // instead of 1 later we will pass a req.user.id
+   User.update(user, (err, data) => {
+    if (err) return next(new Error(err.message))
+    res.json(data)
+   })
  })
 })
 
@@ -129,17 +128,17 @@ const updatePassword = asyncHandler(async (req, res, next) => {
 const forgetPassword = asyncHandler(async (req, res, next) => {
  const { EMAIL } = req.body
  console.log(EMAIL)
- if (EMAIL === "") {
+ if (EMAIL === '') {
   return res.json({ success: false, message: 'Votre email est incorrect !' })
  }
- User.findByEmail(EMAIL,async (err, user) => {
+ User.findByEmail(EMAIL, async (err, user) => {
   if (err) return next(new Error(err.message))
   const { success, data } = user
   if (success) {
    const resetPassword = await User.getResetPasswordToken(EMAIL)
 
    const url = `http://localhost:3000/reset_password/${resetPassword}`
-   console.log("the url ready to be sent line 142 userController",url)
+   console.log('the url ready to be sent line 142 userController', url)
    //  localhost:3000/reset_password/:token
 
    const message = `nous vous avons envoyer cette email car peut etre vous ou quelqu'un d'autre a demmande de reinitialiser le mot de pass confirm en clickant ici ${url}`
@@ -160,18 +159,16 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 })
 
 const resetPassword = asyncHandler(async (req, res, next) => {
-
-  console.log("token from front:",req.params.resettoken)
+ console.log('token from front:', req.params.resettoken)
  // console.log('this is token after hashing', plainToken)
  User.finByToken(req.params.resettoken, req.body.newPassword, (err, data) => {
-   if(err)return next(new Error(err.message))
+  if (err) return next(new Error(err.message))
 
-    console.log("data oute here 168 userController",data)
+  console.log('data oute here 168 userController', data)
 
   return res.json(data)
  })
-//  return res.json(data)
-
+ //  return res.json(data)
 })
 
 module.exports = {

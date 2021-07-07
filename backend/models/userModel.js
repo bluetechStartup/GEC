@@ -106,23 +106,22 @@ class User {
   })
  }
 
- static updatePassword(newUpdate, cb) {
+ static async updatePassword(newUpdate, cb) {
   const { OLD_PASSWORD, NEW_PASSWORD, USER_ID } = newUpdate
   // console.log('this is data from body from userModel ', newUpdate)
 
+  const hashedPassword = await bcrypt.hash(NEW_PASSWORD, 10)
   connection.query(
    'select * from admin_users where USER_ID=?',
    [USER_ID],
    (err, data) => {
     if (err) return cb(err, null)
 
-
     const isMatch = bcrypt.compareSync(OLD_PASSWORD, data[0].PASSWORD)
     if (!isMatch) return cb(null, { success: false, message: 'wrong password' })
-    const hashedPassword = bcrypt.hash(NEW_PASSWORD, 10)
     connection.query(
      'update admin_users set PASSWORD=? WHERE USER_ID=?',
-     [hashedPassword, USER_ID],
+     [String(hashedPassword), parseInt(USER_ID)],
      (err, data) => {
       if (err) return cb(err, null)
       return cb(null, { success: true, message: 'password updated' })
@@ -157,31 +156,31 @@ class User {
   )
  }
 
- static async finByToken(resetToken, newPassword,cb) {
-
-   const hashedPassword = await bcrypt.hash(newPassword, 10)
+ static async finByToken(resetToken, newPassword, cb) {
+  const hashedPassword = await bcrypt.hash(newPassword, 10)
   connection.query(
    `select * from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE >${Date.now()}`,
    [resetToken],
    (err, data) => {
     if (err) return cb(err, null)
-    console.log("data here userModel 168",data)
+    console.log('data here userModel 168', data)
     if (data && data.length <= 0) {
-      return cb(null,{ success: false, message: 'le token est expirE...' }) 
+     return cb(null, { success: false, message: 'le token est expirE...' })
     }
 
     connection.query(
-      `update admin_users set PASSWORD=? where USER_ID=?`,
-      [hashedPassword, data[0].USER_ID],
-      (err, response) => {
-        if (err) {
-          console.log(err)
-          return cb(err,null)
-        }
-        console.log("the response 181 userModel",response)
+     `update admin_users set PASSWORD=? where USER_ID=?`,
+     [String(hashedPassword), parseInt(data[0].USER_ID)],
+     (err, response) => {
+      if (err) {
+       console.log(err)
+       return cb(err, null)
+      }
+      console.log('the response 181 userModel', response)
 
-      if(response.effectedRows<=0)console.log("not updated line 178 from userModel",response)
-      return cb(null,{success: true,message:"welcome...."})
+      if (response.effectedRows <= 0)
+       console.log('not updated line 178 from userModel', response)
+      return cb(null, { success: true, message: 'welcome....' })
      }
     )
 
@@ -196,21 +195,19 @@ class User {
 
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
-  const tok = String(resetPassordToken).replace(/\//g, "")
+  const tok = String(resetPassordToken).replace(/\/ | \./g, '')
   // console.log("token sent:",tok.replaceAll('/',''))
-  console.log("token sent:",tok.replace(/\//g, ""))
+  console.log('token sent:', tok.replace(/\//g, ''))
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
    'update admin_users set PASSWORD_RESET_TOKEN=?,RESET_PASSWORD_EXPIRE=? where EMAIL=?',
-   [resetPassordToken.toString().replace('/',''), expireTime, EMAIL],
+   [tok, expireTime, EMAIL],
    (err, data) => {
     if (err) throw err
-    if(data.affectedRows<=0){
-      console.log("not updated userModel line 206")
-
+    if (data.affectedRows <= 0) {
+     console.log('not updated userModel line 206')
     }
-
    }
   )
   return tok
