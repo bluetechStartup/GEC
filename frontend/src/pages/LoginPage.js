@@ -42,13 +42,13 @@ function LoginPage({history}) {
                             <p>Sign in with google</p>
                         </Button> */}
                         {/* <label>Email adress</label> */}
-                        <TextField  value={email} name="email" label="Email" variant="outlined" size="small"  onChange={(e)=>setEmail(e.target.value)} required/>
-                        <TextField  value={password} name="password" label="Pssword" variant="outlined" size="small"  onChange={(e)=>setPassword(e.target.value)} required/>
+                        <TextField  value={email} name="email" label="Email" variant="outlined" size="small"  onChange={(e)=>setEmail(e.target.value.trim())} required/>
+                        <TextField  value={password} type="password" name="password" label="Password" variant="outlined" size="small"  onChange={(e)=>setPassword(e.target.value.trim())} required/>
                         {/* <input type="text" onChange={(e)=>setEmail(e.target.value)} required/> */}
                         {/* <label>Password</label> */}
                         {/* <input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} required/> */}
                         <Button type="submit" className="submit">Sign in</Button>
-                        <Link><p>Forget password?</p></Link>
+                        <Link to="/reset_password"><p>Forget password?</p></Link>
                     </form>
                     
                 </div>

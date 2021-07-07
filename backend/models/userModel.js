@@ -165,20 +165,22 @@ class User {
    [resetToken],
    (err, data) => {
     if (err) return cb(err, null)
+    console.log("data here userModel 168",data)
     if (data && data.length <= 0) {
       return cb(null,{ success: false, message: 'le token est expirE...' }) 
     }
-    data[0].PASSWORD=hashedPassword
+
     connection.query(
-      `update admin_users set ? where USER_ID=?`,
-      [data[0], data[0].USER_ID],
+      `update admin_users set PASSWORD=? where USER_ID=?`,
+      [hashedPassword, data[0].USER_ID],
       (err, response) => {
         if (err) {
           console.log(err)
           return cb(err,null)
         }
+        console.log("the response 181 userModel",response)
 
-      if(response.effectedRows<=0)console.log("not updated line 178 from userModel")
+      if(response.effectedRows<=0)console.log("not updated line 178 from userModel",response)
       return cb(null,{success: true,message:"welcome...."})
      }
     )
@@ -194,9 +196,9 @@ class User {
 
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
- 
-  console.log("this resetPassordToken BEFORE replace",resetPassordToken)
-  console.log("this resetPassordToken after replace",resetPassordToken.toString().map((x=>x!='/')))
+  const tok = String(resetPassordToken).replace(/\//g, "")
+  // console.log("token sent:",tok.replaceAll('/',''))
+  console.log("token sent:",tok.replace(/\//g, ""))
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
@@ -211,7 +213,7 @@ class User {
 
    }
   )
-  return resetPassordToken.toString().replacAll('/','')
+  return tok
  }
 }
 module.exports = User

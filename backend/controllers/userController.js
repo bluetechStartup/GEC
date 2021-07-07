@@ -128,15 +128,15 @@ const updatePassword = asyncHandler(async (req, res, next) => {
 })
 const forgetPassword = asyncHandler(async (req, res, next) => {
  const { EMAIL } = req.body
- if ((EMAIL && EMAIL.trim() == '') || EMAIL == undefined) {
-  return res.json({ success: false, message: 'votre email...!!' })
+ console.log(EMAIL)
+ if (EMAIL === "") {
+  return res.json({ success: false, message: 'Votre email est incorrect !' })
  }
  User.findByEmail(EMAIL,async (err, user) => {
   if (err) return next(new Error(err.message))
   const { success, data } = user
   if (success) {
    const resetPassword = await User.getResetPasswordToken(EMAIL)
-   console.log("this is getResetPasswordToken from userController",resetPassword)
 
    const url = `http://localhost:3000/reset_password/${resetPassword}`
    console.log("the url ready to be sent line 142 userController",url)
@@ -160,10 +160,8 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 })
 
 const resetPassword = asyncHandler(async (req, res, next) => {
- // decrypt
- 
 
-
+  console.log("token from front:",req.params.resettoken)
  // console.log('this is token after hashing', plainToken)
  User.finByToken(req.params.resettoken, req.body.newPassword, (err, data) => {
    if(err)return next(new Error(err.message))
@@ -172,6 +170,8 @@ const resetPassword = asyncHandler(async (req, res, next) => {
 
   return res.json(data)
  })
+//  return res.json(data)
+
 })
 
 module.exports = {
