@@ -194,12 +194,14 @@ class User {
 
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
-
+ 
+  console.log("this resetPassordToken BEFORE replace",resetPassordToken)
+  console.log("this resetPassordToken after replace",resetPassordToken.toString().map((x=>x!='/')))
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
    'update admin_users set PASSWORD_RESET_TOKEN=?,RESET_PASSWORD_EXPIRE=? where EMAIL=?',
-   [resetPassordToken, expireTime, EMAIL],
+   [resetPassordToken.toString().replace('/',''), expireTime, EMAIL],
    (err, data) => {
     if (err) throw err
     if(data.affectedRows<=0){
@@ -209,7 +211,7 @@ class User {
 
    }
   )
-  return resetPassordToken
+  return resetPassordToken.toString().replacAll('/','')
  }
 }
 module.exports = User

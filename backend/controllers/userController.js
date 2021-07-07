@@ -131,13 +131,15 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
  if ((EMAIL && EMAIL.trim() == '') || EMAIL == undefined) {
   return res.json({ success: false, message: 'votre email...!!' })
  }
- User.findByEmail(EMAIL, (err, user) => {
+ User.findByEmail(EMAIL,async (err, user) => {
   if (err) return next(new Error(err.message))
   const { success, data } = user
   if (success) {
-   const resetPassword = User.getResetPasswordToken(EMAIL)
+   const resetPassword = await User.getResetPasswordToken(EMAIL)
+   console.log("this is getResetPasswordToken from userController",resetPassword)
 
    const url = `http://localhost:3000/reset_password/${resetPassword}`
+   console.log("the url ready to be sent line 142 userController",url)
    //  localhost:3000/reset_password/:token
 
    const message = `nous vous avons envoyer cette email car peut etre vous ou quelqu'un d'autre a demmande de reinitialiser le mot de pass confirm en clickant ici ${url}`
