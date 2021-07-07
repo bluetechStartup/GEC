@@ -31,7 +31,7 @@ function GrantingRights() {
                 dispatch(updateFuncFinished())
                 setProfile("")
                 setFonctionnalite("")
-            }, 3000);
+            }, 1000);
         }
         
     }, [profileUpdated])

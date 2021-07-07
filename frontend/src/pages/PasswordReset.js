@@ -1,16 +1,17 @@
-import React,{ useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import { useDispatch,useSelector } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import "../styles/passwordReset.scss"
-import { passwordReset, submitToken } from '../redux/passwordResetReducer';
+import { passwordReset, submitToken, resetComplete } from '../redux/passwordResetReducer';
+import { Link } from 'react-router-dom';
 
-function PasswordReset({match}) {
+function PasswordReset({match, location}) {
 
     const dispatch = useDispatch()
-    const {loading, successEmail, error} = useSelector(state => state.passwordReset)
+    const {loading, successEmail, successToken, error} = useSelector(state => state.passwordReset)
     const [EMAIL, setEMAIL] = useState("")
     const [PASSWORD, setPASSWORD] = useState("")
     const [ConfirmPassword, setConfirmPassword] = useState("")
@@ -21,6 +22,10 @@ function PasswordReset({match}) {
         e.preventDefault()
         dispatch(passwordReset(EMAIL))
     }
+
+    useEffect(() => {
+        dispatch(resetComplete())
+    }, [location])
 
     const handleResetPassword = (e)=>{
         e.preventDefault()
@@ -50,6 +55,7 @@ function PasswordReset({match}) {
                 </>
                 :
                 <>
+                    { successToken && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Password update <Link to="/login"> Login here</Link></div> }
                     <h3>Please enter new password</h3>
                     <form onSubmit={handleResetPassword}>
                         <TextField  value={PASSWORD} name="password" label="Password" variant="outlined" size="small" onChange={(e)=>setPASSWORD(e.target.value.trim())}
@@ -58,7 +64,7 @@ function PasswordReset({match}) {
                         <TextField  value={ConfirmPassword} label="Confirm Password" variant="outlined" size="small" onChange={(e)=>setConfirmPassword(e.target.value.trim())}
                         type="password"
                         required/>
-                    <Button type="submit">Confirm password</Button>
+                    <Button type="submit">Confirm password</Button> 
                     </form>
                 </>
                 }

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import SendIcon from '@material-ui/icons/Send';
 import LanguageIcon from '@material-ui/icons/Language';
 import Avatar from '@material-ui/core/Avatar'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link, withRouter } from 'react-router-dom';
 import '../styles/header.scss'
 

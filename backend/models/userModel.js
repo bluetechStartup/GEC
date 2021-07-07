@@ -196,14 +196,14 @@ class User {
 
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
-  const tok = String(resetPassordToken).replace(/\//g, "")
-  // console.log("token sent:",tok.replaceAll('/',''))
-  console.log("token sent:",tok.replace(/\//g, ""))
+  const tok = String(resetPassordToken).replace(/\./g, "").replace(/\//g, "")
+  
+  console.log("token sent:",tok)
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
    'update admin_users set PASSWORD_RESET_TOKEN=?,RESET_PASSWORD_EXPIRE=? where EMAIL=?',
-   [resetPassordToken.toString().replace('/',''), expireTime, EMAIL],
+   [tok, expireTime, EMAIL],
    (err, data) => {
     if (err) throw err
     if(data.affectedRows<=0){
