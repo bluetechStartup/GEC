@@ -161,19 +161,26 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 })
 
 const resetPassword = asyncHandler(async (req, res, next) => {
+
+  console.log("token from front:",req.params.resettoken)
  // decrypt
  var Decrypt = CryptoJS.AES.decrypt(
   req.params.resettoken,
   process.env.JWT_SECRET
  )
+ 
  const resetPassordToken = Decrypt.toString(CryptoJS.enc.Utf8)
+ console.log("decrypt:",resetPassordToken)
+ console.log("token after decrypt:",resetPassordToken)
+
  // console.log('this is token after hashing', plainToken)
  User.finByToken(resetPassordToken, req.body.newPassword, (err, data) => {
-  if (data && data.length <= 0)
-   return res.json({ success: false, message: 'le temps est ecoulE...!!' })
+  if (data && data.length <= 0){
+    return res.json({ success: false, message: 'le temps est ecoulE...!!' })
+  }
   return res.json(data)
  })
- return res.json(data)
+//  return res.json(data)
 
 })
 

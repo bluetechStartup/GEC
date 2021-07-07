@@ -158,14 +158,16 @@ class User {
   )
  }
 
- static finByToken(resetToken, newPassword) {
+ static finByToken(resetToken, newPassword, cb) {
+   console.log("token",resetToken,"new password:",newPassword)
   connection.query(
    `select * from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE >${Date.now()}`,
    [resetToken],
    (err, data) => {
     if (err) throw err
     if (data && data.length <= 0) {
-     return cb(null, { success: false, message: 'user not found' })
+      console.log("data:",data)
+      return cb(null, { success: false, message: 'user not found' })
     }
     const hashedPassword = bcrypt.hash(newPassword, 10)
     connection.query(
