@@ -1,7 +1,7 @@
 const User = require('../models/userModel.js')
 const asyncHandler = require('express-async-handler')
-
 const sendEmail = require('../utils/sendEmail.js')
+const CryptoJS = require('crypto-js')
 
 // @desc    GET ALL USERS
 // @route   GET /api/users/
@@ -74,8 +74,6 @@ const getUserById = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/users
 // @access  Private
 const updateUser = asyncHandler(async (req, res, next) => {
- console.log('this is update user')
- console.log(req.body)
  // instead of 1 later we will pass a req.user.id
  User.getMe(req.user.USER_ID, (err, user) => {
   console.log('user out here ...', user)
@@ -86,7 +84,7 @@ const updateUser = asyncHandler(async (req, res, next) => {
    (user.USER_NAME = req.body.USER_NAME ? req.body.USER_NAME : user.USER_NAME),
    (user.EMAIL = req.body.EMAIL ? req.body.EMAIL : user.EMAIL),
    (user.TELEPHONE = req.body.TELEPHONE ? req.body.TELEPHONE : user.TELEPHONE),
-   console.log('user out here updated...', user)
+
   // instead of 1 later we will pass a req.user.id
   User.update(user, (err, data) => {
    if (err) return next(new Error(err.message))
@@ -107,7 +105,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
 })
 const updatePassword = asyncHandler(async (req, res, next) => {
  const { OLD_PASSWORD, NEW_PASSWORD } = req.body
- console.log('the body out here', req.body)
+
  if (
   (OLD_PASSWORD && OLD_PASSWORD.trim() == '') ||
   OLD_PASSWORD == undefined ||
@@ -138,9 +136,9 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
   const { success, data } = user
   if (success) {
    const resetPassword = User.getResetPasswordToken(EMAIL)
-   const url = `${req.protocol}://${req.get(
-    'host'
-   )}/api/users/resetpassword/${resetPassword}`
+
+   const url = `http://localhost:3000/reset_password/${resetPassword}`
+   //  localhost:3000/reset_password/:token
 
    const message = `nous vous avons envoyer cette email car peut etre vous ou quelqu'un d'autre a demmande de reinitialiser le mot de pass confirm en clickant ici ${url}`
 
@@ -160,14 +158,17 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
 })
 
 const resetPassword = asyncHandler(async (req, res, next) => {
- // Get hashed token
- const resetPassordToken = crypto
-  .createHash('sha256')
-  .update(req.params.resettoken)
-  .digest('hex')
- User.finByToken(resetPassordToken, req.body.newPassword, (err, data) => {
-  if (data && data.length <= 0)
-   return res.json({ success: false, message: 'le temps est ecoulE...!!' })
+ // decrypt
+ 
+
+
+ // console.log('this is token after hashing', plainToken)
+ User.finByToken(req.params.resettoken, req.body.newPassword, (err, data) => {
+   if(err)return next(new Error(err.message))
+
+    console.log("data oute here 168 userController",data)
+
+  return res.json(data)
  })
 })
 
