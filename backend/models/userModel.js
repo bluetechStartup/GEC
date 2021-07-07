@@ -1,8 +1,7 @@
 const connection = require('../config/db.js')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const crypto = require('crypto')
-const CryptoJS = require('crypto-js')
+
 const { v4: uuidv4 } = require('uuid')
 
 class User {
@@ -34,7 +33,7 @@ class User {
      if (!isMatch) {
       return cb(null, { success: false, message: 'wrong password..' })
      }
-     console.log('data:', data)
+
      const token = jwt.sign({ id: data[0].USER_ID }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
      })
@@ -150,7 +149,7 @@ class User {
    [EMAIL],
    (err, data) => {
     if (err) return cb(err, null)
-    console.log('this is data length', data.length)
+
     if (data.length <= 0)
      return cb(null, { success: false, message: 'wrong email' })
     return cb(null, { success: true, data: data[0] })
@@ -159,13 +158,12 @@ class User {
  }
 
  static async finByToken(resetToken, newPassword,cb) {
-   console.log("le resetToken from userModel line 162",resetToken)
+
    const hashedPassword = await bcrypt.hash(newPassword, 10)
   connection.query(
    `select * from admin_users where PASSWORD_RESET_TOKEN=? and RESET_PASSWORD_EXPIRE >${Date.now()}`,
    [resetToken],
    (err, data) => {
-     console.log("DATA LENGTH FROM userModel and data line 168",data,data.length)
     if (err) return cb(err, null)
     if (data && data.length <= 0) {
       return cb(null,{ success: false, message: 'le token est expirE...' }) 
@@ -179,7 +177,7 @@ class User {
           console.log(err)
           return cb(err,null)
         }
-        console.log("DATA  response line 178",response)
+
       if(response.effectedRows<=0)console.log("not updated line 178 from userModel")
       return cb(null,{success: true,message:"welcome...."})
      }
@@ -194,11 +192,9 @@ class User {
 
   const resetToken = uuidv4()
 
-  console.log('this is token before hashing', resetToken)
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
 
-  console.log('this is resetPassordToken', resetPassordToken)
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
@@ -210,7 +206,7 @@ class User {
       console.log("not updated userModel line 206")
 
     }
-    console.log(data)
+
    }
   )
   return resetPassordToken
