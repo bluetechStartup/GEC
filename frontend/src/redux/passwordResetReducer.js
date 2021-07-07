@@ -29,6 +29,7 @@ export const submitToken = (token,PASSWORD) => async dispatch =>{
     dispatch({type:SUBMIT_TOKEN_REQUEST})
     try {
         const {data} = await axios.post(`${api.URL}/api/users/resetpassword/${token}`,{newPassword:PASSWORD})
+        console.log("data reset:",data)
         data ? 
             dispatch({type:SUBMIT_TOKEN_SUCCESS, payload: data.data})
             : dispatch({type:SUBMIT_TOKEN_FAILED, payload: data.message})

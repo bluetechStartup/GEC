@@ -132,11 +132,11 @@ const forgetPassword = asyncHandler(async (req, res, next) => {
  if (EMAIL === "") {
   return res.json({ success: false, message: 'Votre email est incorrect !' })
  }
- User.findByEmail(EMAIL, (err, user) => {
+ User.findByEmail(EMAIL,async (err, user) => {
   if (err) return next(new Error(err.message))
   const { success, data } = user
   if (success) {
-   const resetPassword = User.getResetPasswordToken(EMAIL)
+   const resetPassword = await User.getResetPasswordToken(EMAIL)
 
    const url = `http://localhost:3000/reset_password/${resetPassword}`
    //  localhost:3000/reset_password/:token
