@@ -1,6 +1,6 @@
 let connection = require('../config/db')
 
-class Mdl_rapports {
+class Rapport {
  static courriers_non_traite_categorie(cb) {
   connection.query(
    `SELECT COUNT(cr.COURRIER_ID) AS NB_COURRIER,ct.CATEGORIE_COURRIER_DESCR FROM cr_courriers AS cr JOIN cr_categorie_courier AS ct ON cr.CATEGORIE_COURRIER_ID = ct.CATEGORIE_COURRIER_ID WHERE cr.STATUT_ID != 3 `,
@@ -22,4 +22,4 @@ class Mdl_rapports {
  }
 }
 
-module.exports = Mdl_rapports
+module.exports = Rapport
