@@ -15,6 +15,7 @@ function ChangePassword() {
 
     const dispatch = useDispatch()
     const { loading, data, error } = useSelector(state => state.changePassword)
+    const { data:{ USER_ID } } = useSelector(state => state.user)
 
     const [PASSWORD, setPASSWORD] = useState("")
     const [OLDPASSWORD, setOLDPASSWORD] = useState("")
@@ -22,7 +23,7 @@ function ChangePassword() {
     const handleChangePassword = (e) =>{
         e.preventDefault()
         console.log(PASSWORD," ",OLDPASSWORD)
-        dispatch(changePassword(PASSWORD,OLDPASSWORD))
+        dispatch(changePassword(PASSWORD, OLDPASSWORD, USER_ID))
     }
 
     return (
@@ -36,7 +37,7 @@ function ChangePassword() {
 
                     {error && <div className="alert error"><ErrorOutlineIcon/>{error}</div>}
                     {/* {warning && <div className="alert warning"><WarningIcon/>{warning}</div>} */}
-                    {data &&  <div className="alert success"><CheckIcon/>Password changed successfully !</div>}
+                    {data?.success &&  <div className="alert success"><CheckIcon/>Password changed successfully !</div>}
                     
                     <form onSubmit={handleChangePassword}>
                         <TextField  value={OLDPASSWORD} label="Old password" variant="outlined" size="small" onChange={(e)=>setOLDPASSWORD(e.target.value.trim())}
