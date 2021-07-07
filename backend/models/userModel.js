@@ -194,7 +194,9 @@ class User {
 
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
-
+  const tok = String(resetPassordToken).replace(/\//g, "")
+  // console.log("token sent:",tok.replaceAll('/',''))
+  console.log("token sent:",tok.replace(/\//g, ""))
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
@@ -209,7 +211,7 @@ class User {
 
    }
   )
-  return resetPassordToken
+  return tok
  }
 }
 module.exports = User
