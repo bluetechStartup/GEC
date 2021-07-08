@@ -53,4 +53,4 @@ const remove = asyncHandler(async (req, res, next) => {
  })
 })
 
-module.exports = { add, one, all, edit, remove }
+module.exports = { create, getById,update,getAll, remove }

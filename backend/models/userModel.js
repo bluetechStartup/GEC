@@ -17,7 +17,7 @@ class User {
   const { email, password } = credentiels
 
   connection.query(
-   'select adm.USER_ID,adm.USER_NAME,adm.PASSWORD,adm.FIRST_NAME,adm.LAST_NAME,adm.EMAIL,prof.PROFIL_DESCR,adm.IS_ACTIVE FROM admin_users adm , admin_profil prof where adm.EMAIL=? GROUP BY adm.USER_ID',
+   'select adm.USER_ID,adm.USER_NAME,adm.PASSWORD,adm.FIRST_NAME,adm.LAST_NAME,adm.EMAIL,prof.PROFIL_DESCR,adm.SERVICE_ID,adm.IS_ACTIVE FROM admin_users adm , admin_profil prof where adm.EMAIL=? GROUP BY adm.USER_ID',
    [email],
    (err, data) => {
     if (err) return cb(err, null)
@@ -195,7 +195,9 @@ class User {
 
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
-  const tok = String(resetPassordToken).replace(/\/ | \./g, '')
+  const tok = String(resetPassordToken).replace(/\./g, "").replace(/\//g, "")
+  
+  console.log("token sent:",tok)
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(

@@ -9,6 +9,7 @@ const PASSWORD_RESET_REQUEST_FAILED = "PASSWORD_RESET_REQUEST_FAILED"
 const SUBMIT_TOKEN_REQUEST = "SUBMIT_TOKEN_REQUEST"
 const SUBMIT_TOKEN_SUCCESS = "SUBMIT_TOKEN_SUCCESS"
 const SUBMIT_TOKEN_FAILED = "SUBMIT_TOKEN_FAILED"
+const RESET_COMPLETE = "RESET_COMPLETE"
 
 
 // PASSWORD RESET actions 
@@ -30,13 +31,15 @@ export const submitToken = (token,PASSWORD) => async dispatch =>{
     try {
         const {data} = await axios.post(`${api.URL}/api/users/resetpassword/${token}`,{newPassword:PASSWORD})
         console.log("data reset:",data)
-        data ? 
+        data.success ? 
             dispatch({type:SUBMIT_TOKEN_SUCCESS, payload: data.data})
             : dispatch({type:SUBMIT_TOKEN_FAILED, payload: data.message})
     } catch (error) {
         dispatch({type:SUBMIT_TOKEN_FAILED,payload: error.message})
     }
 }
+
+export const resetComplete = () =>{ return { type:RESET_COMPLETE } }
 
 
 // PASSWORD RESET reducer
@@ -55,10 +58,13 @@ export const passwordResetReducer = (state={}, action) =>{
             return { loading:true }
 
         case SUBMIT_TOKEN_SUCCESS:
-            return { loading:false, success:true}
+            return { loading:false, successToken:true}
         
         case SUBMIT_TOKEN_FAILED:
-            return { loading:false, success:false, errorToken:"Token is not valid"}
+            return { loading:false, successToken:false, errorToken:"Token is not valid"}
+        
+        case RESET_COMPLETE:
+            return {}
 
         default:return { ...state }
     }

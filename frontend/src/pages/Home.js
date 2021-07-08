@@ -33,7 +33,7 @@ function Home({history}) {
                     <Button className="google_home" onClick={handleLogout}>
                         Logout Mr {user?.FIRST_NAME}
                     </Button>
-                    <h2>Welcome {user?.FIRST_NAME} {user?.PROFIL_DESCR}</h2>                  
+                    <h2>Welcome {user?.FIRST_NAME}</h2>                  
                 </div>
             </div>
         </div>

@@ -9,5 +9,5 @@ router
  .route('/courriers_non_traite_categorie')
  .get(getCourriersNonTraitCategorie)
 
-apiRouter.route('/courriers_categorie/').get(getCourrierCategorie)
+ router.route('/courriers_categorie/').get(getCourrierCategorie)
 module.exports = router

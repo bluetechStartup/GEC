@@ -15,6 +15,7 @@ import { prioritiesReducer } from "./priorityReducer"
 import { annexeCategoriesReducer } from "./annexeCategoryReducer"
 import { typesAnnexeReducer } from "./typesAnnexe"
 import { passwordResetReducer } from  "./passwordResetReducer"
+import { changePasswordReducer } from "./changePasswordReducer"
 
 const rootReducer = combineReducers({
     user:userReducer,
@@ -41,7 +42,8 @@ const rootReducer = combineReducers({
     priorities:prioritiesReducer,
     annexeCategories:annexeCategoriesReducer,
     typesAnnexe:typesAnnexeReducer,
-    passwordReset:passwordResetReducer
+    passwordReset:passwordResetReducer,
+    changePassword:changePasswordReducer
 })
 
 export default rootReducer

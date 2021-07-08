@@ -12,6 +12,7 @@ import ListingUsersPage from "./pages/ListingUsersPage";
 import GrantingRights from "./pages/GrantingRights";
 import UpdateUserPage from "./pages/UpdateUserPage";
 import PasswordReset from "./pages/PasswordReset";
+import ChangePassword from "./pages/ChangePassword";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route exact path='/login'component={LoginPage} />
         <Route exact path='/reset_password'component={PasswordReset} />
         <Route exact path='/reset_password/:token'component={PasswordReset} />
+        <ProtectedRoute exact path='/change_password'component={ChangePassword} />
         <ProtectedRoute exact path='/menu'component={MenuPage} />
         <ProtectedRoute exact path='/create'component={CreateUserPage} />
         <ProtectedRoute exact path='/users'component={ListingUsersPage} />
