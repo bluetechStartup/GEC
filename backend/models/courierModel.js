@@ -107,7 +107,7 @@ class Courrier {
  }
  static courriersByservice(id,cb){
 
-   connection.query("select cra.*,cr.* from admin_users ad join cr_courriers cr on ad.SERVICE_ID = cr.SERVICE_ID JOIN cr_courrier_annexe cra on cr.COURRIER_ID= cr.COURRIER_ID WHERE ad.SERVICE_ID=? GROUP by cr.COURRIER_ID",[parseInt(id)],(err,data)=>{
+   connection.query("select cra.*,cr.* from admin_users ad join cr_courriers cr on ad.SERVICE_ID = cr.SERVICE_ID JOIN cr_courrier_annexe cra on cr.COURRIER_ID=cr.COURRIER_ID WHERE cr.REFERENT_USER_ID=? GROUP by cr.COURRIER_ID",[parseInt(id)],(err,data)=>{
       if(err) throw err
       cb(err, {success: true,count:data.length, data})
    })

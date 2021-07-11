@@ -12,12 +12,9 @@ const create = asyncHandler(async (req, res, next) => {
   CATEGORIE_COURRIER_ID == undefined ||
   CATEGORIE_COURRIER_ID == ''
  ) {
-  response.status(500).json({
-   success: fasle,
-   message: `Il y a un champ null ou indéfini`,
-  })
+  res.status(500).json({success: false,message:"un ou plusieur champ sont vide..."})
  } else {
-  const newRegle = { CATEGORIE_COURRIER_ID, NOMBRE_HEURE, PERSONE_ID }
+  const newRegle = {NOMBRE_HEURE:parseInt(CATEGORIE_COURRIER_ID)  ,CATEGORIE_COURRIER_ID:parseInt(NOMBRE_HEURE) ,PERSONE_ID: parseInt(PERSONE_ID) }
   Regle.insert(newRegle, (err, data) => {
    if (err) return next(new Error(err.message))
    return res.json(data)
@@ -33,7 +30,7 @@ const getAll = asyncHandler(async (req, res, next) => {
 })
 
 const getById = asyncHandler(async (req, res, next) => {
- Regle.getOne(request.params.id, (err, data) => {
+ Regle.getOne(req.params.id, (err, data) => {
   if (err) return next(new Error(err.message))
   return res.json(data)
  })
