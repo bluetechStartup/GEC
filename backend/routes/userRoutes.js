@@ -11,6 +11,7 @@ const {
  updatePassword,
  forgetPassword,
  resetPassword,
+ getUsersByService
 } = require('../controllers/userController.js')
 const router = express.Router()
 router.route('/').get(getAll).put(protect, updateUser)
@@ -18,6 +19,7 @@ router.route('/:id').get(getUserById).put(updateUserProfile)
 router.route('/:id/updatepassword').put(updatePassword)
 router.route('/forgetPassword').post(forgetPassword)
 router.route('/resetpassword/:resettoken').post(resetPassword)
+router.route('/userbyservice/:id').get(getUsersByService)
 // POST /api/users/resetpassword/:resettoken
 
 router.route('/register').post(register)
