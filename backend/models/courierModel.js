@@ -73,7 +73,7 @@ class Courrier {
  }
 
  static removeCourrier(id, cb) {
-  connection.query(
+  c*onnection.query(
    'DELETE FROM cr_courriers WHERE COURRIER_ID = ?',
    [id],
    (error, data) => {
@@ -107,7 +107,7 @@ class Courrier {
  }
  static courriersByservice(id,cb){
 
-   connection.query("select cra.*,cr.* from admin_users ad join cr_courriers cr on ad.SERVICE_ID = cr.SERVICE_ID JOIN cr_courrier_annexe cra on cr.COURRIER_ID=cr.COURRIER_ID WHERE cr.REFERENT_USER_ID=? GROUP by cr.COURRIER_ID",[parseInt(id)],(err,data)=>{
+   connection.query("select cr.COURRIER_ID,cr.REFERENCE,cr.DATE_RECEPTION,cr.DATE_COURRIER,cr.DATE_ENREGISTREMENT,cr.OBJET,ca.ACTION_DESCR from cr_courriers cr join cr_action ca on cr.ACTION_ID=ca.ACTION_ID  WHERE cr.REFERENT_USER_ID=?",[parseInt(id)],(err,data)=>{
       if(err) throw err
       cb(err, {success: true,count:data.length, data})
    })

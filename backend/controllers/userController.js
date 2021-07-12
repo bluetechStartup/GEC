@@ -171,6 +171,13 @@ const resetPassword = asyncHandler(async (req, res, next) => {
  //  return res.json(data)
 })
 
+const getUsersByService= asyncHandler(async (req, res, next) => {
+
+  User.getUserByservice(req.params.id,(err,data)=>{
+    if(err) return next(new Error(err.message))
+    res.json(data)
+  })
+})
 module.exports = {
  getAll,
  register,
@@ -181,4 +188,5 @@ module.exports = {
  updatePassword,
  forgetPassword,
  resetPassword,
+ getUsersByService
 }

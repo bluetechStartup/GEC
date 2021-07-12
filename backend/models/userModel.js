@@ -212,5 +212,12 @@ class User {
   )
   return tok
  }
+ static getUserByservice(id,cb){
+   connection.query('select  * from admin_users where SERVICE_ID=?',[parseInt(id)],(err,data)=>{
+     if(err)throw err
+     cb(err,data)
+   })
+
+ }
 }
 module.exports = User
