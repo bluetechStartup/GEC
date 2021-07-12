@@ -2,7 +2,7 @@ let connection = require('../config/db')
 
 class Regles {
  static getAll(cb) {
-  connection.query(`SELECT * FROM rg_regles`, (error, data) => {
+  connection.query(`select * from rg_regles`, (error, data) => {
    if (error) return cb(error, null)
    cb(error, { success: true, data })
   })
@@ -21,24 +21,30 @@ class Regles {
 
  static getOne(id, cb) {
   connection.query(
-   'SELECT * FROM rg_regles WHERE REGLE_ID = ?',
+   'select * from rg_regles where REGLE_ID=?',
    [id],
    (error, resultats) => {
-    cb(error, { success: true, data: resultats[0] })
+       console.log("this is the resultats from line 27 regleModel",resultats)
+    cb(error, { success: true,data:resultats[0]?resultats[0]: resultats})
    }
   )
  }
 
  static insert(newRegle, cb) {
-  connection.query(`INSERT INTO rg_regles SET ?`, [newRegle], (error, data) => {
-   if (error) return cb(error, null)
+     const { NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID }=newRegle
+
+     console.log("this is newRegle from regleModel",newRegle)
+  connection.query('insert into rg_regles (NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID) values(?,?,?)',[parseInt(NOMBRE_HEURE),parseInt(CATEGORIE_COURRIER_ID),parseInt(PERSONE_ID)], (error, data) => {
+   if (error) {
+       throw console.error();
+       return cb(error, null)}
    cb(null, { success: true, data })
   })
  }
 
  static update(data, id, cb) {
   connection.query(
-   `UPDATE rg_regles SET ? WHERE REGLE_ID =?`,
+   `update rg_regles set ? where REGLE_ID=?`,
    [data, id],
    (error, data) => {
     return cb(error, { success: true, data })
@@ -48,7 +54,7 @@ class Regles {
 
  static remove(id, cb) {
   connection.query(
-   'DELETE FROM rg_regles WHERE REGLE_ID = ?',
+   'delete from rg_regles where REGLE_ID=?',
    [id],
    (error, data) => {
     if (error) throw error
@@ -57,27 +63,6 @@ class Regles {
   )
  }
 
- static removeByCategory(id, cb) {
-  connection.query(
-   'DELETE FROM rg_regles WHERE CATEGORIE_COURRIER_ID = ?',
-   [id],
-   (error, data) => {
-    if (error) throw error
-    cb(error, { success: true, data })
-   }
-  )
- }
-
- static checkCourriers(cd) {
-  connection.query(
-   `SELECT cr.* FROM cr_courriers AS cr `,
-   [CATEGORIE_COURRIER_ID],
-   (error, data) => {
-    if (error) throw error
-    cb(error, { success: true, data })
-   }
-  )
- }
 }
 
 module.exports = Regles

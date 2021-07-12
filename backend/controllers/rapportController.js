@@ -1,27 +1,21 @@
 const Rapport = require('../models/rapportModel.js')
+const asyncHandler = require('express-async-handler')
 
-let courriers_non_traite_categorie = (request, response) => {
- Rapport.courriers_non_traite_categorie((error, courriers) => {
-  response.status(200).send({
-   data: courriers,
-   type: 'sucess',
-   success: true,
-  })
+const getCourriersNonTraitCategorie = asyncHandler(async (req, res, next) => {
+ Rapport.courriers_non_traite_categorie((err, data) => {
+  if (err) return next(new Error(err.message))
+  res.json(data)
  })
-}
+})
 
-let courriers_categorie = (request, response) => {
- Rapport.courriers_categorie((error, courriers) => {
-  response.status(200).send({
-   data: courriers,
-   type: 'sucess',
-   success: true,
-   message: `donnees`,
-  })
+const getCourrierCategorie = asyncHandler(async (req, res, next) => {
+ Rapport.courriers_categorie((err, data) => {
+  if (err) return next(new Error(err.message))
+  res.json(data)
  })
-}
+})
 
 module.exports = {
- courriers_non_traite_categorie,
- courriers_categorie,
+ getCourriersNonTraitCategorie,
+ getCourrierCategorie,
 }

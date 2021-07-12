@@ -10,16 +10,15 @@ const {
  getAnnexes,
  removeCourrier,
  removeAnnexe,
+ getAcourriersByService
 } = require('../controllers/courierController.js')
 router.route('/').get(getCouriers).post(createCourier)
 router.route('/:id').get(getById).put(update).delete(removeCourrier)
 router
- .route('/courrierAnnexe/:id')
- // 
- //  @DESCGET ANNEXES BY COURRIER_ID
- //  GET api/courrier/courrierAnnexe/:id
+.route('/courrierAnnexe/:id')
 .get(getAnnexes)
- .post(createAnnexe)
- .delete(removeAnnexe)
+.post(createAnnexe)
+.delete(removeAnnexe)
+router.route('/courrierbyservice/:id').get(getAcourriersByService)
 
 module.exports = router

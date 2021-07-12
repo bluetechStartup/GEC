@@ -1,9 +1,8 @@
- apiRouter.route("/regle/").post(regles.add);
 
-  apiRouter.route("/regle/:id").put(regles.edit);
+const express = require('express')
+const router = express.Router()
+const { create, getById,update,getAll, remove }=require('../controllers/regleController.js')
 
-  apiRouter.route("/regle/:id").get(regles.one);
-  apiRouter.route("/regle/").get(regles.all);
-
-  apiRouter.route("/regle/:id").delete(regles.remove);
-  apiRouter.route("/regle/:id").delete(regles.removeByCategory);
+router.route("/:id").put(update).get(getById).delete(remove);
+router.route('/').get(getAll).post(create)
+module.exports = router
