@@ -11,10 +11,11 @@ const GET_REFERANTS_BY_SERVICE_REQUEST_FAILED = "GET_REFERANTS_BY_SERVICE_REQUES
 export const getReferantsUsers = id => async dispatch =>{
     dispatch({type:GET_REFERANTS_BY_SERVICE_REQUEST})
     try {
-        const {data} = await axios.get(`${api.URL}/api/courierAction/${id}`)
-        data.success ? 
-            dispatch({type:GET_REFERANTS_BY_SERVICE_REQUEST_SUCCESS, payload: data.data})
-            : dispatch({type:GET_REFERANTS_BY_SERVICE_REQUEST_FAILED, payload: data.message})
+        const {data} = await axios.get(`${api.URL}/api/users/userbyservice/${id}`)
+        console.log("data:",data,"id:",id)
+        data ? 
+            dispatch({type:GET_REFERANTS_BY_SERVICE_REQUEST_SUCCESS, payload: data})
+            : dispatch({type:GET_REFERANTS_BY_SERVICE_REQUEST_FAILED, payload: "No users !"})
     } catch (error) {
         dispatch({type:GET_REFERANTS_BY_SERVICE_REQUEST_FAILED,payload: error.message})
     }

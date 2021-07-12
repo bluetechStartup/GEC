@@ -331,13 +331,10 @@ function CourrierEntrantPage() {
                             <Select label="Referrant" value={REFERENT_USER_ID} onChange={(e)=>setREFERENT_USER_ID(e.target.value)} required
                             disabled={SERVICE_ID ? false : true}
                             >
-                            {/* { referantUsers && referantUsers.map((x)=>{
-                                return(<MenuItem key={x.STATUT_ID} value={x.STATUT_ID}>{x.STATUT_DESCR}</MenuItem>)
-                            }) } */}
                             <MenuItem value="">None</MenuItem>
-                            <MenuItem value={1}>DT</MenuItem>
-                            <MenuItem value={2}>DAF</MenuItem>
-                            <MenuItem value={2}>DG</MenuItem>
+                            { referantUsers && referantUsers.map((x)=>{
+                                return(<MenuItem key={x.USER_ID} value={x.USER_ID}>{x.FIRST_NAME}</MenuItem>)
+                            }) }
                             </Select>
                         </FormControl>
                     </div>
