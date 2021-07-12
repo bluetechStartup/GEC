@@ -2,6 +2,10 @@ import React,{ useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import UserIllustration from '../assets/undraw_Coding_re_iv62.svg'
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
@@ -9,11 +13,13 @@ import WarningIcon from '@material-ui/icons/Warning';
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import { createUser, finishRequest } from '../redux/user/userActions'
 import '../styles/create.scss'
+import { getAllProfiles } from '../redux/profile/profileActions';
 
 
 function CreateUserPage() {
     
     const dispatch = useDispatch();
+    const { data:profiles } = useSelector(state => state.allProfiles)
     const {loading, error, data} = useSelector(state => state.userCreatedOrUpdated);
 
     const [warning, setWarning] = useState('')
@@ -25,8 +31,12 @@ function CreateUserPage() {
         TELEPHONE:'',
         EMAIL:'',
         PASSWORD:'',
-        PROFIL_ID:1,
+        PROFIL_ID:''
     })
+
+    useEffect(() => {
+        dispatch(getAllProfiles())
+    }, [])
 
     useEffect(() => {
         if (data && data.success){
@@ -37,7 +47,7 @@ function CreateUserPage() {
                 TELEPHONE:'',
                 EMAIL:'',
                 PASSWORD:'',
-                PROFIL_ID:1,
+                PROFIL_ID:'',
             })
             setConfirmPassword('')
             setTimeout(() => {
@@ -77,8 +87,18 @@ function CreateUserPage() {
                             <TextField value={user.FIRST_NAME} name="FIRST_NAME" label="FirstName" variant="outlined" size="small" onChange={handleChange} required/>
                             <TextField value={user.LAST_NAME} name="LAST_NAME" label="LastName" variant="outlined" size="small" onChange={handleChange} required/>
                         </div>
-                        
-                        <TextField value={user.EMAIL} name="EMAIL" label="Email" variant="outlined" size="small" onChange={handleChange} required/>
+                        <div className="formGroup">
+                            <TextField value={user.EMAIL} name="EMAIL" label="Email" variant="outlined" size="small" onChange={handleChange} required/>
+                            <FormControl variant="outlined" size="small">
+                                <InputLabel>Profil</InputLabel>
+                                <Select label="Profil" value={user.PROFIL_ID} onChange={(e)=>setUser({...user,PROFIL_ID:e.target.value})} required>
+                                <MenuItem value="">None</MenuItem>
+                                { profiles?.data && profiles?.data.map((x)=>{
+                                    return(<MenuItem key={x.PROFIL_ID} value={x.PROFIL_ID}>{x.PROFIL_DESCR}</MenuItem>)
+                                }) }
+                                </Select>
+                            </FormControl>
+                        </div>
                         
                         <div className="formGroup">
                             <TextField value={user.USER_NAME} name="USER_NAME" label="Username" variant="outlined" size="small" onChange={handleChange} required/>
