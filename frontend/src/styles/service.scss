@@ -1,0 +1,53 @@
+.wrapperService{
+    .service{
+        width: 80%;
+        margin: auto;
+        &>div{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+
+            &>a{
+                display: flex;
+                align-items: center;
+                color: black;
+                text-decoration: none;
+                padding: 10px 20px;
+                border-radius: 3px;
+                transition: .2s all;
+                &:hover{
+                    background-color: #1e90ff;
+                    color: #ffffff;
+                }
+            }
+        }
+        table{
+            width: 100%;
+            text-align: left;
+            margin: auto;
+            border-collapse: separate;
+            border-spacing: 0px 8px;
+            tr{
+                box-shadow: rgba(0, 0, 0, 0.062) 0px 1px 4px;
+                border-radius: 5px;
+                td{
+                    padding: 2px 30px;
+                }
+                th{
+                    padding: 15px 30px;
+                }
+            }
+
+            .MuiSvgIcon-root{
+                cursor: pointer;
+                margin: 5px;
+                transition: .2s all;
+                &:hover{
+                    color: #1e90ff;
+                    transform: scale(1.3);
+                } 
+            }
+        }
+    }
+}

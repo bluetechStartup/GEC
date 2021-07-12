@@ -26,6 +26,7 @@ import { getActions } from '../redux/actionsReducer';
 import { getStatus } from '../redux/statusReducer';
 import { getTypesAnnex } from '../redux/typesAnnexe';
 import { getAnnexeCategories } from '../redux/annexeCategoryReducer';
+import { getReferantsUsers } from "../redux/ReferantUserReducer"
 
 
 function CourrierEntrantPage() {
@@ -46,6 +47,7 @@ function CourrierEntrantPage() {
     const {data: priorities} = useSelector(state => state.priorities)
     const {data: typesAnnexe} = useSelector(state => state.typesAnnexe)
     const {data: categoriesAnnexe} = useSelector(state => state.annexeCategories)
+    const {data: referantUsers} = useSelector(state => state.referantsUsers)
 
 
     // fields states for mail
@@ -106,7 +108,6 @@ function CourrierEntrantPage() {
         dispatch(getStatus())
         dispatch(getTypesAnnex())
         dispatch(getAnnexeCategories())
-        
     }, [])
 
 
@@ -219,8 +220,8 @@ function CourrierEntrantPage() {
             { errorCourrier && <div className="alert error">{errorCourrier}</div> }
             <form onSubmit={handleFirstStep} >
             <div className="form_group">
-                <TextField label="No de reference" variant="outlined" value={REFERENCE} onChange={(e)=>setREFERENCE(e.target.value)} required/>
-                <FormControl variant="outlined">
+                <TextField label="No de reference" variant="outlined" value={REFERENCE} onChange={(e)=>setREFERENCE(e.target.value)} required size="small"/>
+                <FormControl variant="outlined" size="small">
                     <InputLabel>Mouvement ID</InputLabel>
                     <Select label="Mouvement ID" value={MOUVEMENT_ID} onChange={(e)=>setMOUVEMENT_ID(e.target.value)} required>
                     <MenuItem value=" ">None</MenuItem>
@@ -235,13 +236,13 @@ function CourrierEntrantPage() {
                 <div className="left">
                     <div className="date">
                         <h4>Date</h4>
-                        <TextField label="Date du courrier" type="date" variant="outlined" value={DATE_RECEPTION} onChange={(e)=>setDATE_RECEPTION(e.target.value)}/>
-                        <TextField label="Date de récéption" type="date" variant="outlined" value={DATE_COURRIER} onChange={(e)=>setDATE_COURRIER(e.target.value)}/>
-                        <TextField label="Date d'enregistrement" type="date" variant="outlined" value={DATE_ENREGISTREMENT} InputProps={{readOnly: true}}/>
+                        <TextField label="Date du courrier" type="date" variant="outlined" value={DATE_RECEPTION} onChange={(e)=>setDATE_RECEPTION(e.target.value)} size="small"/>
+                        <TextField label="Date de récéption" type="date" variant="outlined" value={DATE_COURRIER} onChange={(e)=>setDATE_COURRIER(e.target.value)} size="small"/>
+                        <TextField label="Date d'enregistrement" type="date" variant="outlined" value={DATE_ENREGISTREMENT} InputProps={{readOnly: true}} size="small"/>
                     </div>
                     <div className="expediteur">
                         <h4>Expediteur</h4>
-                        <FormControl variant="outlined" >
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Civilité</InputLabel>
                             <Select label="Civilité" value={CIVILITE_ID} onChange={(e)=>setCIVILITE_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
@@ -250,9 +251,9 @@ function CourrierEntrantPage() {
                             }) }
                             </Select>
                         </FormControl>
-                        <TextField label="Expediteur" variant="outlined" value={EXPEDITEUR_IDENTITE} onChange={(e)=>setEXPEDITEUR_IDENTITE(e.target.value)} required/>
-                        <TextField label="Adresse d'Expediteur" variant="outlined" value={EXPEDITEUR_ADDRESSE} onChange={(e)=>setEXPEDITEUR_ADDRESSE(e.target.value)} required/>
-                        <FormControl variant="outlined" >
+                        <TextField label="Expediteur" variant="outlined" value={EXPEDITEUR_IDENTITE} onChange={(e)=>setEXPEDITEUR_IDENTITE(e.target.value)} required size="small"/>
+                        <TextField label="Adresse d'Expediteur" variant="outlined" value={EXPEDITEUR_ADDRESSE} onChange={(e)=>setEXPEDITEUR_ADDRESSE(e.target.value)} required size="small"/>
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Ville</InputLabel>
                             <Select label="Ville" value={EXPEDITEUR_VILLE_ID} onChange={(e)=>setEXPEDITEUR_VILLE_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
@@ -267,8 +268,8 @@ function CourrierEntrantPage() {
                 <div className="right">   
                     <div className="object">
                         <h4>Objet</h4>
-                        <TextField label="Objet" variant="outlined" value={OBJET} onChange={(e)=>setOBJET(e.target.value)} required/>
-                        <FormControl variant="outlined" >
+                        <TextField label="Objet" variant="outlined" value={OBJET} onChange={(e)=>setOBJET(e.target.value)} required size="small"/>
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Categorie du courrier</InputLabel>
                             <Select label="Categorie du courrier" value={CATEGORIE_COURRIER_ID} onChange={(e)=>setCATEGORIE_COURRIER_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
@@ -277,7 +278,7 @@ function CourrierEntrantPage() {
                             })}
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" >
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Priorité</InputLabel>
                             <Select
                             label="Priorité"
@@ -294,16 +295,20 @@ function CourrierEntrantPage() {
                     </div>         
                     <div className="destinateur">
                         <h4>Destinateur</h4>
-                        <FormControl variant="outlined" >
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Service</InputLabel>
-                            <Select label="Service" value={SERVICE_ID} onChange={(e)=>setSERVICE_ID(e.target.value)} required>
+                            <Select label="Service" value={SERVICE_ID} 
+                            onChange={ (e)=>{setSERVICE_ID(e.target.value)
+                                e.target.value && dispatch(getReferantsUsers(parseInt(e.target.value)))
+                            }} 
+                            required>
                             <MenuItem value="">None</MenuItem>
                             { services.map((x)=>{
                                 return(<MenuItem key={x.SERVICE_ID} value={x.SERVICE_ID}>{x.SERVICE_DESCR}</MenuItem>)
                             }) }
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" >
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Action</InputLabel>
                             <Select label="Action" value={ACTION_ID} onChange={(e)=>setACTION_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
@@ -312,7 +317,7 @@ function CourrierEntrantPage() {
                             }) }
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" >
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Status</InputLabel>
                             <Select label="Status" value={STATUT_ID} onChange={(e)=>setSTATUT_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
@@ -321,13 +326,15 @@ function CourrierEntrantPage() {
                             }) }
                             </Select>
                         </FormControl>
-                        <FormControl variant="outlined" >
+                        <FormControl variant="outlined" size="small">
                             <InputLabel>Referrant</InputLabel>
-                            <Select label="Referrant" value={REFERENT_USER_ID} onChange={(e)=>setREFERENT_USER_ID(e.target.value)} required>
+                            <Select label="Referrant" value={REFERENT_USER_ID} onChange={(e)=>setREFERENT_USER_ID(e.target.value)} required
+                            disabled={SERVICE_ID ? false : true}
+                            >
                             <MenuItem value="">None</MenuItem>
-                            <MenuItem value={1}>DT</MenuItem>
-                            <MenuItem value={2}>DAF</MenuItem>
-                            <MenuItem value={2}>DG</MenuItem>
+                            { referantUsers && referantUsers.map((x)=>{
+                                return(<MenuItem key={x.USER_ID} value={x.USER_ID}>{x.FIRST_NAME}</MenuItem>)
+                            }) }
                             </Select>
                         </FormControl>
                     </div>
@@ -346,7 +353,7 @@ function CourrierEntrantPage() {
                     <form onSubmit={submitAnnexe} encType="multipart/form-data">
                         <div className="form_group">
                             
-                            <FormControl variant="outlined" >
+                            <FormControl variant="outlined" size="small">
                                 <InputLabel>Categorie d'annexe</InputLabel>
                                 <Select label="Categorie d'annexe"
                                 name="CATEGORIE_ANNEXE_ID"
@@ -360,7 +367,7 @@ function CourrierEntrantPage() {
                                 })}
                                 </Select>
                             </FormControl>
-                            <FormControl variant="outlined">
+                            <FormControl variant="outlined" size="small">
                                 <InputLabel>Type d'annexe</InputLabel>
                                 <Select
                                 name="TYPE_ANNEXE_ID"
@@ -383,6 +390,7 @@ function CourrierEntrantPage() {
                         name="NOM_PIECE"
                         value={NOM_PIECE}
                         onChange={e=>setNOM_PIECE(e.target.value)}
+                        size="small"
                         required
                         />
                         <div className="fileWrapper">

@@ -16,7 +16,13 @@ import {
 
     GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST,
     GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_SUCCESS,
-    GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_FAILED
+    GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_FAILED,
+
+    ADD_FUNCTION_REQUEST,
+    ADD_FUNCTION_REQUEST_SUCCESS,
+    ADD_FUNCTION_REQUEST_FAILED,
+    ADD_FUNCTION_REQUEST_FINISH
+
 } from "./functionsTypes"
 
 
@@ -50,7 +56,22 @@ export const updateFuncByProfile = (dataInfo) => async (dispatch) =>{
     }
 }
 
+export const addFunctionality = (func, funcURL) => async (dispatch) =>{
+    dispatch({type:ADD_FUNCTION_REQUEST})
+    try {
+        const {data} = await axios.post(`${api.URL}/api/fonctionnalite`,{FONCTIONNALITE_URL:funcURL,FONCTIONNALITE_DESCR:func})
+        console.log(data)
+        data.success ? 
+            dispatch({type:ADD_FUNCTION_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
+            : dispatch({type:ADD_FUNCTION_REQUEST_FAILED, payload: data.message})
+
+    } catch (error) {
+        dispatch({type:ADD_FUNCTION_REQUEST_FAILED,payload: error.message});
+    }
+}
+
 export const updateFuncFinished = ()=> {return ({ type: UPDATE_RIGHTS_BY_PROFILE_FINISH })}
+export const addFuncFinish = ()=> {return ({ type: ADD_FUNCTION_REQUEST_FINISH })}
 
 // actions for all functionnalities 
 
