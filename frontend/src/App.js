@@ -14,6 +14,12 @@ import UpdateUserPage from "./pages/UpdateUserPage";
 import PasswordReset from "./pages/PasswordReset";
 import ChangePassword from "./pages/ChangePassword";
 import DisplayMailsPage from "./pages/DisplayMailsPage";
+import ServicePage from "./pages/ServicePage";
+import CreateServicePage from "./pages/CreateServicePage";
+import CreateFunctionalityPage from "./pages/CreateFunctionalityPage";
+import CreateProfilePage from "./pages/CreateProfilePage";
+import ProfilePage from "./pages/ProfilePage";
+import FunctionalityPage from "./pages/FunctionalityPage";
 
 
 function App() {
@@ -30,6 +36,12 @@ function App() {
         <Route exact path='/reset_password'component={PasswordReset} />
         <Route exact path='/reset_password/:token'component={PasswordReset} />
         <Route exact path='/mails'component={DisplayMailsPage} />
+        <Route exact path='/service'component={ServicePage} />
+        <Route exact path='/profiles'component={ProfilePage} />
+        <Route exact path='/functionalities'component={FunctionalityPage} />
+        <Route exact path='/create-service'component={CreateServicePage} />
+        <Route exact path='/create-functionality'component={CreateFunctionalityPage} />
+        <Route exact path='/create-profile'component={CreateProfilePage} />
         <ProtectedRoute exact path='/change_password'component={ChangePassword} />
         <ProtectedRoute exact path='/menu'component={MenuPage} />
         <ProtectedRoute exact path='/create'component={CreateUserPage} />

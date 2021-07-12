@@ -14,16 +14,18 @@ import {
 
     GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST,
     GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_SUCCESS,
-    GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_FAILED
+    GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST_FAILED,
+
+    ADD_FUNCTION_REQUEST,
+    ADD_FUNCTION_REQUEST_SUCCESS,
+    ADD_FUNCTION_REQUEST_FAILED,
+    ADD_FUNCTION_REQUEST_FINISH
 } from "./functionsTypes"
 
 
-// functionnality state
-const funcState = { loading: false, data:null, error:""}
-
 
 // reducer for single functionnality
-export const functionnalityReducer = (state = funcState, action)=>{
+export const functionnalityReducer = (state = {}, action)=>{
     switch (action.type) {
         case GET_FUNCTION_REQUEST:
             return { loading: true}
@@ -45,13 +47,26 @@ export const functionnalityReducer = (state = funcState, action)=>{
 
         case UPDATE_RIGHTS_BY_PROFILE_FINISH:
             return { loading: false }
+
+        case ADD_FUNCTION_REQUEST:
+            return { loading: true}
+        
+        case ADD_FUNCTION_REQUEST_SUCCESS:
+            return { loading: false, functionAdded: action.payload}
+        
+        case ADD_FUNCTION_REQUEST_FAILED:
+            return { loading: false, error: action.payload}
+
+        case ADD_FUNCTION_REQUEST_FINISH:
+            return { loading: false}
+            
         default: return { ...state }
     }
 }
 
 
 // reducer for all functionnalities
-export const allFunctionnalityReducer = (state = funcState, action)=>{
+export const allFunctionnalityReducer = (state = {}, action)=>{
     switch (action.type) {
         case GET_ALL_FUNCTIONS_REQUEST:
             return { loading: true}
@@ -67,7 +82,7 @@ export const allFunctionnalityReducer = (state = funcState, action)=>{
 }
 
 // reducer for all functionnalities by profile
-export const allFunctionnalityByProfileReducer = (state = funcState, action)=>{
+export const allFunctionnalityByProfileReducer = (state = {}, action)=>{
     switch (action.type) {
         case GET_ALL_FUNCTIONS_BY_PROFILE_REQUEST:
             return { loading: true}
