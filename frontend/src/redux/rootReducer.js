@@ -16,6 +16,8 @@ import { annexeCategoriesReducer } from "./annexeCategoryReducer"
 import { typesAnnexeReducer } from "./typesAnnexe"
 import { passwordResetReducer } from  "./passwordResetReducer"
 import { changePasswordReducer } from "./changePasswordReducer"
+import { allMailsReducer } from "./allCourriersReducer"
+import { referantsUsersReducer } from "./ReferantUserReducer"
 
 const rootReducer = combineReducers({
     user:userReducer,
@@ -43,7 +45,9 @@ const rootReducer = combineReducers({
     annexeCategories:annexeCategoriesReducer,
     typesAnnexe:typesAnnexeReducer,
     passwordReset:passwordResetReducer,
-    changePassword:changePasswordReducer
+    changePassword:changePasswordReducer,
+    allMailsByUser:allMailsReducer,
+    referantsUsers: referantsUsersReducer
 })
 
 export default rootReducer

@@ -26,6 +26,7 @@ import { getActions } from '../redux/actionsReducer';
 import { getStatus } from '../redux/statusReducer';
 import { getTypesAnnex } from '../redux/typesAnnexe';
 import { getAnnexeCategories } from '../redux/annexeCategoryReducer';
+import { getReferantsUsers } from "../redux/ReferantUserReducer"
 
 
 function CourrierEntrantPage() {
@@ -46,6 +47,7 @@ function CourrierEntrantPage() {
     const {data: priorities} = useSelector(state => state.priorities)
     const {data: typesAnnexe} = useSelector(state => state.typesAnnexe)
     const {data: categoriesAnnexe} = useSelector(state => state.annexeCategories)
+    const {data: referantUsers} = useSelector(state => state.referantsUsers)
 
 
     // fields states for mail
@@ -106,7 +108,6 @@ function CourrierEntrantPage() {
         dispatch(getStatus())
         dispatch(getTypesAnnex())
         dispatch(getAnnexeCategories())
-        
     }, [])
 
 
@@ -296,7 +297,11 @@ function CourrierEntrantPage() {
                         <h4>Destinateur</h4>
                         <FormControl variant="outlined" >
                             <InputLabel>Service</InputLabel>
-                            <Select label="Service" value={SERVICE_ID} onChange={(e)=>setSERVICE_ID(e.target.value)} required>
+                            <Select label="Service" value={SERVICE_ID} 
+                            onChange={ (e)=>{setSERVICE_ID(e.target.value)
+                                e.target.value && dispatch(getReferantsUsers(parseInt(e.target.value)))
+                            }} 
+                            required>
                             <MenuItem value="">None</MenuItem>
                             { services.map((x)=>{
                                 return(<MenuItem key={x.SERVICE_ID} value={x.SERVICE_ID}>{x.SERVICE_DESCR}</MenuItem>)
@@ -323,7 +328,12 @@ function CourrierEntrantPage() {
                         </FormControl>
                         <FormControl variant="outlined" >
                             <InputLabel>Referrant</InputLabel>
-                            <Select label="Referrant" value={REFERENT_USER_ID} onChange={(e)=>setREFERENT_USER_ID(e.target.value)} required>
+                            <Select label="Referrant" value={REFERENT_USER_ID} onChange={(e)=>setREFERENT_USER_ID(e.target.value)} required
+                            disabled={SERVICE_ID ? false : true}
+                            >
+                            {/* { referantUsers && referantUsers.map((x)=>{
+                                return(<MenuItem key={x.STATUT_ID} value={x.STATUT_ID}>{x.STATUT_DESCR}</MenuItem>)
+                            }) } */}
                             <MenuItem value="">None</MenuItem>
                             <MenuItem value={1}>DT</MenuItem>
                             <MenuItem value={2}>DAF</MenuItem>

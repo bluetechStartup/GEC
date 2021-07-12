@@ -7,11 +7,11 @@ const GET_ALL_COURRIERS_REQUEST_SUCCESS = "GET_ALL_COURRIERS_REQUEST_SUCCESS"
 const GET_ALL_COURRIERS_REQUEST_FAILED = "GET_ALL_COURRIERS_REQUEST_FAILED"
 
 
-// courrier actions
-export const addCourrier = courrier => async dispatch =>{
+// all mails actions
+export const getAllMailsByUser = id => async dispatch =>{
     dispatch({type:GET_ALL_COURRIERS_REQUEST})
     try {
-        const {data} = await axios.post(`${api.URL}/api/courrier`,courrier)
+        const {data} = await axios.get(`${api.URL}/api/courrier/courrierbyservice/${id}`)
         data.success ? 
             dispatch({type:GET_ALL_COURRIERS_REQUEST_SUCCESS, payload: data.data})
             : dispatch({type:GET_ALL_COURRIERS_REQUEST_FAILED, payload: data.message})
@@ -21,8 +21,8 @@ export const addCourrier = courrier => async dispatch =>{
 }
 
 
-// courrier reducer
-export const courrierReducer = (state={}, action) =>{
+// all mails reducer
+export const allMailsReducer = (state={}, action) =>{
     switch (action.type) {
         case GET_ALL_COURRIERS_REQUEST:
             return { loading:true }
