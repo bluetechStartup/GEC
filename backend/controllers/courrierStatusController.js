@@ -1,5 +1,3 @@
-// CourrierStatus
-
 const asyncHandler = require('express-async-handler')
 const CourrierStatus = require('../models/courrierStatusModel.js')
 

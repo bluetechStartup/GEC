@@ -1,7 +1,6 @@
 const User = require('../models/userModel.js')
 const asyncHandler = require('express-async-handler')
 const sendEmail = require('../utils/sendEmail.js')
-const CryptoJS = require('crypto-js')
 
 // @desc    GET ALL USERS
 // @route   GET /api/users/
@@ -178,6 +177,7 @@ const getUsersByService= asyncHandler(async (req, res, next) => {
     res.json(data)
   })
 })
+
 module.exports = {
  getAll,
  register,

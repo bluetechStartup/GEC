@@ -13,6 +13,7 @@ class Fonctionnalite {
   }
 
   static getOne(id, cb) {
+    
     connection.query(
       `SELECT * FROM admin_fonctionnalites WHERE FONCTIONNALITE_ID=? ORDER BY FONCTIONNALITE_ID DESC`,
       [id],

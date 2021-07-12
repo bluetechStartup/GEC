@@ -29,7 +29,7 @@ class Service {
  static create(newService, cb) {
   const { SERVICE_DESCR, HIERARCHIE_ID, SERVICE_DEPEND } = newService
   connection.query(
-   'insert into services set ?',
+   'insert into services set ?', 
    { HIERARCHIE_ID, SERVICE_DESCR },
    (err, data) => {
     console.log('services to be created', err)
@@ -77,11 +77,11 @@ class Service {
       if (data.affectedRows > 0) {
        return cb(null, data)
       }
-      err.message = 'not deleted succeffly...'
+      err.message = 'not deleted successfuly...'
       return cb(err, null)
      }
     )
-    return cb(null, data)
+
    }
   )
  }
