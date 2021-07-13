@@ -5,6 +5,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
 import ErrorIcon from '@material-ui/icons/ErrorOutline';
 import { Link } from "react-router-dom"
+import WarningIcon from '@material-ui/icons/Warning';
+import BackspaceIcon from '@material-ui/icons/Backspace';
 import "../styles/mailDetail.scss"
 import { getAnnex } from '../redux/annexeReducer';
 
@@ -26,7 +28,7 @@ function MailDetailPage({match}) {
     return (
         
         <div className="mailDetail">
-            <Link to="/mails"><BackIcon /></Link>                        
+            <Link to="/mails"><BackspaceIcon /></Link>                        
             { loading && <div className="loader"><CircularProgress/></div>}
             { error && <div className="alert error"><ErrorIcon/>{error}</div>}
             { data &&
@@ -52,14 +54,14 @@ function MailDetailPage({match}) {
             </div>
             <div className="mailDetailInfoBottom">
                 <div className="mailDetailInfoTop_left">
-                    { allAnnex ? 
+                    { allAnnex && allAnnex.length > 0 ? 
                     <>
                     <h3>Pieces jointes</h3>
                     <table>
-                        <tr>
+                        {/* <tr>
                             <th>Nom</th>
                             <th>Categorie</th>
-                        </tr>
+                        </tr> */}
                     {allAnnex.map((x)=>{
                         return(<tr>
                                  <td>{x.NOM_PIECE}</td>
@@ -68,7 +70,7 @@ function MailDetailPage({match}) {
                     }
                     </table>
                    
-                    </>:<p>Y a pas d'annexes</p>
+                    </>:<div className="alert warning"><WarningIcon/>Pas d'annexes !</div>
                     }
                 </div>
                 <div className="mailDetailInfoTop_right">

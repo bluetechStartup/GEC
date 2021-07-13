@@ -2,12 +2,11 @@
     padding: 13px;
     border-radius: 3px;
     margin-bottom: 10px;
-    margin-top: -15px;
     display: flex;
     align-items: center;
 
     .MuiSvgIcon-root{
-        margin-right: 6px;
+        margin-right: 8px;
     }
 
     &.error{
@@ -28,7 +27,7 @@
 
 .createUserWrapper{
 
-    width: auto;
+    margin-top: 2%;
     color: #01053d;
 
     .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {

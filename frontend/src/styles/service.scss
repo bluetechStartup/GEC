@@ -27,17 +27,18 @@
             text-align: left;
             margin: auto;
             border-collapse: separate;
-            border-spacing: 0px 8px;
-            tr{
-                box-shadow: rgba(0, 0, 0, 0.062) 0px 1px 4px;
-                border-radius: 5px;
-                td{
-                    padding: 2px 30px;
-                }
-                th{
-                    padding: 15px 30px;
-                }
+            border-radius: 10px;
+            box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+            
+            
+            td{
+                padding: 3px 30px;
             }
+            th{
+                padding: 25px 30px;
+                border-bottom: 1px solid rgb(240, 240, 240);
+            }
+            
 
             .MuiSvgIcon-root{
                 cursor: pointer;

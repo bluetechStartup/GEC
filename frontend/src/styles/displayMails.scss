@@ -1,20 +1,51 @@
 .displayMails{
     width: 80%;
     margin: auto;
+    &_header{
+        display: flex;
+        justify-content: space-between;
+
+        .MuiFormControl-root{
+            width: 27%;
+            font-family: inherit;
+            margin: 10px 0px;   
+        }
+        .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+            border-color: #3497fa !important;
+        }
+    
+        .MuiFormLabel-root.Mui-focused {
+            color: #3497fa !important;
+            font-family: inherit;
+        }
+        .MuiOutlinedInput-root {
+            padding: 0!important;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+        .MuiInputLabel-outlined{
+            font-family: inherit;
+        }
+        .MuiSelect-select:focus{
+            background-color: transparent;
+        }
+    }
 
     table{
         width: 100%;
+        border-radius: 10px;
+        box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
         border-collapse: collapse;
-        border-spacing: 0px 15px;
-        tr{
-            box-shadow: rgba(0, 0, 0, 0.055) 0px 1px 4px;
-            td{
-                padding: 10px;
-            }
+        margin-bottom: 35px;
+        
+        td{
+            padding: 10px 15px;
         }
+        
         th{
             text-align: left;
-            padding:20px 10px;
+            padding:25px 10px;
+            border-bottom: 1px solid rgb(240, 240, 240);
         }
         .mailRow{
             cursor: pointer;

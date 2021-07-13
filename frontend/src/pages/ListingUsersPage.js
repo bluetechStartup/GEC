@@ -6,6 +6,8 @@ import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { Link } from 'react-router-dom'
+import AddIcon from '@material-ui/icons/Add';
 import CreateIcon from '@material-ui/icons/Create';
 import '../styles/listingUsers.scss'
 import { getAllUsers } from '../redux/user/userActions';
@@ -27,7 +29,11 @@ function ListingUsersPage() {
         <div className="usersWrapper">
             <div className="users">
                 <div className="users__header">
-                    <h1>Users</h1>
+                    <div>
+                        <h1>Users</h1>
+                        <Link to="/create"><AddIcon/>Add User</Link>
+                    </div>
+                    
                     <div className="options">
                         <div className="counter">Total of users(14)</div>
                         <div className="searchInput">

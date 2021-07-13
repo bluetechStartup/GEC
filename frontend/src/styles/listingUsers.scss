@@ -7,6 +7,28 @@
         width: 80%;
         margin: auto;
 
+        &__header{
+            &>div{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+    
+                &>a{
+                    display: flex;
+                    align-items: center;
+                    color: black;
+                    text-decoration: none;
+                    padding: 10px 20px;
+                    border-radius: 3px;
+                    transition: .3s all;
+                    &:hover{
+                        background-color: #1e90ff;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+
         &__table{
             margin-top: 30px;
         }
@@ -44,23 +66,28 @@
 
         table{
             border-collapse: separate;
-            border-spacing: 0px 7px;
+            // border-spacing: 0px 7px;
             width: 100%;
+            border-radius: 10px;
+            box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+            border-collapse: collapse;
+            margin-bottom: 35px;
 
             thead{
                 th{
-                    padding: 20px 10px;
+                    padding: 25px 10px;
                     text-align: center;
+                    border-bottom: 1px solid rgb(240, 240, 240);
                 }
             }
 
             tr{
                 // background-color: rgb(246, 250, 255);
                 border-radius: 5px;
-                box-shadow: rgba(0, 0, 0, 0.103) 0px 1px 4px;
+                // box-shadow: rgba(0, 0, 0, 0.103) 0px 1px 4px;
             
                 td{
-                    padding: 6px 10px;
+                    padding: 0px 10px;
                     text-align: center;
                 }
 
