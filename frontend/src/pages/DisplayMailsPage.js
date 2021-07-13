@@ -2,6 +2,11 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { getAllMailsByUser } from '../redux/allCourriersReducer';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
 import "../styles/displayMails.scss"
 
 function DisplayMailsPage({history}) {
@@ -17,7 +22,23 @@ function DisplayMailsPage({history}) {
 
     return (
         <div className="displayMails">
-            <h2>Mails({mails?.reduce((n,x)=> {return n+1}, 0)})</h2>
+            <div className="displayMails_header">
+                <h2>Mails({mails?.reduce((n,x)=> {return n+1}, 0)})</h2>
+                <FormControl variant="outlined" size="small">
+                    <InputLabel>Category</InputLabel>
+                    <Select label="Category" value=""  required>
+                    <MenuItem value="">None</MenuItem>
+                    <MenuItem value="1">category1</MenuItem>
+                    <MenuItem value="2">category2</MenuItem>
+                    <MenuItem value="2">category2</MenuItem>
+                    <MenuItem value="3">category2</MenuItem>
+                    {/* { profiles?.data && profiles?.data.map((x)=>{
+                        return(<MenuItem key={x.PROFIL_ID} value={x.PROFIL_ID}>{x.PROFIL_DESCR}</MenuItem>)
+                    }) } */}
+                    </Select>
+                </FormControl>
+            </div>
+            
             { loading && <div className="loadMails"><CircularProgress/></div> }
             { mails?.length > 0  ? 
             <table>
