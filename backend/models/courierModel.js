@@ -104,7 +104,7 @@ class Courrier {
  }
  static courriersByservice(id,cb){
 
-   connection.query("select cr.REFERENCE,cr.COURRIER_ID,cr.REFERENCE,cr.DATE_RECEPTION,cr.DATE_COURRIER,cr.DATE_ENREGISTREMENT,cr.OBJET,ca.ACTION_DESCR from cr_courriers cr join cr_action ca on cr.ACTION_ID=ca.ACTION_ID  WHERE cr.REFERENT_USER_ID=?",[parseInt(id)],(err,data)=>{
+   connection.query("select cr.REFERENCE,cr.CATEGORIE_COURRIER_ID,cr.COURRIER_ID,cr.REFERENCE,cr.DATE_RECEPTION,cr.DATE_COURRIER,cr.DATE_ENREGISTREMENT,cr.OBJET,ca.ACTION_DESCR from cr_courriers cr join cr_action ca on cr.ACTION_ID=ca.ACTION_ID  WHERE cr.REFERENT_USER_ID=?",[parseInt(id)],(err,data)=>{
       if(err) throw err
       cb(err, {success: true,count:data.length, data})
    })

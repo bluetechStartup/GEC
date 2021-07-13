@@ -1,24 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { getAllMailsByUser } from '../redux/allCourriersReducer';
+import { filterMailsByCategory, getAllMailsByUser } from '../redux/allCourriersReducer';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import "../styles/displayMails.scss"
+import { getCategories } from '../redux/categoryReducer';
 
 function DisplayMailsPage({history}) {
 
     const dispatch = useDispatch()
     const { loading, data:mails, error } = useSelector(state => state.allMailsByUser)
     const { data:{ USER_ID } } = useSelector(state => state.user)
+    const { data: categories} = useSelector(state => state.categories)
+
+    const [CATEGORIE, setCATEGORIE] = useState("")
+
     useEffect(() => {
+        dispatch(getCategories())
         dispatch(getAllMailsByUser(parseInt(USER_ID)))
     }, [])
 
-    const handleMail = id => console.log("courrier id: ",id)
+    useEffect(() => {
+        CATEGORIE ? dispatch(filterMailsByCategory(USER_ID,CATEGORIE)) : dispatch(getAllMailsByUser(parseInt(USER_ID)))
+    }, [CATEGORIE])
 
     return (
         <div className="displayMails">
@@ -26,15 +33,13 @@ function DisplayMailsPage({history}) {
                 <h2>Mails({mails?.reduce((n,x)=> {return n+1}, 0)})</h2>
                 <FormControl variant="outlined" size="small">
                     <InputLabel>Category</InputLabel>
-                    <Select label="Category" value=""  required>
+                    <Select label="Category" value={CATEGORIE} onChange={(e)=>{
+                        setCATEGORIE(e.target.value)  
+                    }} required>
                     <MenuItem value="">None</MenuItem>
-                    <MenuItem value="1">category1</MenuItem>
-                    <MenuItem value="2">category2</MenuItem>
-                    <MenuItem value="2">category2</MenuItem>
-                    <MenuItem value="3">category2</MenuItem>
-                    {/* { profiles?.data && profiles?.data.map((x)=>{
-                        return(<MenuItem key={x.PROFIL_ID} value={x.PROFIL_ID}>{x.PROFIL_DESCR}</MenuItem>)
-                    }) } */}
+                    { categories && categories?.map((x)=>{
+                        return(<MenuItem key={x.CATEGORIE_COURRIER_ID} value={x.CATEGORIE_COURRIER_ID}>{x.COURRIER_DESCR}</MenuItem>)
+                    }) }
                     </Select>
                 </FormControl>
             </div>
