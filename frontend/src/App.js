@@ -20,13 +20,10 @@ import CreateFunctionalityPage from "./pages/CreateFunctionalityPage";
 import CreateProfilePage from "./pages/CreateProfilePage";
 import ProfilePage from "./pages/ProfilePage";
 import FunctionalityPage from "./pages/FunctionalityPage";
+import MailDetailPage from './pages/MailDetailPage'
 
 
 function App() {
-
-  // useEffect(() => {
-  //   window.addEventListener("unload", () => localStorage.clear());
-  // }, [])
 
   return (
     <div>
@@ -36,6 +33,7 @@ function App() {
         <Route exact path='/reset_password'component={PasswordReset} />
         <Route exact path='/reset_password/:token'component={PasswordReset} />
         <Route exact path='/mails'component={DisplayMailsPage} />
+        <Route exact path='/mails/:id'component={MailDetailPage} />
         <Route exact path='/service'component={ServicePage} />
         <Route exact path='/profiles'component={ProfilePage} />
         <Route exact path='/functionalities'component={FunctionalityPage} />

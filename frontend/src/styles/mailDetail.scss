@@ -1,0 +1,46 @@
+.mailDetail{
+    width: 80%;
+    margin:3% auto;
+    border-radius: 20px;
+    padding:2% 5%;
+    box-shadow: rgba(0, 0, 0, 0.068) 0px 18px 50px -10px;
+    box-sizing: border-box;
+
+    &>a{
+        text-decoration: none;
+        color: #000000;
+        margin-bottom: 10px;
+        display: inline-block;
+        font-size: 30px;
+        transition: .3s all;
+        &:hover{
+            transform: scale(1.4);
+            color: #1e90ff;
+        }
+    }
+
+    .mailDetailInfoMiddle{
+        margin: 35px 0;
+    }
+
+    .mailDetailInfoTop,.mailDetailInfoBottom{
+        display: flex;
+        justify-content: space-between;
+        // border: 2px solid rgb(235, 235, 235);
+        // padding: 20px;
+        // border-radius: 10px;
+        &_left{
+            width: 55%;
+        }
+
+        &_right{
+            width: 40%;
+        }
+
+        table{
+            width: 100%;
+            text-align: left;
+
+        }
+    }
+}
