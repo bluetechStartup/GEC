@@ -27,7 +27,7 @@ export const getAllMailsByUser = id => async dispatch =>{
 export const filterMailsByCategory = (id,category) => async dispatch =>{
     dispatch({type:FILTER_COURRIERS_REQUEST})
     try {
-        const {data} = await axios.get(`${api.URL}/api/courrier/courrierbyservice/${id}`,{category})
+        const {data} = await axios.post(`${api.URL}/api/courrier/courrierbyservice/${id}`,{category})
         data.success ? 
             dispatch({type:FILTER_COURRIERS_REQUEST_SUCCESS, payload: data.data})
             : dispatch({type:FILTER_COURRIERS_REQUEST_FAILED, payload: data.message})
