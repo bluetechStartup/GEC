@@ -4,7 +4,7 @@
 
     .home{
         width: 80%;
-        margin:3% auto;
+        margin:20px auto;
         background-color: #ffffff;
         display: flex;
         justify-content: space-between;
@@ -12,6 +12,7 @@
         height: fit-content;
         min-height: 70vh;
         position: relative;
+        border-radius: 20px;
         box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
 
         &__options{

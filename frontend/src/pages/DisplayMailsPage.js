@@ -4,7 +4,7 @@ import { getAllMailsByUser } from '../redux/allCourriersReducer';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import "../styles/displayMails.scss"
 
-function DisplayMailsPage() {
+function DisplayMailsPage({history}) {
 
     const dispatch = useDispatch()
     const { loading, data:mails, error } = useSelector(state => state.allMailsByUser)
@@ -31,7 +31,7 @@ function DisplayMailsPage() {
                 </tr>
                 { mails.map((x)=>{
                     return(
-                        <tr key={x.COURRIER_ID} onClick={()=>handleMail(x.COURRIER_ID)} className="mailRow">
+                        <tr key={x.COURRIER_ID} onClick={()=>history.push(`/mails/${x.COURRIER_ID}`)} className="mailRow">
                             <td>{x.REFERENCE}</td>
                             <td>{x.DATE_RECEPTION}</td>
                             <td>{x.DATE_COURRIER}</td>
