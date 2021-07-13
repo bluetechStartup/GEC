@@ -7,17 +7,26 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import BackspaceIcon from '@material-ui/icons/Backspace';
+import { Link } from "react-router-dom"
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import '../styles/passwordReset.scss'
 import { addService, addServiceFinish } from '../redux/serviceReducer';
+import { getHierarchies } from '../redux/hierarchieReducer';
 
 function CreateServicePage({ match }) {
 
     const dispatch = useDispatch()
     const { loading, serviceAdded, error } = useSelector(state => state.services)
+    const { data:hierarchies } = useSelector(state => state.hierarchies)
     const [SERVICE, setSERVICE] = useState("")
     const [SERVICE_DEP, setSERVICE_DEP] = useState("")
     const [HIERARCHIE, setHIERARCHIE] = useState("")
+
+
+    useEffect(() => {
+        dispatch(getHierarchies())
+    }, [])
 
     useEffect(() => {
         if(serviceAdded?.insertId > 0){
@@ -38,6 +47,7 @@ function CreateServicePage({ match }) {
     }
     return (
         <div className="wrapperNewService">
+            <Link to="/service"><BackspaceIcon/></Link>
             <div className="newService">
             { loading && <CircularProgress/>}
             { error && <div className="alert error">{error}</div> }
@@ -49,12 +59,9 @@ function CreateServicePage({ match }) {
                     <InputLabel>Hierarchie</InputLabel>
                     <Select label="Hierarchie" value={HIERARCHIE} onChange={(e)=>setHIERARCHIE(e.target.value)} required>
                     <MenuItem value=" ">None</MenuItem>
-                    <MenuItem value={1}>H0</MenuItem>
-                    <MenuItem value={1}>H1</MenuItem>
-                    <MenuItem value={3}>H3</MenuItem>
-                    {/* { profiles?.data && profiles?.data.map((x)=>{
-                        return(<MenuItem key={x.PROFIL_ID} value={x.PROFIL_ID}>{x.PROFIL_DESCR}</MenuItem>)
-                    }) } */}
+                    { hierarchies && hierarchies.map((x)=>{
+                        return(<MenuItem key={x.HIERARCHIE_ID} value={x.HIERARCHIE_ID}>{x.HIERARCHIE_DESCR}</MenuItem>)
+                    })}
                     </Select>
                 </FormControl>
                 <FormControl variant="outlined" size="small">

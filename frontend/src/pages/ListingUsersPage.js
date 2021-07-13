@@ -12,7 +12,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import '../styles/listingUsers.scss'
 import { getAllUsers } from '../redux/user/userActions';
 
-function ListingUsersPage() {
+function ListingUsersPage({history}) {
 
     const dispatch = useDispatch()
     const { data:allUsers, loading } = useSelector(state => state.allUsers)
@@ -67,7 +67,7 @@ function ListingUsersPage() {
                                             <IconButton><LockOutlinedIcon/></IconButton>:
                                             <IconButton><LockOpenOutlinedIcon/></IconButton>
                                         }
-                                        <IconButton><CreateIcon/></IconButton>
+                                        <IconButton><CreateIcon onClick={()=>history.push(`/update/${user.USER_ID}`)}/></IconButton>
                                         <IconButton><OpenInNewIcon/></IconButton>
                                     </td>
                                 </tr>

@@ -12,6 +12,8 @@ function ServicePage({history}) {
 
     const dispatch = useDispatch()
     const { loading, data:services, serviceDeleted, error } = useSelector(state => state.services)
+    
+    
     useEffect(() => {
         dispatch(getServices())
     }, [])

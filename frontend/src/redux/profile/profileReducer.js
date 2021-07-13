@@ -13,6 +13,7 @@ import {
     GET_ALL_PROFILES_REQUEST,
     GET_ALL_PROFILES_REQUEST_SUCCESS,
     GET_ALL_PROFILES_REQUEST_FAILED,
+    CREATE_OR_UPDATE_PROFILE_FINISH
 } from "./profileTypes"
 
 
@@ -32,6 +33,7 @@ export const singleProfileReducer = (state = singleProfileState, action)=>{
         
         case GET_PROFILE_REQUEST_FAILED:
             return { loading: false, error: action.payload}
+
     
         default: return { ...state }
     }
@@ -52,7 +54,10 @@ export const createdOrUpdateProfileReducer = (state = createdOrUpdateProfileStat
         
         case CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED:
             return { loading: false, error: action.payload}
-    
+        
+        case CREATE_OR_UPDATE_PROFILE_FINISH:
+            return { loading: false }
+
         default: return { ...state }
     }
 }
