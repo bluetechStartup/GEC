@@ -1,15 +1,11 @@
 let connection = require('../config/db')
 
 class Courrier {
- static getAll(cb) {
-  connection.query(
-   `SELECT cr.* , ct.COURRIER_DESCR,sv.SERVICE_DESCR, cv.CIVILITE_DESCR, st.STATUT_DESCR, pr.PRIORITE_DESCR FROM cr_courriers AS cr 
-      JOIN cr_categorie_courier AS ct ON ct.CATEGORIE_COURRIER_ID = cr.CATEGORIE_COURRIER_ID 
-      JOIN services AS sv ON sv.SERVICE_ID = cr.SERVICE_ID 
-      JOIN cr_civilite AS cv ON cv.CIVILITE_ID = cr.CIVILITE_ID  
-      JOIN cr_statut AS st ON st.STATUT_ID = cr.STATUT_ID 
-      JOIN cr_priorite AS pr ON pr.PRIORITE_ID = cr.PRIORITE_ID 
-      ORDER BY cr.COURRIER_ID DESC`,
+   
+ static getAll(orderBy,category,cb) {
+    const request=category?`SELECT * FROM cr_courriers WHERE CATEGORIE_COURRIER_ID=${parseInt(category)} ORDER BY DATE_ENREGISTREMENT DESC`
+       :'SELECT * FROM cr_courriers ORDER BY DATE_ENREGISTREMENT DESC'
+  connection.query(request,
    (error, data) => {
     if (error)return cb(error, null)
     cb(error, {success:true,count: data.length,data})

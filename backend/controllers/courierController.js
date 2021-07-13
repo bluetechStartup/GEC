@@ -2,7 +2,13 @@ const asyncHandler = require('express-async-handler')
 const Courrier = require('../models/courierModel.js')
 const fs = require('fs')
 let getCouriers = asyncHandler(async (req, res, next) => {
- Courrier.getAll((err, data) => {
+   const orderBy = req.query.sort
+  ? req.query.sort.split(',').join(' ')
+  : 'DATE_ENREGISTREMENT'
+
+ const category = req.query.category
+
+ Courrier.getAll(orderBy,category,(err, data) => {
   if (err) return next(new Error(err.message))
 
   res.status(200).send(data)
