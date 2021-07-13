@@ -198,8 +198,8 @@ let removeCourrier = asyncHandler(async (req, res, next) => {
  })
 })
 let getAcourriersByService=asyncHandler(async (req, res, next) => {
-
-  Courrier.courriersByservice(req.params.id,(err,data)=>{
+  const {category}=req.body
+  Courrier.courriersByservice(category,req.params.id,(err,data)=>{
     if(err) return next(new Error(err.message))
     res.json(data)
   })
