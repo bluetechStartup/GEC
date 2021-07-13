@@ -24,10 +24,10 @@ function Home({history}) {
             <div className="home">
                 <div className="home__options">
                     <Link className="active">Tableau de bord</Link>
-                    <Link className="">Courriers</Link>
-                    <Link>Donnees</Link>
-                    <Link>Regles</Link>
-                    <Link>Administration</Link>
+                    <Link to="/entrant"className="">Courriers</Link>
+                    <Link to="/service">Services</Link>
+                    <Link to="/mails">Mails</Link>
+                    <Link to="/users">Administration</Link>
                 </div>
                 <div className="home__info">
                     <Button className="google_home" onClick={handleLogout}>
