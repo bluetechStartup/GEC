@@ -19,6 +19,6 @@ router
 .get(getAnnexes)
 .post(createAnnexe)
 .delete(removeAnnexe)
-router.route('/courrierbyservice/:id').get(getAcourriersByService)
+router.route('/courrierbyservice/:id').get(getAcourriersByService).post(getAcourriersByService)
 
 module.exports = router
