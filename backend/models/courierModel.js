@@ -19,7 +19,8 @@ class Courrier {
 
  //   PROFIL_ID,FONCTIONNALITE_ID ,STRING
  static getById(id, cb) {
-    const request='SELECT cr.REFERENCE,cr.COURRIER_ID,cr.DATE_RECEPTION ,cr.DATE_COURRIER,cr.DATE_ENREGISTREMENT,cr.OBJET,cr.EXPEDITEUR_IDENTITE,cr.EXPEDITEUR_ADDRESSE,cm.MOUVEMENT_DESCR,ct.COURRIER_DESCR,cp.PRIORITE_DESCR,cv.CIVILITE_DESCR,v.VILLE_DESCR,sv.SERVICE_DESCR,ca.ACTION_DESCR,ad.FIRST_NAME,ad.LAST_NAME,cst.STATUT_DESCR FROM cr_courriers cr JOIN cr_mouvements cm on cr.MOUVEMENT_ID=cm.MOUVEMENT_ID join cr_categorie_courier ct ON cr.CATEGORIE_COURRIER_ID=ct.CATEGORIE_COURRIER_ID join cr_priorite cp on cr.PRIORITE_ID=cp.PRIORITE_ID join cr_civilite cv on cr.CIVILITE_ID=cv.CIVILITE_ID join villes v on cr.EXPEDITEUR_VILLE_ID=v.VILLE_ID  join services sv on cr.SERVICE_ID=sv.SERVICE_ID join cr_action ca on cr.ACTION_ID=ca.ACTION_ID join admin_users ad on cr.USER_ID=ad.USER_ID join cr_statut cst on cr.STATUT_ID=cst.STATUT_ID  WHERE cr.COURRIER_ID =?'
+    const request='SELECT cr.COURRIER_ID,cr.DATE_RECEPTION ,cr.DATE_COURRIER,cr.DATE_ENREGISTREMENT,cr.OBJET,cr.EXPEDITEUR_IDENTITE,cr.EXPEDITEUR_ADDRESSE,cm.MOUVEMENT_DESCR,ct.COURRIER_DESCR,cp.PRIORITE_DESCR,cv.CIVILITE_DESCR,v.VILLE_DESCR,sv.SERVICE_DESCR,ca.ACTION_DESCR,ad.FIRST_NAME,ad.LAST_NAME,cst.STATUT_DESCR FROM cr_courriers cr LEFT JOIN  cr_mouvements cm on cr.MOUVEMENT_ID=cm.MOUVEMENT_ID LEFT join cr_categorie_courier ct ON cr.CATEGORIE_COURRIER_ID=ct.CATEGORIE_COURRIER_ID LEFT join cr_priorite cp on cr.PRIORITE_ID=cp.PRIORITE_ID LEFT join cr_civilite cv on cr.CIVILITE_ID=cv.CIVILITE_ID LEFT join villes v on cr.EXPEDITEUR_VILLE_ID=v.VILLE_ID LEFT join services sv on cr.SERVICE_ID=sv.SERVICE_ID left join cr_action ca on cr.ACTION_ID=ca.ACTION_ID left join admin_users ad on cr.USER_ID=ad.USER_ID LEFT join cr_statut cst on cr.STATUT_ID=cst.STATUT_ID  WHERE cr.COURRIER_ID =?'
+
   connection.query(request,
    [parseInt(id)],
    (error, data) => {

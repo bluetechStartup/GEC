@@ -65,7 +65,7 @@ class Service {
  }
  static delete(id, cb) {
   connection.query(
-   'delete  from services where SERVICE_ID=?',
+   'delete from services where SERVICE_ID=?',
    [id],
    (err, data) => {
     if (err) return cb(err, null)
