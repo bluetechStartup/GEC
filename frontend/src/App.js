@@ -21,6 +21,7 @@ import CreateProfilePage from "./pages/CreateProfilePage";
 import ProfilePage from "./pages/ProfilePage";
 import FunctionalityPage from "./pages/FunctionalityPage";
 import MailDetailPage from './pages/MailDetailPage'
+import UpdateServicePage from "./pages/UpdateServicePage";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route exact path='/mails'component={DisplayMailsPage} />
         <Route exact path='/mails/:id'component={MailDetailPage} />
         <Route exact path='/service'component={ServicePage} />
+        <Route exact path='/service/:id'component={UpdateServicePage} />
         <Route exact path='/profiles'component={ProfilePage} />
         <Route exact path='/functionalities'component={FunctionalityPage} />
         <Route exact path='/create-service'component={CreateServicePage} />

@@ -45,7 +45,7 @@ function ServicePage({history}) {
                             <td>{x.SERVICE_ID}</td>
                             <td>{x.SERVICE_DESCR}</td>
                             <td>
-                                <EditIcon onClick={()=>{console.log("edit:",x.SERVICE_ID)}}/>
+                                <EditIcon onClick={()=>{history.push(`/service/${x.SERVICE_ID}`)}}/>
                                 <DeleteIcon onClick={()=>handleDelete(x.SERVICE_ID)}/>
                             </td>
                         </tr>

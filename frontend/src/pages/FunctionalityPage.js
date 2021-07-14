@@ -37,7 +37,7 @@ function FunctionalityPage({history}) {
                             <td>{x.FONCTIONNALITE_ID}</td>
                             <td>{x.FONCTIONNALITE_DESCR}</td>
                             <td>
-                                <EditIcon onClick={()=>{console.log("edit FUNC:",x.FONCTIONNALITE_ID)}}/>
+                                {/* <EditIcon onClick={()=>{console.log("edit FUNC:",x.FONCTIONNALITE_ID)}}/> */}
                                 <DeleteIcon onClick={()=>{console.log("delete FUNC:",x.FONCTIONNALITE_ID)}}/>
                             </td>
                         </tr>
