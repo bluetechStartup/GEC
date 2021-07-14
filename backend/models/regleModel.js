@@ -33,12 +33,11 @@ class Regles {
  static insert(newRegle, cb) {
      const { NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID }=newRegle
 
-     console.log("this is newRegle from regleModel",newRegle)
-  connection.query('insert into rg_regles (NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID) values(?,?,?)',[parseInt(NOMBRE_HEURE),parseInt(CATEGORIE_COURRIER_ID),parseInt(PERSONE_ID)], (error, data) => {
-   if (error) {
-       throw console.error();
-       return cb(error, null)}
-   cb(null, { success: true, data })
+
+  connection.query('insert into rg_regles set ?',{NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID }, (error, data) => {
+   if (error) 
+       throw error
+   cb(error, { success: true, data })
   })
  }
 

@@ -19,6 +19,7 @@ import { changePasswordReducer } from "./changePasswordReducer"
 import { allMailsReducer } from "./allCourriersReducer"
 import { referantsUsersReducer } from "./ReferantUserReducer"
 import { HierarchiesReducer } from './hierarchieReducer.js';
+import { ruleReducer } from './ReglesReducer.js';
 
 const rootReducer = combineReducers({
     user:userReducer,
@@ -49,7 +50,8 @@ const rootReducer = combineReducers({
     changePassword:changePasswordReducer,
     allMailsByUser:allMailsReducer,
     referantsUsers: referantsUsersReducer,
-    hierarchies:HierarchiesReducer
+    hierarchies:HierarchiesReducer,
+    regles:ruleReducer
 })
 
 export default rootReducer
