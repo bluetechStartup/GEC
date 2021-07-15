@@ -55,10 +55,10 @@ export const createProfile = (prof,profilDescr) => async (dispatch) =>{
     }
 }
 
-export const updateProfile = (userData) => async (dispatch) =>{
+export const updateProfile = (id,prof,profilDescr) => async (dispatch) =>{
     dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST})
     try {
-        const {data} = await axios.put(`${api.URL}/api/profile`,{...userData})
+        const {data} = await axios.put(`${api.URL}/api/profile/${id}`,{PROFIL_CODE:prof,PROFIL_DESCR:profilDescr})
         data.success ? 
             dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
             : dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED, payload: data.message})

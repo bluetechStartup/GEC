@@ -9,7 +9,7 @@ import { Link } from "react-router-dom"
 import '../styles/passwordReset.scss'
 import { addProfileFinish, createProfile } from '../redux/profile/profileActions';
 
-function CreateProfilePage() {
+function CreateProfilePage({ history }) {
     const [PROFILE, setPROFILE] = useState("")
     const [PROFILE_DESCR, setPROFILE_DESCR] = useState("")
     const dispatch = useDispatch()
@@ -21,6 +21,7 @@ function CreateProfilePage() {
             setPROFILE_DESCR("")
             setTimeout(() => {
                 dispatch(addProfileFinish())
+                history.push("/profiles")
             }, 2000);
         }
     }, [profileAdded])

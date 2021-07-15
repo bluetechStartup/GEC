@@ -50,7 +50,7 @@ export const createdOrUpdateProfileReducer = (state = createdOrUpdateProfileStat
             return { loading: true}
         
         case CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS:
-            return { loading: false, data: action.payload}
+            return { loading: false, profileUpdated: action.payload}
         
         case CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED:
             return { loading: false, error: action.payload}

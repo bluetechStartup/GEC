@@ -21,7 +21,15 @@ import {
     ADD_FUNCTION_REQUEST,
     ADD_FUNCTION_REQUEST_SUCCESS,
     ADD_FUNCTION_REQUEST_FAILED,
-    ADD_FUNCTION_REQUEST_FINISH
+    ADD_FUNCTION_REQUEST_FINISH,
+
+    DELETE_FUNCTION_REQUEST,
+    DELETE_FUNCTION_REQUEST_SUCCESS,
+    DELETE_FUNCTION_REQUEST_FAILED,
+
+    UPDATE_FUNCTION_REQUEST,
+    UPDATE_FUNCTION_REQUEST_SUCCESS,
+    UPDATE_FUNCTION_REQUEST_FAILED
 
 } from "./functionsTypes"
 
@@ -31,7 +39,7 @@ import {
 export const getFunc = (id) => async (dispatch) =>{
     dispatch({type:GET_FUNCTION_REQUEST})
     try {
-        const {data} = await axios.get(`${api.URL}/api/profile/${id}`)
+        const {data} = await axios.get(`${api.URL}/api/fonctionnalite/${id}`)
         console.log(data)
         data.success ? 
             dispatch({type:GET_FUNCTION_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
@@ -56,6 +64,20 @@ export const updateFuncByProfile = (dataInfo) => async (dispatch) =>{
     }
 }
 
+export const deleteFunc = (id) => async (dispatch) =>{
+    dispatch({type:DELETE_FUNCTION_REQUEST})
+    try {
+        const {data} = await axios.delete(`${api.URL}/api/fonctionnalite/${id}`)
+        console.log(data)
+        data.success ? 
+            dispatch({type:DELETE_FUNCTION_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
+            : dispatch({type:DELETE_FUNCTION_REQUEST_FAILED, payload: data.message})
+
+    } catch (error) {
+        dispatch({type:DELETE_FUNCTION_REQUEST_FAILED,payload: error.message});
+    }
+}
+
 export const addFunctionality = (func, funcURL) => async (dispatch) =>{
     dispatch({type:ADD_FUNCTION_REQUEST})
     try {
@@ -67,6 +89,20 @@ export const addFunctionality = (func, funcURL) => async (dispatch) =>{
 
     } catch (error) {
         dispatch({type:ADD_FUNCTION_REQUEST_FAILED,payload: error.message});
+    }
+}
+
+export const updateFunctionality = (id, func, funcURL) => async (dispatch) =>{
+    dispatch({type:UPDATE_FUNCTION_REQUEST})
+    try {
+        const {data} = await axios.put(`${api.URL}/api/fonctionnalite/${id}`,{FONCTIONNALITE_URL:funcURL,FONCTIONNALITE_DESCR:func})
+        console.log(data)
+        data.success ? 
+            dispatch({type:UPDATE_FUNCTION_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
+            : dispatch({type:UPDATE_FUNCTION_REQUEST_FAILED, payload: data.message})
+
+    } catch (error) {
+        dispatch({type:UPDATE_FUNCTION_REQUEST_FAILED,payload: error.message});
     }
 }
 

@@ -67,6 +67,7 @@ function CourrierEntrantPage() {
     const [REFERENT_USER_ID, setREFERENT_USER_ID] = useState('')
     const [ACTION_ID, setACTION_ID] = useState('')
     const [STATUT_ID, setSTATUT_ID] = useState('')
+    const [TYPE_DE_COURRIER, setTYPE_DE_COURRIER] = useState('')
 
     // fiels states for annexe 
     const [ANNEXE, setANNEXE] = useState(null)
@@ -219,6 +220,16 @@ function CourrierEntrantPage() {
             {courrier?.loading && <div className="loader"><CircularProgress/></div>}
             { errorCourrier && <div className="alert error">{errorCourrier}</div> }
             <form onSubmit={handleFirstStep} >
+            <div className="form_group">
+                <FormControl variant="outlined" size="small">
+                    <InputLabel>Type de courrier</InputLabel>
+                    <Select label="Type de courrier" value={TYPE_DE_COURRIER} onChange={(e)=>setTYPE_DE_COURRIER(e.target.value)} required>
+                    <MenuItem value=" ">None</MenuItem>
+                    <MenuItem value="Entrant">Entrant</MenuItem>
+                    <MenuItem value="Sortant">Sortant</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
             <div className="form_group">
                 <TextField label="No de reference" variant="outlined" value={REFERENCE} onChange={(e)=>setREFERENCE(e.target.value)} required size="small"/>
                 <FormControl variant="outlined" size="small">

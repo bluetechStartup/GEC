@@ -36,8 +36,8 @@ class Profile {
      const {PROFIL_ID,PROFIL_CODE,PROFIL_DESCR}=updatedProfile
      const requete=`update admin_profil set PROFIL_DESCR=?,PROFIL_CODE=? where PROFIL_ID=?`
   connection.query(requete,[PROFIL_DESCR,PROFIL_CODE,PROFIL_ID], (error, profile) => {
-   if (error) return cb(error, null)
-   cb(null, { success: true, profile })
+   if (error) throw error
+   cb(error, { success: true, profile })
   })
  }
 

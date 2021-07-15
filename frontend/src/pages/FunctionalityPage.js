@@ -7,15 +7,20 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import '../styles/service.scss'
 import { getAllProfiles } from '../redux/profile/profileActions';
-import { getAllFuncs } from '../redux/functionnalities/functionsActions';
+import { deleteFunc, getAllFuncs } from '../redux/functionnalities/functionsActions';
 
 function FunctionalityPage({history}) {
 
     const dispatch = useDispatch()
     const { loading, data, error } = useSelector(state => state.allFuncs)
+    const { functionDeleted } = useSelector(state => state.singleFunc)
     useEffect(() => {
         dispatch(getAllFuncs())
     }, [])
+
+    useEffect(() => {
+        functionDeleted && dispatch(getAllFuncs())
+    }, [functionDeleted])
 
     return (
         <div className="wrapperService">
@@ -37,8 +42,8 @@ function FunctionalityPage({history}) {
                             <td>{x.FONCTIONNALITE_ID}</td>
                             <td>{x.FONCTIONNALITE_DESCR}</td>
                             <td>
-                                {/* <EditIcon onClick={()=>{console.log("edit FUNC:",x.FONCTIONNALITE_ID)}}/> */}
-                                <DeleteIcon onClick={()=>{console.log("delete FUNC:",x.FONCTIONNALITE_ID)}}/>
+                                <EditIcon onClick={()=>{history.push(`/functionalities/${x.FONCTIONNALITE_ID}`)}}/>
+                                <DeleteIcon onClick={()=>{dispatch(deleteFunc(x.FONCTIONNALITE_ID))}}/>
                             </td>
                         </tr>
                     )
