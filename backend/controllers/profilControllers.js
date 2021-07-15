@@ -42,16 +42,11 @@ let update=asyncHandler(async (req, res, next) => {
     Profile.getById(req.params.id, (err, profile)=>{
         if(err) return next(new Error(err.message))
         const {data}=profile
-        if(data.PROFIL_ID<=0)return next(new Error("no user found.."))
-     console.log("user before update",data)
-     data.PROFIL_CODE=req.body.PROFIL_CODE?req.body.PROFIL_CODE:data.PROFIL_CODE
-     data.PROFIL_DESCR=req.body.PROFIL_DESCR?req.body.PROFIL_DESCR:data.PROFIL_DESCR
-    
-     console.log("user after update",data)
-        // Profile.update(data,(err,result)=>{
-        //     if(err) return next(new Error(err.message))
-        //     res.json(result)
-        // })
+        if(data.PROFIL_ID<=0)return next(new Error("no profile found.."))
+        Profile.update(req.body,req.params.id,(err,result)=>{
+            if(err) return next(new Error(err.message))
+            res.json(result)
+        })
         
 
     })
@@ -64,17 +59,6 @@ let deleteProfile=asyncHandler(async (req, res, next) => {
     })
 
 })
-
-// let fonctionnalites=asyncHandler(async (req, res, next) => {
-
-//     Profile.getFonctionnalites(req.params.id,(err, fonctionnalites) => {
-//      if (err) return next(new Error(err.message))
-//      res.status(200).json(fonctionnalites)
-//     })
-
-// }
-
-// )
 module.exports = {
  create,
  getAll,

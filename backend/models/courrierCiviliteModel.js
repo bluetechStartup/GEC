@@ -9,5 +9,31 @@ class CourrierCivilite{
         })
 
     }
+    static create(newCivilite, cb){
+        connection.query('insert into cr_civilite set ?',newCivilite,(err,data)=>{
+            if(err)throw err
+            return cb(err, { success: true,data})
+        })
+    }
+    static getById(id, cb) {
+        connection.query('select * from cr_civilite where CIVILITE_ID=?',[parseInt(id)],(err,data)=>{
+            if(err)throw err
+            return cb(err, { success: true,data})
+        })
+    }
+    static update(newCivilite,id,cb){
+
+        connection.query('update cr_civilite set ? where CIVILITE_ID=?',[newCivilite,id],(err,data)=>{
+            if(err)throw err
+            return cb(err, { success: true,data})
+        })
+    }
+    static remove(id, cb) {
+        connection.query('delete from cr_civilite where CIVILITE_ID=?',[id],(err,data)=>{
+            if(err)throw err
+            return cb(err, { success: true,data})
+        })
+    }
+    
 }
 module.exports =CourrierCivilite

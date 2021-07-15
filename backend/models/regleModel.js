@@ -2,6 +2,7 @@ let connection = require('../config/db')
 
 class Regles {
  static getAll(cb) {
+     
   connection.query(`select * from rg_regles`, (error, data) => {
    if (error) return cb(error, null)
    cb(error, { success: true, data })

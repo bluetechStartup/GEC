@@ -32,10 +32,10 @@ class Profile {
   })
  }
 
- static update(updatedProfile, cb) {
-     const {PROFIL_ID,PROFIL_CODE,PROFIL_DESCR}=updatedProfile
-     const requete=`update admin_profil set PROFIL_DESCR=?,PROFIL_CODE=? where PROFIL_ID=?`
-  connection.query(requete,[PROFIL_DESCR,PROFIL_CODE,PROFIL_ID], (error, profile) => {
+ static update(updatedProfile,id, cb) {
+
+     const requete=`update admin_profil set ? where PROFIL_ID=?`
+  connection.query(requete,[updatedProfile,id], (error, profile) => {
    if (error) return cb(error, null)
    cb(null, { success: true, profile })
   })
