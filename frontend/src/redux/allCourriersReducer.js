@@ -8,7 +8,7 @@ const GET_ALL_COURRIERS_REQUEST_FAILED = "GET_ALL_COURRIERS_REQUEST_FAILED"
 
 
 // all mails actions
-export const getAllMailsByUser = id => async dispatch =>{
+export const getAllMailsByUser = id => async dispatch =>{ 
     dispatch({type:GET_ALL_COURRIERS_REQUEST})
     try {
         const {data} = await axios.get(`${api.URL}/api/courrier/courrierbyservice/${id}`)

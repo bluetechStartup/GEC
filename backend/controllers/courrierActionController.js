@@ -9,6 +9,7 @@ const getAllCourrierAction=asyncHandler(async (req, res, next) => {
         if(err) return next(new Error(err.message))
         return res.json(data)
     })
+    
 })
 
 module.exports = {getAllCourrierAction}
