@@ -11,13 +11,15 @@ import BackspaceIcon from '@material-ui/icons/Backspace';
 import { Link } from "react-router-dom"
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import '../styles/passwordReset.scss'
-import { addService, addServiceFinish } from '../redux/serviceReducer';
+import { addService, addServiceFinish, getSingleService, updateService } from '../redux/serviceReducer';
 import { getHierarchies } from '../redux/hierarchieReducer';
 
-function CreateServicePage({ match }) {
+function UpdateServicePage({ match }) {
+
+    const id = parseInt(match.params.id)
 
     const dispatch = useDispatch()
-    const { loading, serviceAdded, error } = useSelector(state => state.services)
+    const { loading, serviceRetrieved, serviceUpdated, error } = useSelector(state => state.services)
     const { data:hierarchies } = useSelector(state => state.hierarchies)
     const [SERVICE, setSERVICE] = useState("")
     const [SERVICE_DEP, setSERVICE_DEP] = useState("")
@@ -25,24 +27,30 @@ function CreateServicePage({ match }) {
 
 
     useEffect(() => {
+        dispatch(getSingleService(id))
         dispatch(getHierarchies())
     }, [])
 
     useEffect(() => {
-        if(serviceAdded?.insertId > 0){
-            setSERVICE("")
-            setSERVICE_DEP("")
-            setHIERARCHIE("")
+        if(serviceUpdated){
             setTimeout(() => {
                 dispatch(addServiceFinish())
             }, 2000);
         }
-    }, [serviceAdded])
+    }, [serviceUpdated])
+
+    useEffect(() => {
+        if(serviceRetrieved){
+            setSERVICE(serviceRetrieved[0].SERVICE_DESCR)
+            setSERVICE_DEP(1)
+            setHIERARCHIE(serviceRetrieved[0].HIERARCHIE_ID)
+        }
+    }, [serviceRetrieved])
 
     const handleSubmit = (e)=>{
         e.preventDefault();
         console.log(SERVICE,SERVICE_DEP,HIERARCHIE)
-        dispatch(addService(SERVICE, SERVICE_DEP, HIERARCHIE))
+        dispatch(updateService(id,SERVICE, SERVICE_DEP, HIERARCHIE))
 
     }
     return (
@@ -51,8 +59,8 @@ function CreateServicePage({ match }) {
             <div className="newService">
             { loading && <CircularProgress/>}
             { error && <div className="alert error">{error}</div> }
-            { serviceAdded && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Service added successfully</div>}
-            <h2>Add new service</h2>
+            { serviceUpdated && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Service added successfully</div>}
+            <h2>Update service</h2>
             <form onSubmit={handleSubmit}>
                 <TextField  value={SERVICE} name="SERVICE" label="Service name" variant="outlined" size="small" onChange={(e)=>setSERVICE(e.target.value.trim())} required/>
                 <FormControl variant="outlined" size="small">
@@ -76,11 +84,11 @@ function CreateServicePage({ match }) {
                     }) } */}
                     </Select>
                 </FormControl>
-                <Button type="submit">ADD SERVICE</Button>
+                <Button type="submit">UPDATE SERVICE</Button>
             </form>
             </div>
         </div>
     )
 }
 
-export default CreateServicePage
+export default UpdateServicePage

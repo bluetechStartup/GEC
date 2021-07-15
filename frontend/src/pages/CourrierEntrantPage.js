@@ -329,7 +329,7 @@ function CourrierEntrantPage() {
                         <FormControl variant="outlined" size="small">
                             <InputLabel>Referrant</InputLabel>
                             <Select label="Referrant" value={REFERENT_USER_ID} onChange={(e)=>setREFERENT_USER_ID(e.target.value)} required
-                            disabled={SERVICE_ID ? false : true}
+                            disabled={SERVICE_ID && !referantUsers?.length <= 0 ? false : true}
                             >
                             <MenuItem value="">None</MenuItem>
                             { referantUsers && referantUsers.map((x)=>{

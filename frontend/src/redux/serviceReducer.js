@@ -7,10 +7,19 @@ const GET_SERVICES_REQUEST_SUCCESS = "GET_SERVICES_REQUEST_SUCCESS"
 const GET_SERVICES_REQUEST_FAILED = "GET_SERVICES_REQUEST_FAILED"
 
 // single service
+const GET_SINGLE_SERVICE_REQUEST = "GET_SINGLE_SERVICE_REQUEST"
+const GET_SINGLE_SERVICE_REQUEST_SUCCESS = "GET_SINGLE_SERVICE_REQUEST_SUCCESS"
+const GET_SINGLE_SERVICE_REQUEST_FAILED = "GET_SINGLE_SERVICE_REQUEST_FAILED"
+
 const ADD_SERVICE_REQUEST = "ADD_SERVICE_REQUEST"
 const ADD_SERVICE_REQUEST_SUCCESS = "ADD_SERVICE_REQUEST_SUCCESS"
 const ADD_SERVICE_REQUEST_FAILED = "ADD_SERVICE_REQUEST_FAILED"
 const ADD_SERVICE_REQUEST_FINISH = "ADD_SERVICE_REQUEST_FINISH"
+
+const UPDATE_SERVICE_REQUEST = "UPDATE_SERVICE_REQUEST"
+const UPDATE_SERVICE_REQUEST_SUCCESS = "UPDATE_SERVICE_REQUEST_SUCCESS"
+const UPDATE_SERVICE_REQUEST_FAILED = "UPDATE_SERVICE_REQUEST_FAILED"
+const UPDATE_SERVICE_REQUEST_FINISH = "UPDATE_SERVICE_REQUEST_FINISH"
 
 const DELETE_SERVICE_REQUEST = "DELETE_SERVICE_REQUEST"
 const DELETE_SERVICE_REQUEST_SUCCESS = "DELETE_SERVICE_REQUEST_SUCCESS"
@@ -31,6 +40,18 @@ export const getServices = () => async dispatch =>{
     }
 }
 
+export const getSingleService = id => async dispatch =>{
+    dispatch({type:GET_SINGLE_SERVICE_REQUEST})
+    try {
+        const {data} = await axios.get(`${api.URL}/api/service/${id}`)
+        data.success ? 
+            dispatch({type:GET_SINGLE_SERVICE_REQUEST_SUCCESS, payload: data.data})
+            : dispatch({type:GET_SINGLE_SERVICE_REQUEST_FAILED, payload: data.message})
+    } catch (error) {
+        dispatch({type:GET_SINGLE_SERVICE_REQUEST_FAILED,payload: error.message})
+    }
+}
+
 export const addService = (ser,serDep,hierachie) => async dispatch =>{
     dispatch({type:ADD_SERVICE_REQUEST})
     try {
@@ -40,6 +61,18 @@ export const addService = (ser,serDep,hierachie) => async dispatch =>{
             : dispatch({type:ADD_SERVICE_REQUEST_FAILED, payload: data.message})
     } catch (error) {
         dispatch({type:ADD_SERVICE_REQUEST_FAILED,payload: error.message})
+    }
+}
+
+export const updateService = (id,ser,serDep,hierachie) => async dispatch =>{
+    dispatch({type:UPDATE_SERVICE_REQUEST})
+    try {
+        const {data} = await axios.put(`${api.URL}/api/service/${id}`,{SERVICE_DESCR:ser, SERVICE_DEPEND:serDep, HIERARCHIE_ID:hierachie})
+        data.success ? 
+            dispatch({type:UPDATE_SERVICE_REQUEST_SUCCESS, payload: data.data})
+            : dispatch({type:UPDATE_SERVICE_REQUEST_FAILED, payload: data.message})
+    } catch (error) {
+        dispatch({type:UPDATE_SERVICE_REQUEST_FAILED,payload: error.message})
     }
 }
 
@@ -69,7 +102,16 @@ export const servicesReducer = (state={}, action) =>{
         
         case GET_SERVICES_REQUEST_FAILED:
             return { loading:false, error:action.payload}
+
+        case GET_SINGLE_SERVICE_REQUEST:
+            return { loading:true }
         
+        case GET_SINGLE_SERVICE_REQUEST_SUCCESS:
+            return { loading:false, serviceRetrieved: action.payload }
+        
+        case GET_SINGLE_SERVICE_REQUEST_FAILED:
+            return { loading:false, error:action.payload}
+
         case ADD_SERVICE_REQUEST:
             return { loading:true }
         
@@ -81,6 +123,15 @@ export const servicesReducer = (state={}, action) =>{
         
         case ADD_SERVICE_REQUEST_FINISH:
             return {  loading:false }
+        
+        case UPDATE_SERVICE_REQUEST:
+            return { loading:true }
+        
+        case UPDATE_SERVICE_REQUEST_SUCCESS:
+            return { loading:false, serviceUpdated: action.payload }
+        
+        case UPDATE_SERVICE_REQUEST_FAILED:
+            return {  loading:false, error:action.payload}    
 
         case DELETE_SERVICE_REQUEST_SUCCESS:
             return { ...state, loading:false, serviceDeleted: action.payload }

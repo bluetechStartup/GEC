@@ -35,7 +35,7 @@ function CreateFunctionalityPage() {
             <div className="newFunctionality">
             { loading && <CircularProgress/>}
             { error && <div className="alert error">{error}</div> }
-            { functionAdded && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Service added successfully</div>}
+            { functionAdded && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Functionnality added successfully</div>}
             <h2>Add new functionality</h2>
             <form onSubmit={handleSubmit}>
                 <TextField  value={FUNCTIONALITY}  label="Functionality descr" variant="outlined" size="small" onChange={(e)=>setFUNCTIONALITY(e.target.value.trim())} required/>

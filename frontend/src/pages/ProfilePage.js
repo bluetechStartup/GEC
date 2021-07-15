@@ -6,15 +6,22 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import '../styles/service.scss'
-import { getAllProfiles } from '../redux/profile/profileActions';
+import { deleteProfile, getAllProfiles } from '../redux/profile/profileActions';
 
 function ProfilePage({history}) {
 
     const dispatch = useDispatch()
     const { loading, data:profiles, error } = useSelector(state => state.allProfiles)
+    const { data:profileAdded } = useSelector(state => state.createdOrUpdateProfile)
+
     useEffect(() => {
         dispatch(getAllProfiles())
     }, [])
+    useEffect(() => {
+        if(profileAdded){
+            dispatch(getAllProfiles())
+        }
+    }, [profileAdded])
 
     return (
         <div className="wrapperService">
@@ -36,8 +43,8 @@ function ProfilePage({history}) {
                             <td>{x.PROFIL_ID}</td>
                             <td>{x.PROFIL_DESCR}</td>
                             <td>
-                                <EditIcon onClick={()=>{console.log("edit profile:",x.PROFIL_ID)}}/>
-                                <DeleteIcon onClick={()=>{console.log("delete profile:",x.PROFIL_ID)}}/>
+                                {/* <EditIcon onClick={()=>{console.log("edit profile:",x.PROFIL_ID)}}/> */}
+                                <DeleteIcon onClick={()=>{dispatch(deleteProfile(x.PROFIL_ID))}}/>
                             </td>
                         </tr>
                     )

@@ -15,6 +15,7 @@ import {
     GET_ALL_PROFILES_REQUEST,
     GET_ALL_PROFILES_REQUEST_SUCCESS,
     GET_ALL_PROFILES_REQUEST_FAILED,
+    CREATE_OR_UPDATE_PROFILE_FINISH
 } from "./profileTypes";
 
 
@@ -41,12 +42,13 @@ export const getProfile = (id) => async (dispatch) =>{
 
 // actions for profile creation and update
 
-export const createProfile = (userData) => async (dispatch) =>{
+export const createProfile = (prof,profilDescr) => async (dispatch) =>{
     dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST})
     try {
-        const {data} = await axios.post(`${api.URL}/api/profile`,{...userData})
+        const {data} = await axios.post(`${api.URL}/api/profile`,{PROFIL_CODE:prof,PROFIL_DESCR:profilDescr})
+        console.log(data)
         data.success ? 
-            dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS, payload: {success:data.success, data:data.data }})
+            dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS, payload: data.profile})
             : dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED, payload: data.message})
     } catch (error) {
         dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED,payload: error.message});
@@ -68,7 +70,7 @@ export const updateProfile = (userData) => async (dispatch) =>{
 export const deleteProfile = (id) => async (dispatch) =>{
     dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST})
     try {
-        const {data} = await axios.post(`${api.URL}/api/profile/${id}`)
+        const {data} = await axios.delete(`${api.URL}/api/profile/${id}`)
         console.log(data)
         data.success ? 
             dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS, payload: {success:data.success }})
@@ -78,6 +80,8 @@ export const deleteProfile = (id) => async (dispatch) =>{
         dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED,payload: error.message});
     }
 }
+
+export const addProfileFinish = ()=> {return ({ type: CREATE_OR_UPDATE_PROFILE_FINISH })}
 
 // actions for all profiles
 

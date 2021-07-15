@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCourrier } from '../redux/courrierReducer';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import BackIcon from '@material-ui/icons/KeyboardBackspace';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import ErrorIcon from '@material-ui/icons/ErrorOutline';
 import { Link } from "react-router-dom"
 import WarningIcon from '@material-ui/icons/Warning';
@@ -66,6 +67,7 @@ function MailDetailPage({match}) {
                         return(<tr>
                                  <td>{x.NOM_PIECE}</td>
                                  <td>{x.CATEGORIE_ANNEXE_DESCR}</td>
+                                 <td><a href={x.PATH}><OpenInNewIcon/></a></td>
                               </tr>)})
                     }
                     </table>

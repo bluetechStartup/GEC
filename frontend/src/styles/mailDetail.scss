@@ -46,8 +46,20 @@
             text-align: left;
             background-color: #1e90ff;
             color: #ffffff;
-            border-radius: 10px;
+            border-radius: 5px;
             padding: 10px;
+
+            td{
+                padding: 5px 0;
+            }
+
+            a{
+                color: white;
+                text-decoration: none;
+                &:hover{
+                    color: #a9d4ff;
+                }
+            }
 
         }
     }

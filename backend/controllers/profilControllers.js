@@ -4,10 +4,10 @@ let create = asyncHandler(async (req, res, next)=>{
     const {PROFIL_CODE,PROFIL_DESCR}=req.body
 
     if (
-     PROFIL_CODE == undefined ||
-     PROFIL_CODE == '' ||
-     PROFIL_DESCR == undefined ||
-     PROFIL_DESCR == ''
+     PROFIL_CODE === undefined ||
+     PROFIL_CODE === '' ||
+     PROFIL_DESCR === undefined ||
+     PROFIL_DESCR === ''
     ) {
      res.status(500).json(`Il y a un champ null ou indéfini`)
     } else {

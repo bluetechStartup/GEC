@@ -32,12 +32,13 @@ class Regles {
 
  static insert(newRegle, cb) {
      const { NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID }=newRegle
-   connection.query('insert into rg_regles set ?',{NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID}, (error, data) => {
-   if (error) {
-       throw console.error();
-       return cb(error, null)}
-   cb(null, { success: true, data })
-   })
+
+
+  connection.query('insert into rg_regles set ?',{NOMBRE_HEURE, CATEGORIE_COURRIER_ID, PERSONE_ID }, (error, data) => {
+   if (error) 
+       throw error
+   cb(error, { success: true, data })
+  })
  }
 
  static update(data, id, cb) {
