@@ -12,16 +12,16 @@ function ProfilePage({history}) {
 
     const dispatch = useDispatch()
     const { loading, data:profiles, error } = useSelector(state => state.allProfiles)
-    const { data:profileAdded } = useSelector(state => state.createdOrUpdateProfile)
+    const { profileDeleted } = useSelector(state => state.createdOrUpdateProfile)
 
     useEffect(() => {
         dispatch(getAllProfiles())
     }, [])
     useEffect(() => {
-        if(profileAdded){
+        if(profileDeleted){
             dispatch(getAllProfiles())
         }
-    }, [profileAdded])
+    }, [profileDeleted])
 
     return (
         <div className="wrapperService">

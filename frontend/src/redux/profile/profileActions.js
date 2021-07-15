@@ -11,6 +11,10 @@ import {
     CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS,
     CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED,
 
+    DELETE_PROFILE_REQUEST,
+    DELETE_PROFILE_REQUEST_SUCCESS,
+    DELETE_PROFILE_REQUEST_FAILED,
+
     // for all profiles
     GET_ALL_PROFILES_REQUEST,
     GET_ALL_PROFILES_REQUEST_SUCCESS,
@@ -68,16 +72,16 @@ export const updateProfile = (id,prof,profilDescr) => async (dispatch) =>{
 }
 
 export const deleteProfile = (id) => async (dispatch) =>{
-    dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST})
+    dispatch({type:DELETE_PROFILE_REQUEST})
     try {
         const {data} = await axios.delete(`${api.URL}/api/profile/${id}`)
         console.log(data)
         data.success ? 
-            dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS, payload: {success:data.success }})
-            : dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED, payload: data.message})
+            dispatch({type:DELETE_PROFILE_REQUEST_SUCCESS, payload: {success:data.success }})
+            : dispatch({type:DELETE_PROFILE_REQUEST_FAILED, payload: data.message})
 
     } catch (error) {
-        dispatch({type:CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED,payload: error.message});
+        dispatch({type:DELETE_PROFILE_REQUEST_FAILED,payload: error.message});
     }
 }
 

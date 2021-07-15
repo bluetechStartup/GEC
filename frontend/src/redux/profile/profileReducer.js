@@ -9,6 +9,10 @@ import {
     CREATE_OR_UPDATE_PROFILE_REQUEST_SUCCESS,
     CREATE_OR_UPDATE_PROFILE_REQUEST_FAILED,
 
+    DELETE_PROFILE_REQUEST,
+    DELETE_PROFILE_REQUEST_SUCCESS,
+    DELETE_PROFILE_REQUEST_FAILED,
+
     // for all profiles
     GET_ALL_PROFILES_REQUEST,
     GET_ALL_PROFILES_REQUEST_SUCCESS,
@@ -57,6 +61,15 @@ export const createdOrUpdateProfileReducer = (state = createdOrUpdateProfileStat
         
         case CREATE_OR_UPDATE_PROFILE_FINISH:
             return { loading: false }
+
+        case DELETE_PROFILE_REQUEST:
+            return { loading: true}
+        
+        case DELETE_PROFILE_REQUEST_SUCCESS:
+            return { loading: false, profileDeleted: action.payload}
+        
+        case DELETE_PROFILE_REQUEST_FAILED:
+            return { loading: false, error: action.payload}
 
         default: return { ...state }
     }

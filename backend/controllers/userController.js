@@ -24,6 +24,7 @@ const register = asyncHandler(async (req, res, next) => {
   TELEPHONE,
   PASSWORD,
   PROFIL_ID,
+  SERVICE_ID
  } = req.body
  const newUser = {
   FIRST_NAME,
@@ -33,6 +34,7 @@ const register = asyncHandler(async (req, res, next) => {
   TELEPHONE,
   PASSWORD,
   PROFIL_ID,
+  SERVICE_ID
  }
  console.log('THIS IS new user', newUser)
 

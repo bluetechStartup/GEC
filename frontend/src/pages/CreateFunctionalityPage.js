@@ -3,6 +3,8 @@ import { useDispatch,useSelector } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import BackspaceIcon from '@material-ui/icons/Backspace';
+import { Link } from "react-router-dom"
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
 import '../styles/passwordReset.scss'
 import { addFunctionality,addFuncFinish } from '../redux/functionnalities/functionsActions';
@@ -33,13 +35,14 @@ function CreateFunctionalityPage({ history }) {
     }
     return (
         <div className="wrapperNewFunctionality">
+            <Link to="/functionalities"><BackspaceIcon/></Link>
             <div className="newFunctionality">
             { loading && <CircularProgress/>}
             { error && <div className="alert error">{error}</div> }
             { functionAdded && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Functionnality added successfully</div>}
             <h2>Add new functionality</h2>
             <form onSubmit={handleSubmit}>
-                <TextField  value={FUNCTIONALITY}  label="Functionality descr" variant="outlined" size="small" onChange={(e)=>setFUNCTIONALITY(e.target.value.trim())} required/>
+                <TextField  value={FUNCTIONALITY}  label="Functionality descr" variant="outlined" size="small" onChange={(e)=>setFUNCTIONALITY(e.target.value)} required/>
                 <TextField  value={FUNCTIONALITY_URL}  label="Functionality url" variant="outlined" size="small" onChange={(e)=>setFUNCTIONALITY_URL(e.target.value.trim())} required/>
                 <Button type="submit">ADD FUNCTIONALITY</Button>
             </form>

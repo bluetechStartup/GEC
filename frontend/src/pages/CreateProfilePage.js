@@ -13,10 +13,10 @@ function CreateProfilePage({ history }) {
     const [PROFILE, setPROFILE] = useState("")
     const [PROFILE_DESCR, setPROFILE_DESCR] = useState("")
     const dispatch = useDispatch()
-    const { loading,data:profileAdded, error } = useSelector(state => state.createdOrUpdateProfile)
+    const { loading,profileUpdated, error } = useSelector(state => state.createdOrUpdateProfile)
 
     useEffect(() => {
-        if(profileAdded?.insertId > 0){
+        if(profileUpdated?.insertId > 0){
             setPROFILE("")
             setPROFILE_DESCR("")
             setTimeout(() => {
@@ -24,7 +24,7 @@ function CreateProfilePage({ history }) {
                 history.push("/profiles")
             }, 2000);
         }
-    }, [profileAdded])
+    }, [profileUpdated])
 
     const handleSubmit = (e)=>{
         e.preventDefault();
@@ -36,7 +36,7 @@ function CreateProfilePage({ history }) {
             <div className="newProfile">
             { loading && <CircularProgress/>}
             { error && <div className="alert error">{error}</div> }
-            { profileAdded && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Profile added successfully</div>}
+            { profileUpdated && <div className="alert success"><CheckCircleOutlineOutlinedIcon/>Profile added successfully</div>}
             <h2>Add new profile</h2>
             <form onSubmit={handleSubmit}>
                 <TextField  value={PROFILE} label="Profile code" variant="outlined" size="small" onChange={(e)=>setPROFILE(e.target.value.trim())} required/>

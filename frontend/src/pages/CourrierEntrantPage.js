@@ -183,7 +183,7 @@ function CourrierEntrantPage() {
         {mouvements && categoriesAnnexe && priorities && categories && services && actions && civilities && status && villes && typesAnnexe ? 
         <div className="formsEntrant">
             <div>
-                <h2>Courrier Entrant</h2>
+                <h2>Courrier</h2>
             </div>
             <div className="formStep">
                 <div className="formStep__indicator">
@@ -221,22 +221,12 @@ function CourrierEntrantPage() {
             { errorCourrier && <div className="alert error">{errorCourrier}</div> }
             <form onSubmit={handleFirstStep} >
             <div className="form_group">
-                <FormControl variant="outlined" size="small">
-                    <InputLabel>Type de courrier</InputLabel>
-                    <Select label="Type de courrier" value={TYPE_DE_COURRIER} onChange={(e)=>setTYPE_DE_COURRIER(e.target.value)} required>
-                    <MenuItem value=" ">None</MenuItem>
-                    <MenuItem value="Entrant">Entrant</MenuItem>
-                    <MenuItem value="Sortant">Sortant</MenuItem>
-                    </Select>
-                </FormControl>
-            </div>
-            <div className="form_group">
                 <TextField label="No de reference" variant="outlined" value={REFERENCE} onChange={(e)=>setREFERENCE(e.target.value)} required size="small"/>
                 <FormControl variant="outlined" size="small">
                     <InputLabel>Mouvement ID</InputLabel>
                     <Select label="Mouvement ID" value={MOUVEMENT_ID} onChange={(e)=>setMOUVEMENT_ID(e.target.value)} required>
                     <MenuItem value=" ">None</MenuItem>
-                    { mouvements.map((x)=>{
+                    { mouvements?.map((x)=>{
                         return(<MenuItem key={x.MOUVEMENT_ID} value={x.MOUVEMENT_ID}>{x.MOUVEMENT_DESCR}</MenuItem>)
                     })}
                     </Select>
@@ -257,7 +247,7 @@ function CourrierEntrantPage() {
                             <InputLabel>Civilité</InputLabel>
                             <Select label="Civilité" value={CIVILITE_ID} onChange={(e)=>setCIVILITE_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
-                            { civilities.map((x)=>{
+                            { civilities?.map((x)=>{
                                 return(<MenuItem key={x.CIVILITE_ID} value={x.CIVILITE_ID}>{x.CIVILITE_DESCR}</MenuItem>)
                             }) }
                             </Select>
@@ -268,7 +258,7 @@ function CourrierEntrantPage() {
                             <InputLabel>Ville</InputLabel>
                             <Select label="Ville" value={EXPEDITEUR_VILLE_ID} onChange={(e)=>setEXPEDITEUR_VILLE_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
-                            { villes.map((x)=>{
+                            { villes?.map((x)=>{
                                 return(<MenuItem key={x.VILLE_ID} value={x.VILLE_ID}>{x.VILLE_DESCR}</MenuItem>)
                             }) }
                             </Select>
@@ -284,7 +274,7 @@ function CourrierEntrantPage() {
                             <InputLabel>Categorie du courrier</InputLabel>
                             <Select label="Categorie du courrier" value={CATEGORIE_COURRIER_ID} onChange={(e)=>setCATEGORIE_COURRIER_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
-                            { categories.map((x)=>{
+                            { categories?.map((x)=>{
                                 return(<MenuItem key={x.CATEGORIE_COURRIER_ID} value={x.CATEGORIE_COURRIER_ID}>{x.COURRIER_DESCR}</MenuItem>)
                             })}
                             </Select>
@@ -298,7 +288,7 @@ function CourrierEntrantPage() {
                             required
                             >
                             <MenuItem value="">None</MenuItem>
-                            { priorities.map((x)=>{
+                            { priorities?.map((x)=>{
                                 return(<MenuItem key={x.PRIORITE_ID} value={x.PRIORITE_ID}>{x.PRIORITE_DESCR}</MenuItem>)
                             }) }
                             </Select>
@@ -314,7 +304,7 @@ function CourrierEntrantPage() {
                             }} 
                             required>
                             <MenuItem value="">None</MenuItem>
-                            { services.map((x)=>{
+                            {  services?.map((x)=>{
                                 return(<MenuItem key={x.SERVICE_ID} value={x.SERVICE_ID}>{x.SERVICE_DESCR}</MenuItem>)
                             }) }
                             </Select>
@@ -323,7 +313,7 @@ function CourrierEntrantPage() {
                             <InputLabel>Action</InputLabel>
                             <Select label="Action" value={ACTION_ID} onChange={(e)=>setACTION_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
-                            { actions.map((x)=>{
+                            { actions?.map((x)=>{
                                 return(<MenuItem key={x.ACTION_ID} value={x.ACTION_ID}>{x.ACTION_DESCR}</MenuItem>)
                             }) }
                             </Select>
@@ -332,7 +322,7 @@ function CourrierEntrantPage() {
                             <InputLabel>Status</InputLabel>
                             <Select label="Status" value={STATUT_ID} onChange={(e)=>setSTATUT_ID(e.target.value)} required>
                             <MenuItem value="">None</MenuItem>
-                            { status.map((x)=>{
+                            { status?.map((x)=>{
                                 return(<MenuItem key={x.STATUT_ID} value={x.STATUT_ID}>{x.STATUT_DESCR}</MenuItem>)
                             }) }
                             </Select>
@@ -343,7 +333,7 @@ function CourrierEntrantPage() {
                             disabled={SERVICE_ID && !referantUsers?.length <= 0 ? false : true}
                             >
                             <MenuItem value="">None</MenuItem>
-                            { referantUsers && referantUsers.map((x)=>{
+                            { referantUsers && referantUsers?.map((x)=>{
                                 return(<MenuItem key={x.USER_ID} value={x.USER_ID}>{x.FIRST_NAME}</MenuItem>)
                             }) }
                             </Select>
@@ -441,7 +431,7 @@ function CourrierEntrantPage() {
                 <h2>You have registred the mail successfully</h2>
                 {/* <Button onClick={toRegister}>HOME</Button> */}
             </div>}            
-        </div>:<div><CircularProgress/></div>}
+        </div>:<div class="loadingBloc"><CircularProgress/><p>Please wait loading all datas</p></div>}
         </>
     )
 }

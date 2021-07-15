@@ -28,7 +28,7 @@ function UpdateProfilePage({ match }) {
         if(profileUpdated){
             setTimeout(() => {
                 dispatch(addProfileFinish())
-            }, 2000);
+            }, 1000);
         }
     }, [profileUpdated])
 
