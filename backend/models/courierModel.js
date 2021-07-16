@@ -16,7 +16,7 @@ class Courrier {
          request=orderBy?`SELECT * FROM cr_courriers ORDER BY ${orderBy} DESC`:`SELECT * FROM cr_courriers ORDER BY DATE_ENREGISTREMENT DESC`
          
          }
-     console.log("this is the new request",request)
+
   connection.query(request,
    (error, data) => {
     if (error)return cb(error, null)

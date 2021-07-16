@@ -1,7 +1,9 @@
 
 const router=require('express').Router()
 
-const {getAllCourrierPriorite}=require('../controllers/courrierPrioriteController.js')
-router.route('/').get(getAllCourrierPriorite)
+const {getAll,create,getById,remove,update}=require('../controllers/courrierPrioriteController.js')
+router.route('/').get(getAll).post(create)
+router.route('/:id').get(getById).put(update).delete(remove)
+
 
 module.exports = router
