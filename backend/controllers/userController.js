@@ -7,8 +7,8 @@ const sendEmail = require('../utils/sendEmail.js')
 // @access  Private/admin
 const getAll = asyncHandler(async (req, res, next) => {
   const pageSize = 10
-  const page = Number(req.query.pageNumber) || 1
- 
+  const page = Number(req.query.page) || 0
+ console.log("this is page",page)
   const orderBy = req.query.orderBy
   ? req.query.orderBy.split(',').join(' ')
   : 'USER_ID'
@@ -16,7 +16,7 @@ const getAll = asyncHandler(async (req, res, next) => {
  const service =Number(req.query.service)
  const profile =Number(req.query.profile)
 const search=req.query.search
- User.getAll(orderBy,service,profile,(err, users) => {
+ User.getAll(orderBy,service,profile,search,pageSize,page,(err, users) => {
   if (err) throw new Error(err.message)
   res.json(users)
  })
