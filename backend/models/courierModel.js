@@ -1,16 +1,16 @@
 let connection = require('../config/db')
 
 class Courrier {
-   
+   // SELECT * FROM `cr_courriers` where REFERENCE like '22%' OR DATE_COURRIER LIKE '22%' OR DATE_RECEPTION LIKE '22%' OR DATE_ENREGISTREMENT LIKE '22%' OR OBJET LIKE '22%' OR EXPEDITEUR_ADDRESSE LIKE '22%' OR EXPEDITEUR_IDENTITE LIKE '22%'
  static getAll(orderBy,category,search,cb) {
 
        let request=''
        if(category && search){
-         request=`SELECT * FROM cr_courriers WHERE CATEGORIE_COURRIER_ID=${parseInt(category)} AND REFERENCE LIKE '${search}%' ORDER BY DATE_ENREGISTREMENT DESC`
+         request=`SELECT * FROM cr_courriers WHERE CATEGORIE_COURRIER_ID=${parseInt(category)}  ORDER BY DATE_ENREGISTREMENT DESC`
        }else if(category){
           request=`SELECT * FROM cr_courriers WHERE CATEGORIE_COURRIER_ID=${parseInt(category)} ORDER BY DATE_ENREGISTREMENT DESC`
        }else if(search){
-         request=`SELECT * FROM cr_courriers WHERE REFERENCE LIKE '${search}%' ORDER BY DATE_ENREGISTREMENT DESC`
+         request=`SELECT * FROM cr_courriers WHERE REFERENCE LIKE '${search}%' OR DATE_COURRIER LIKE '${search}%' OR DATE_RECEPTION LIKE '${search}%' OR DATE_ENREGISTREMENT LIKE '${search}%' OR OBJET LIKE '${search}%' OR EXPEDITEUR_ADDRESSE LIKE '${search}%' OR EXPEDITEUR_IDENTITE LIKE '${search}%' ORDER BY DATE_ENREGISTREMENT DESC`
            
        }else {
          request=orderBy?`SELECT * FROM cr_courriers ORDER BY ${orderBy} DESC`:`SELECT * FROM cr_courriers ORDER BY DATE_ENREGISTREMENT DESC`

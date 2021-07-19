@@ -61,9 +61,22 @@ class User {
  static getSpecificUserRouteInfo = () => {
   // SELECT * FROM `admin_profil_fonctionnalites`WHERE PROFIL_ID = (SELECT PROFIL_ID FROM admin_users WHERE USER_NAME="soso") and FONCTIONNALITE_ID=1
  }
- static getAll(cb) {
+ static getAll( orderBy,service,profile,cb) {
+   let request=''
+  //  orderBy,service,profile
+  if(service && profile){
+
+    request=`select * from admin_users where  SERVICE_ID=${service} and PROFIL_ID=${profile} order by ${orderBy} desc`
+  }else if(service){
+     request=`select * from admin_users where  SERVICE_ID=${service} order by ${orderBy} desc`
+  }else if(profile){
+     request=`select * from admin_users where PROFIL_ID=${profile} order by ${orderBy} desc`
+
+   }else {
+     request =`select * from admin_users order by ${orderBy} desc`
+   }
   connection.query(
-   'SELECT * FROM admin_users ORDER BY PROFIL_ID DESC',
+request,
    (error, data) => {
     if (error) return cb(error, null)
     cb(null, { success: true, count: data.length, data })
