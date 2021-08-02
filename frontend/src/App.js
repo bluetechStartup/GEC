@@ -25,6 +25,8 @@ import UpdateServicePage from "./pages/UpdateServicePage";
 import ReglesPage from "./pages/ReglesPage";
 import UpdateProfilePage from "./pages/UpdateProfilePage";
 import UpdateFunctionalityPage from "./pages/UpdateFunctionalityPage";
+import ChartPage from "./pages/ChartPage";
+import ApexChart from "./components/ApexChart";
 
 
 function App() {
@@ -48,6 +50,7 @@ function App() {
         <Route exact path='/create-service'component={CreateServicePage} />
         <Route exact path='/create-functionality'component={CreateFunctionalityPage} />
         <Route exact path='/create-profile'component={CreateProfilePage} />
+        <Route exact path='/stat'component={ApexChart} />
         <ProtectedRoute exact path='/change_password'component={ChangePassword} />
         <ProtectedRoute exact path='/menu'component={MenuPage} />
         <ProtectedRoute exact path='/create'component={CreateUserPage} />
