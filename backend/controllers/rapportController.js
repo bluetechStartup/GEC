@@ -8,6 +8,19 @@ const getCourriersNonTraitCategorie = asyncHandler(async (req, res, next) => {
  })
 })
 
+const getCourriersEnCours = asyncHandler(async (req, res, next) => {
+ Rapport.courriers_en_cours((err, data) => {
+  if (err) return next(new Error(err.message))
+  res.json(data)
+ })
+})
+const getCourriersSuspendu = asyncHandler(async (req, res, next) => {
+ Rapport.courriers_suspendu((err, data) => {
+  if (err) return next(new Error(err.message))
+  res.json(data)
+ })
+})
+
 const getCourrierCategorie = asyncHandler(async (req, res, next) => {
  Rapport.courriers_categorie((err, data) => {
   if (err) return next(new Error(err.message))
@@ -18,4 +31,6 @@ const getCourrierCategorie = asyncHandler(async (req, res, next) => {
 module.exports = {
  getCourriersNonTraitCategorie,
  getCourrierCategorie,
+ getCourriersEnCours,
+ getCourriersSuspendu,
 }
