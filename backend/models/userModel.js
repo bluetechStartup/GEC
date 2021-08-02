@@ -61,14 +61,35 @@ class User {
  static getSpecificUserRouteInfo = () => {
   // SELECT * FROM `admin_profil_fonctionnalites`WHERE PROFIL_ID = (SELECT PROFIL_ID FROM admin_users WHERE USER_NAME="soso") and FONCTIONNALITE_ID=1
  }
- static getAll(cb) {
-  connection.query(
-   'SELECT * FROM admin_users ORDER BY PROFIL_ID DESC',
-   (error, data) => {
-    if (error) return cb(error, null)
-    cb(null, { success: true, count: data.length, data })
-   }
-  )
+ static getAll(orderBy, service, profile, search, pageSize, page, cb) {
+  let request = ''
+  //  orderBy,service,profile
+  // search request
+  // SELECT * FROM admin_users WHERE FIRST_NAME like 'be%' or LAST_NAME LIKE 'ab%' or USER_NAME like 'be%' OR EMAIL LIKE 'be%' OR TELEPHONE LIKE 'be%'OR IS_ACTIVE LIKE 'be%'
+  if (service && profile) {
+   request = `select * from admin_users where  SERVICE_ID=${service} and PROFIL_ID=${profile} order by ${orderBy} desc limit ${
+    page * pageSize
+   } ,${pageSize}`
+  } else if (service) {
+   request = `select * from admin_users where  SERVICE_ID=${service} order by ${orderBy} desc limit ${
+    page * pageSize
+   } ,${pageSize}`
+  } else if (profile) {
+   request = `select * from admin_users where PROFIL_ID=${profile} order by ${orderBy} desc limit ${
+    page * pageSize
+   } ,${pageSize}`
+  } else if (search) {
+   request = `SELECT * FROM admin_users WHERE FIRST_NAME like '${search}%' or LAST_NAME LIKE '${search}%' or USER_NAME like '${search}%' OR EMAIL LIKE '${search}%' OR TELEPHONE LIKE '${search}%' OR IS_ACTIVE LIKE '${search}%' limit ${
+    page * pageSize
+   } ,${pageSize}`
+  } else
+   request = `select * from admin_users order by ${orderBy} desc limit ${
+    page * pageSize
+   } ,${pageSize}`
+  connection.query(request, (error, data) => {
+   if (error) return cb(error, null)
+   cb(null, { success: true, count: data.length, data })
+  })
  }
 
  static findById(id, cb) {
@@ -195,9 +216,9 @@ class User {
 
   // ENCRYPT
   const resetPassordToken = await bcrypt.hash(resetToken, 10)
-  const tok = String(resetPassordToken).replace(/\./g, "").replace(/\//g, "")
-  
-  console.log("token sent:",tok)
+  const tok = String(resetPassordToken).replace(/\./g, '').replace(/\//g, '')
+
+  console.log('token sent:', tok)
 
   const expireTime = Date.now() + 30 * 60 * 1000
   connection.query(
@@ -212,12 +233,15 @@ class User {
   )
   return tok
  }
- static getUserByservice(id,cb){
-   connection.query('select  * from admin_users where SERVICE_ID=?',[parseInt(id)],(err,data)=>{
-     if(err)throw err
-     cb(err,data)
-   })
-
+ static getUserByservice(id, cb) {
+  connection.query(
+   'select  * from admin_users where SERVICE_ID=?',
+   [parseInt(id)],
+   (err, data) => {
+    if (err) throw err
+    cb(err, data)
+   }
+  )
  }
 }
 module.exports = User
