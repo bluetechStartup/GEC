@@ -11,7 +11,7 @@ const {
  updatePassword,
  forgetPassword,
  resetPassword,
- getUsersByService
+ getUsersByService,
 } = require('../controllers/userController.js')
 const router = express.Router()
 router.route('/').get(getAll).put(protect, updateUser)

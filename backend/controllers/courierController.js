@@ -33,7 +33,31 @@ const createCourier = asyncHandler(async (req, res, next) => {
   ACTION_ID,
   USER_ID,
  } = req.body
+ const format = [
+  'audio/midi',
+  'audio / mpeg',
+  'audio / webm',
+  'audio / ogg',
+  'audio / wav',
+  'video/webm',
+  'video/x-msvideo',
+  'video/ogg',
+ ]
+ if (format.includes(req.file.mimetype)) {
+  fs.unlink(req.file.path, (err, data) => {
+   if (err) throw err
+   console.log('successfully deleted..')
+  })
 
+  console.log('this is file', req.file)
+
+  return res.status(404).json({
+   success: false,
+   message: 'seule les documents peuvent etre choisi!!',
+  })
+ }
+
+ PATH = `${process.env.BASE_URL}/${req.file.path}`
  var newCourrier = {
   MOUVEMENT_ID: MOUVEMENT_ID,
   REFERENCE: REFERENCE,
@@ -52,6 +76,7 @@ const createCourier = asyncHandler(async (req, res, next) => {
   ACTION_ID: ACTION_ID,
   USER_ID: USER_ID,
   STATUT_ID: 1,
+  PATH
  }
 
  Courrier.create(newCourrier, (err, data) => {

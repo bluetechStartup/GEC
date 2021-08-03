@@ -39,7 +39,7 @@ app.get('/', (req, res, next) => {
 })
 
 const PORT = process.env.PORT || 3005
- 
+
 app.use('/api/users', userRoutes)
 app.use('/api/profile', profileRoutes)
 app.use('/api/hierarchie', hierarchieRoutes)

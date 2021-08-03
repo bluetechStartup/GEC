@@ -139,6 +139,7 @@ function CourrierEntrantPage() {
         if(!ANNEXE) return
         const dataAnnexe = new FormData(e.target)
         dispatch(addAnnexe(COURRIER_ID,dataAnnexe))
+        
     }
 
     const removeAnnex = (id) =>{
