@@ -14,6 +14,7 @@ import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlin
 import { createUser, finishRequest } from '../redux/user/userActions'
 import '../styles/create.scss'
 import { getAllProfiles } from '../redux/profile/profileActions';
+import { getServices } from '../redux/serviceReducer';
 
 
 function CreateUserPage() {
@@ -21,6 +22,7 @@ function CreateUserPage() {
     const dispatch = useDispatch();
     const { data:profiles } = useSelector(state => state.allProfiles)
     const {loading, error, data} = useSelector(state => state.userCreatedOrUpdated);
+    const {data: services} = useSelector(state => state.services)
 
     const [warning, setWarning] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -31,11 +33,13 @@ function CreateUserPage() {
         TELEPHONE:'',
         EMAIL:'',
         PASSWORD:'',
-        PROFIL_ID:''
+        PROFIL_ID:'',
+        SERVICE_ID:''
     })
 
     useEffect(() => {
         dispatch(getAllProfiles())
+        dispatch(getServices())
     }, [])
 
     useEffect(() => {
@@ -48,6 +52,7 @@ function CreateUserPage() {
                 EMAIL:'',
                 PASSWORD:'',
                 PROFIL_ID:'',
+                SERVICE_ID:''
             })
             setConfirmPassword('')
             setTimeout(() => {
@@ -99,7 +104,15 @@ function CreateUserPage() {
                                 </Select>
                             </FormControl>
                         </div>
-                        
+                        <FormControl variant="outlined" size="small">
+                                <InputLabel>Service</InputLabel>
+                                <Select label="Service" value={user.SERVICE_ID} onChange={(e)=>setUser({...user,SERVICE_ID:e.target.value})} required>
+                                <MenuItem value="">None</MenuItem>
+                                { services && services?.map((x)=>{
+                                    return(<MenuItem key={x.SERVICE_ID} value={x.SERVICE_ID}>{x.SERVICE_DESCR}</MenuItem>)
+                                }) }
+                                </Select>
+                            </FormControl>
                         <div className="formGroup">
                             <TextField value={user.USER_NAME} name="USER_NAME" label="Username" variant="outlined" size="small" onChange={handleChange} required/>
                             <TextField value={user.TELEPHONE} name="TELEPHONE" label="Telephone" variant="outlined" size="small" onChange={handleChange} required/>

@@ -19,7 +19,17 @@ import {
     ADD_FUNCTION_REQUEST,
     ADD_FUNCTION_REQUEST_SUCCESS,
     ADD_FUNCTION_REQUEST_FAILED,
-    ADD_FUNCTION_REQUEST_FINISH
+    ADD_FUNCTION_REQUEST_FINISH,
+
+    DELETE_FUNCTION_REQUEST,
+    DELETE_FUNCTION_REQUEST_SUCCESS,
+    DELETE_FUNCTION_REQUEST_FAILED,
+
+    UPDATE_FUNCTION_REQUEST,
+    UPDATE_FUNCTION_REQUEST_SUCCESS,
+    UPDATE_FUNCTION_REQUEST_FAILED
+
+
 } from "./functionsTypes"
 
 
@@ -59,6 +69,24 @@ export const functionnalityReducer = (state = {}, action)=>{
 
         case ADD_FUNCTION_REQUEST_FINISH:
             return { loading: false}
+
+        case DELETE_FUNCTION_REQUEST:
+            return { loading: true}
+        
+        case DELETE_FUNCTION_REQUEST_SUCCESS:
+            return { loading: false, functionDeleted: action.payload}
+        
+        case DELETE_FUNCTION_REQUEST_FAILED:
+            return { loading: false, error: action.payload}
+
+        case UPDATE_FUNCTION_REQUEST:
+            return { loading: true}
+        
+        case UPDATE_FUNCTION_REQUEST_SUCCESS:
+            return { loading: false, functionUpdated: action.payload}
+        
+        case UPDATE_FUNCTION_REQUEST_FAILED:
+            return { loading: false, error: action.payload}
             
         default: return { ...state }
     }

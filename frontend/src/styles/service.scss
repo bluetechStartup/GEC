@@ -15,9 +15,12 @@
                 text-decoration: none;
                 padding: 10px 20px;
                 border-radius: 3px;
+                background-color: #1e90ff;
+                color: #ffffff;
                 transition: .2s all;
+                
                 &:hover{
-                    background-color: #1e90ff;
+                    background-color: #a4d2ff;
                     color: #ffffff;
                 }
             }

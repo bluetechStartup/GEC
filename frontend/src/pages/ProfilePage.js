@@ -12,16 +12,16 @@ function ProfilePage({history}) {
 
     const dispatch = useDispatch()
     const { loading, data:profiles, error } = useSelector(state => state.allProfiles)
-    const { data:profileAdded } = useSelector(state => state.createdOrUpdateProfile)
+    const { profileDeleted } = useSelector(state => state.createdOrUpdateProfile)
 
     useEffect(() => {
         dispatch(getAllProfiles())
     }, [])
     useEffect(() => {
-        if(profileAdded){
+        if(profileDeleted){
             dispatch(getAllProfiles())
         }
-    }, [profileAdded])
+    }, [profileDeleted])
 
     return (
         <div className="wrapperService">
@@ -43,7 +43,7 @@ function ProfilePage({history}) {
                             <td>{x.PROFIL_ID}</td>
                             <td>{x.PROFIL_DESCR}</td>
                             <td>
-                                {/* <EditIcon onClick={()=>{console.log("edit profile:",x.PROFIL_ID)}}/> */}
+                                <EditIcon onClick={()=>{history.push(`/profiles/${x.PROFIL_ID}`)}}/>
                                 <DeleteIcon onClick={()=>{dispatch(deleteProfile(x.PROFIL_ID))}}/>
                             </td>
                         </tr>

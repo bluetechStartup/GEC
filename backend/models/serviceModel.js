@@ -12,7 +12,7 @@ class Service {
    if (err) return cb(err, null)
    if (data.length > 0) {
     return cb(null, data)
-   } else return cb(null, (data = 'no data yet'))
+   } else return cb(null, {success:false,data})
   })
  }
  static getById(id, cb) {
@@ -21,7 +21,7 @@ class Service {
    `select * from services  where SERVICE_ID=? order by SERVICE_ID DESC`,[id],
    (err, data) => {
     if (err) return cb(err, null)
-    return cb(null, data)
+    return cb(null, {success:true,data})
    }
   )
  }

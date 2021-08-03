@@ -14,7 +14,7 @@ import '../styles/passwordReset.scss'
 import { addService, addServiceFinish } from '../redux/serviceReducer';
 import { getHierarchies } from '../redux/hierarchieReducer';
 
-function CreateServicePage({ match }) {
+function CreateServicePage({ match, history }) {
 
     const dispatch = useDispatch()
     const { loading, serviceAdded, error } = useSelector(state => state.services)
@@ -35,6 +35,7 @@ function CreateServicePage({ match }) {
             setHIERARCHIE("")
             setTimeout(() => {
                 dispatch(addServiceFinish())
+                history.push("/service")
             }, 2000);
         }
     }, [serviceAdded])
