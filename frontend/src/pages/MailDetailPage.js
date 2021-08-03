@@ -10,6 +10,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import BackspaceIcon from '@material-ui/icons/Backspace';
 import "../styles/mailDetail.scss"
 import { getAnnex } from '../redux/annexeReducer';
+import moment from 'moment';
 
 function MailDetailPage({match}) {
 
@@ -34,19 +35,18 @@ function MailDetailPage({match}) {
             { error && <div className="alert error"><ErrorIcon/>{error}</div>}
             { data &&
             <>
-            <h2>Vue global</h2>
+            <h2>Global view</h2>
             <div className="mailDetailInfoTop">
                 <div className="mailDetailInfoTop_left">
-                    <p><strong>Courrier</strong>: {data?.COURRIER_ID}</p>
-                    <p><strong>Objet</strong>: {data?.OBJET}</p>
-                    <p><strong>Date de reception</strong>: {data?.DATE_RECEPTION}</p>
-                    <p><strong>Date d'enregistrement</strong>: {data?.DATE_ENREGISTREMENT}</p>
+                    <p><strong>Mail No</strong>: {data?.COURRIER_ID}</p>
+                    <p><strong>Object</strong>: {data?.OBJET}</p>
+                    <p><strong>Receipt</strong>: {moment(data?.DATE_RECEPTION).format("LL")}</p>
+                    <p><strong>Registration</strong>: {moment(data?.DATE_ENREGISTREMENT).format("LL")}</p>
                 </div>
                 <div className="mailDetailInfoTop_right">
                     <p><strong>Exp</strong>: {data?.EXPEDITEUR_IDENTITE}</p>
-                    <p><strong>Ville</strong>: {data?.VILLE_DESCR}</p>
+                    <p><strong>Town</strong>: {data?.VILLE_DESCR}</p>
                     <p><strong>Addr Exp</strong>: {data?.EXPEDITEUR_ADDRESSE}</p>
-                    {/* <p>Email: {}</p> */}
                 </div>
             </div>
             <div className="mailDetailInfoMiddle">
@@ -59,26 +59,22 @@ function MailDetailPage({match}) {
                     <>
                     <h3>Pieces jointes</h3>
                     <table>
-                        {/* <tr>
-                            <th>Nom</th>
-                            <th>Categorie</th>
-                        </tr> */}
                     {allAnnex.map((x)=>{
                         return(<tr>
                                  <td>{x.NOM_PIECE}</td>
                                  <td>{x.CATEGORIE_ANNEXE_DESCR}</td>
-                                 <td><a href={x.PATH}><OpenInNewIcon/></a></td>
+                                 <td><a href={x.PATH} target="_blank"><OpenInNewIcon/></a></td>
                               </tr>)})
                     }
                     </table>
                    
-                    </>:<div className="alert warning"><WarningIcon/>Pas d'annexes !</div>
+                    </>:<div className="alert warning"><WarningIcon/>There is no annex !</div>
                     }
                 </div>
                 <div className="mailDetailInfoTop_right">
-                    <h3>Traitement</h3>
+                    <h3>Processing</h3>
                     <p><strong>Exp</strong>: </p>
-                    <p><strong>Ville</strong>: </p>
+                    <p><strong>Town</strong>: </p>
                     <p><strong>Tel Exp</strong>: </p>
                     <p><strong>Email</strong>: </p>
                 </div>

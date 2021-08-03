@@ -41,9 +41,9 @@ function UpdateServicePage({ match }) {
 
     useEffect(() => {
         if(serviceRetrieved){
-            setSERVICE(serviceRetrieved[0].SERVICE_DESCR)
+            setSERVICE(serviceRetrieved?.data[0].SERVICE_DESCR)
             setSERVICE_DEP(1)
-            setHIERARCHIE(serviceRetrieved[0].HIERARCHIE_ID)
+            setHIERARCHIE(serviceRetrieved?.data[0].HIERARCHIE_ID)
         }
     }, [serviceRetrieved])
 

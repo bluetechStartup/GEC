@@ -114,7 +114,8 @@ class Courrier {
    }
   )
  }
- static courriersByservice(category,search,id,cb){
+ static courriersByservice(category,id,cb){
+    console.log("courrier here",id)
     const request=category?`select cr.REFERENCE,cr.COURRIER_ID,cr.REFERENCE,cr.DATE_RECEPTION,cr.DATE_COURRIER,cr.DATE_ENREGISTREMENT,cr.OBJET,ca.ACTION_DESCR from cr_courriers cr LEFT join cr_action ca on cr.ACTION_ID=ca.ACTION_ID  WHERE cr.REFERENT_USER_ID=? and cr.CATEGORIE_COURRIER_ID=${parseInt(category)}`:`select cr.REFERENCE,cr.COURRIER_ID,cr.REFERENCE,cr.DATE_RECEPTION,cr.DATE_COURRIER,cr.DATE_ENREGISTREMENT,cr.OBJET,ca.ACTION_DESCR from cr_courriers cr join cr_action ca on cr.ACTION_ID=ca.ACTION_ID  WHERE cr.REFERENT_USER_ID=?`
    connection.query(request,[parseInt(id)],(err,data)=>{
       if(err) throw err

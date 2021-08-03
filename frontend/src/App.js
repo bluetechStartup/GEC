@@ -25,7 +25,6 @@ import UpdateServicePage from "./pages/UpdateServicePage";
 import ReglesPage from "./pages/ReglesPage";
 import UpdateProfilePage from "./pages/UpdateProfilePage";
 import UpdateFunctionalityPage from "./pages/UpdateFunctionalityPage";
-import ChartPage from "./pages/ChartPage";
 import ApexChart from "./components/ApexChart";
 
 

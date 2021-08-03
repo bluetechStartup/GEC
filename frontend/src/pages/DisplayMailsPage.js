@@ -8,9 +8,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import "../styles/displayMails.scss"
 import { getCategories } from '../redux/categoryReducer';
+import moment from 'moment';
+// import 'moment/locale/fr';
 
 function DisplayMailsPage({history}) {
 
+    // moment.locale('en');
     const dispatch = useDispatch()
     const { loading, data:mails, error } = useSelector(state => state.allMailsByUser)
     const { data:{ USER_ID } } = useSelector(state => state.user)
@@ -24,6 +27,7 @@ function DisplayMailsPage({history}) {
     }, [])
 
     useEffect(() => {
+        console.log("ID",CATEGORIE)
         CATEGORIE ? dispatch(filterMailsByCategory(USER_ID,CATEGORIE)) : dispatch(getAllMailsByUser(parseInt(USER_ID)))
     }, [CATEGORIE])
 
@@ -49,19 +53,19 @@ function DisplayMailsPage({history}) {
             <table>
                 <tr>
                     <th>Reference</th>
-                    <th>Receipt date</th>
+                    <th>Receipt</th>
                     <th>Mail date</th>
-                    <th>Registration date</th>
+                    <th>Registration</th>
                     <th>Objet</th>
                     
                 </tr>
                 { mails.map((x)=>{
                     return(
-                        <tr key={x.COURRIER_ID} onClick={()=>history.push(`/mails/${x.COURRIER_ID}`)} className="mailRow">
+                        <tr key={x.COURRIER_ID} onClick={()=>window.open(`/mails/${x.COURRIER_ID}`)} className="mailRow">
                             <td>{x.REFERENCE}</td>
-                            <td>{x.DATE_RECEPTION}</td>
-                            <td>{x.DATE_COURRIER}</td>
-                            <td>{x.DATE_ENREGISTREMENT}</td>
+                            <td>{moment(x.DATE_RECEPTION).format("LL")}</td>
+                            <td>{moment(x.DATE_COURRIER).format("LL")}</td>
+                            <td>{moment(x.DATE_ENREGISTREMENT).format("LL")}</td>
                             <td>{x.OBJET}</td> 
                         </tr>
                     )

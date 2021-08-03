@@ -16,7 +16,7 @@ import { annexeCategoriesReducer } from "./annexeCategoryReducer"
 import { typesAnnexeReducer } from "./typesAnnexe"
 import { passwordResetReducer } from  "./passwordResetReducer"
 import { changePasswordReducer } from "./changePasswordReducer"
-import { allMailsReducer } from "./allCourriersReducer"
+import { allMailsReducer, courrierStatReducer } from "./allCourriersReducer"
 import { referantsUsersReducer } from "./ReferantUserReducer"
 import { HierarchiesReducer } from './hierarchieReducer.js';
 import { ruleReducer } from './ReglesReducer.js';
@@ -51,7 +51,8 @@ const rootReducer = combineReducers({
     allMailsByUser:allMailsReducer,
     referantsUsers: referantsUsersReducer,
     hierarchies:HierarchiesReducer,
-    regles:ruleReducer
+    regles:ruleReducer,
+    courrierStats:courrierStatReducer
 })
 
 export default rootReducer
