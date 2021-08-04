@@ -25,6 +25,7 @@ export const addAnnexe = (id,courrier) => async dispatch =>{
     }
     try {
         const {data} = await axios.post(`${api.URL}/api/courrier/courrierAnnexe/${id}`,courrier,config)
+        console.log("annexe",data)
         data.success ? 
             dispatch({type:ADD_ANNEXE_REQUEST_SUCCESS, payload: data.data})
             : dispatch({type:ADD_ANNEXE_REQUEST_FAILED, payload: data.message})

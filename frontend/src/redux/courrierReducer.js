@@ -15,7 +15,9 @@ const GET_COURRIER_REQUEST_FAILED = "GET_COURRIER_REQUEST_FAILED"
 export const addCourrier = courrier => async dispatch =>{
     dispatch({type:ADD_COURRIER_REQUEST})
     try {
+        console.log(courrier)
         const {data} = await axios.post(`${api.URL}/api/courrier`,courrier)
+        console.log("courrier",data)
         data.success ? 
             dispatch({type:ADD_COURRIER_REQUEST_SUCCESS, payload: data.data})
             : dispatch({type:ADD_COURRIER_REQUEST_FAILED, payload: data.message})

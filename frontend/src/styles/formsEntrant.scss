@@ -89,13 +89,15 @@
     .MuiButton-root{
         font-family: inherit !important;
         background-color: #1e90ff;
+        border-radius: 18px;
         color: white;
         margin: 30px auto;
         display: block;
         padding: 10px 30px;
+        transition: 1s background-color;
 
         &:hover{
-            background-color: #0753a0a2;
+            background-color: #56abffa2;
         }
     }
 
@@ -145,6 +147,36 @@
             width: 47%;
             font-family: inherit;
             margin: 10px 0px;
+        }
+    }
+
+    .file-courier{
+        margin: auto;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        label{
+            border-radius: 50%;
+            background-color: #1e90ff;
+            padding: 10px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content;
+            cursor: pointer;
+            transition: 700ms background-color;
+
+            &:hover{
+                background-color: #1e8fffa8;
+            }
+        }
+
+        input{
+            width: 0.1px;
+            height: 0.1px;
         }
     }
 

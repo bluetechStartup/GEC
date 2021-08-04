@@ -5,7 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from "react-router-dom";
 import store from './redux/store.js';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
+import './i18n.js'
 
 
 ReactDOM.render(

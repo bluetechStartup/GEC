@@ -51,22 +51,23 @@ function DisplayMailsPage({history}) {
             { loading && <div className="loadMails"><CircularProgress/></div> }
             { mails?.length > 0  ? 
             <table>
-                <tr>
-                    <th>Reference</th>
+                {/* <tr>
+                    <th>Sender</th>
                     <th>Receipt</th>
                     <th>Mail date</th>
                     <th>Registration</th>
                     <th>Objet</th>
                     
-                </tr>
+                </tr> */}
                 { mails.map((x)=>{
                     return(
                         <tr key={x.COURRIER_ID} onClick={()=>window.open(`/mails/${x.COURRIER_ID}`)} className="mailRow">
-                            <td>{x.REFERENCE}</td>
-                            <td>{moment(x.DATE_RECEPTION).format("LL")}</td>
-                            <td>{moment(x.DATE_COURRIER).format("LL")}</td>
-                            <td>{moment(x.DATE_ENREGISTREMENT).format("LL")}</td>
+                            <td><strong>{x.EXPEDITEUR_IDENTITE}</strong></td>
+                            {/* <td>{moment(x.DATE_RECEPTION).format("LL")}</td>
+                            <td>{moment(x.DATE_COURRIER).format("LL")}</td> */}
                             <td>{x.OBJET}</td> 
+                            <td>{x.ACTION_DESCR}</td>
+                            <td>{moment(x.DATE_ENREGISTREMENT).format("LL")}</td>
                         </tr>
                     )
                 })}

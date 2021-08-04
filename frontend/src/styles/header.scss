@@ -1,5 +1,6 @@
 .header{
     width: 100%;
+    margin: auto;
     display: flex;
     justify-content: space-between;
     padding: 5px 10vw;
@@ -18,6 +19,15 @@
     &>div{
         display: flex;
         align-items: center;
+        
+        h4{
+            cursor: pointer;
+            transition: 1s all;
+            font-size: 1.4em;
+            &:hover{
+                color: gray;
+            }
+        }
 
         .MuiAvatar-root{
             width: 30px;

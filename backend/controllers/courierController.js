@@ -57,7 +57,8 @@ const createCourier = asyncHandler(async (req, res, next) => {
   })
  }
 
- PATH = `${process.env.BASE_URL}/${req.file.path}`
+ const PATH = `${process.env.BASE_URL}/${req.file.path}`
+ console.log(PATH)
  var newCourrier = {
   MOUVEMENT_ID: MOUVEMENT_ID,
   REFERENCE: REFERENCE,
