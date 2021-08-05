@@ -11,9 +11,9 @@ import AddCircleIcon  from '@material-ui/icons/AddRounded';
 import CheckIcon from "@material-ui/icons/Check";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import CheckCircleIcon from '@material-ui/icons/CheckCircleOutlineRounded';
 import moment from 'moment';
-import { addCourrier } from "../redux/courrierReducer"
+import { addCourrier, courrierFinish } from "../redux/courrierReducer"
 import "../styles/formsEntrant.scss"
 import { addAnnexe, getAnnex, removeAnnexe } from '../redux/annexeReducer';
 import { getMouvements } from '../redux/mouvementReducer';
@@ -28,6 +28,7 @@ import { getTypesAnnex } from '../redux/typesAnnexe';
 import { getAnnexeCategories } from '../redux/annexeCategoryReducer';
 import { getReferantsUsers } from "../redux/ReferantUserReducer"
 import { useTranslation } from 'react-i18next';
+
 
 
 function CourrierEntrantPage() {
@@ -186,6 +187,7 @@ function CourrierEntrantPage() {
     const toValidation = () => {
         setSteps({ ...steps, register: true, validation: true });
         setForms({ ...forms, id: false, register: false, validation: true });
+        dispatch(courrierFinish())
     };
 
     return (
@@ -356,7 +358,7 @@ function CourrierEntrantPage() {
                 <input id="file" name="file" type="file" onChange={(e)=>setFile(()=>e.target.files[0])} required/>
                 <p>{file ? t("File selected") : t("Please select file") }</p>
             </div>
-            <Button type="submit" className="btn_next">{t("Submit")}</Button>
+            <Button type="submit" className="btn_next">{t("Continue")}</Button>
             </form>
             </>) }
 
@@ -411,21 +413,31 @@ function CourrierEntrantPage() {
                         />
                         <div className="fileWrapper">
                             <div className="file">
-                                <label htmlFor="annexe"><AddCircleIcon/></label>
+                                
                                 <input id="annexe" name="file" type="file" onChange={e=>setANNEXE(()=>e.target.files[0])} required/>
-                                <p>{ANNEXE ? "File selected" :"Please select file" }</p>
-                                <Button type="submit">Join annexe</Button>
+                                
+                                <p>{ANNEXE ? "File selected" :"Please select file here" }</p>
+                                <label htmlFor="annexe"><AddCircleIcon/></label>
+                                <Button type="submit">{t("Attach")}</Button>
                             </div>
                         </div>
                     </form>
                 </div>
                 { allAnnex && allAnnex.length > 0 &&
                 <div className="annexTable">
-                <h3>Attachments</h3>
+                <h2>Attachments</h2>
                 <table>
+                    <tr>
+                        <td>Type annexe</td>
+                        <td>Category annexe</td>
+                        <td>Annexe</td>
+                        <td></td>
+                    </tr>
                     {allAnnex.map((x)=>{
                     return(
                         <tr>
+                            <td>{x.TYPE_ANNEXE_DESCR}</td>
+                            <td>{x.CATEGORIE_ANNEXE_DESCR}</td>
                             <td>{x.NOM_PIECE}</td>
                             <td><RemoveCircleOutlineIcon onClick={()=>removeAnnex(x.COURRIER_ANNEXE_ID)}/></td>
                         </tr>)
@@ -434,8 +446,7 @@ function CourrierEntrantPage() {
                 </div>}
                 
                 <div className="group_btn">
-                    {/* <Button onClick={toId} className="btn_prev">prev</Button> */}
-                    <Button className="btn_next" onClick={toValidation}>NEXT</Button>
+                    <Button className="btn_next" onClick={toValidation}>{t("Save")}</Button>
                 </div>                
                 
             </div>)}
@@ -444,7 +455,7 @@ function CourrierEntrantPage() {
             
             <div className="validation">
                 <h2>You have registred the mail successfully</h2>
-                {/* <Button onClick={toRegister}>HOME</Button> */}
+                <CheckCircleIcon/>
             </div>}            
         </div>:<div class="loadingBloc"><CircularProgress/><p>Please wait loading all datas</p></div>}
         </>

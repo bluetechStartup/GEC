@@ -8,12 +8,14 @@ import ErrorIcon from '@material-ui/icons/ErrorOutline';
 import { Link } from "react-router-dom"
 import WarningIcon from '@material-ui/icons/Warning';
 import BackspaceIcon from '@material-ui/icons/Backspace';
+import { useTranslation } from 'react-i18next';
 import "../styles/mailDetail.scss"
 import { getAnnex } from '../redux/annexeReducer';
 import moment from 'moment';
 
 function MailDetailPage({match}) {
 
+    const {t} = useTranslation()
     const id = parseInt(match.params.id)
     const dispatch = useDispatch()
     const { loading, data, error } = useSelector(state => state.courrier)
@@ -35,29 +37,29 @@ function MailDetailPage({match}) {
             { error && <div className="alert error"><ErrorIcon/>{error}</div>}
             { data &&
             <>
-            <h2>Global view</h2>
+            <h2>{t("Global view")}</h2>
             <div className="mailDetailInfoTop">
                 <div className="mailDetailInfoTop_left">
-                    <p><strong>Mail No</strong>: {data?.COURRIER_ID}</p>
-                    <p><strong>Object</strong>: {data?.OBJET}</p>
-                    <p><strong>Receipt</strong>: {moment(data?.DATE_RECEPTION).format("LL")}</p>
-                    <p><strong>Registration</strong>: {moment(data?.DATE_ENREGISTREMENT).format("LL")}</p>
+                    <p><strong>{t("Mail")} No</strong>: {data?.COURRIER_ID}</p>
+                    <p><strong>{t("Object")}</strong>: {data?.OBJET}</p>
+                    <p><strong>{t("Receipt")}</strong>: {moment(data?.DATE_RECEPTION).format("LL")}</p>
+                    <p><strong>{t("Registration")}</strong>: {moment(data?.DATE_ENREGISTREMENT).format("LL")}</p>
                 </div>
                 <div className="mailDetailInfoTop_right">
-                    <p><strong>Exp</strong>: {data?.EXPEDITEUR_IDENTITE}</p>
-                    <p><strong>Town</strong>: {data?.VILLE_DESCR}</p>
+                    <p><strong>{t("Sender")}</strong>: {data?.EXPEDITEUR_IDENTITE}</p>
+                    <p><strong>{t("City")}</strong>: {data?.VILLE_DESCR}</p>
                     <p><strong>Addr Exp</strong>: {data?.EXPEDITEUR_ADDRESSE}</p>
                 </div>
             </div>
             <div className="mailDetailInfoMiddle">
                 <p><strong>Service Acc</strong>: {data?.SERVICE_DESCR}</p>
-                <p><strong>Reference</strong>: {data?.REFERENCE}</p>
+                <p><strong>{t("Reference")}</strong>: {data?.REFERENCE}</p>
             </div>
             <div className="mailDetailInfoBottom">
                 <div className="mailDetailInfoTop_left">
                     { allAnnex && allAnnex.length > 0 ? 
                     <>
-                    <h3>Pieces jointes</h3>
+                    <h3>{t("Attachements")}</h3>
                     <table>
                     {allAnnex.map((x)=>{
                         return(<tr>
@@ -72,7 +74,7 @@ function MailDetailPage({match}) {
                     }
                 </div>
                 <div className="mailDetailInfoTop_right">
-                    <h3>Processing</h3>
+                    <h3>{t("Processing")}</h3>
                     <p><strong>Exp</strong>: </p>
                     <p><strong>Town</strong>: </p>
                     <p><strong>Tel Exp</strong>: </p>

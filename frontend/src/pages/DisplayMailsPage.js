@@ -9,11 +9,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import "../styles/displayMails.scss"
 import { getCategories } from '../redux/categoryReducer';
 import moment from 'moment';
-// import 'moment/locale/fr';
+import { useTranslation } from 'react-i18next';
 
-function DisplayMailsPage({history}) {
 
-    // moment.locale('en');
+function DisplayMailsPage() {
+
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const { loading, data:mails, error } = useSelector(state => state.allMailsByUser)
     const { data:{ USER_ID } } = useSelector(state => state.user)
@@ -34,10 +35,10 @@ function DisplayMailsPage({history}) {
     return (
         <div className="displayMails">
             <div className="displayMails_header">
-                <h2>Mails({mails?.reduce((n,x)=> {return n+1}, 0)})</h2>
+                <h2>{t("Mails")}({mails?.reduce((n,x)=> {return n+1}, 0)})</h2>
                 <FormControl variant="outlined" size="small">
-                    <InputLabel>Category</InputLabel>
-                    <Select label="Category" value={CATEGORIE} onChange={(e)=>{
+                    <InputLabel>{t("Category")}</InputLabel>
+                    <Select label={t("Category")} value={CATEGORIE} onChange={(e)=>{
                         setCATEGORIE(e.target.value)  
                     }} required>
                     <MenuItem value="">None</MenuItem>

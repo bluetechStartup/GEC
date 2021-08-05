@@ -10,6 +10,8 @@ const GET_COURRIER_REQUEST = "GET_COURRIER_REQUEST"
 const GET_COURRIER_REQUEST_SUCCESS = "GET_COURRIER_REQUEST_SUCCESS"
 const GET_COURRIER_REQUEST_FAILED = "GET_COURRIER_REQUEST_FAILED"
 
+const COURRIER_REQUEST_FINISH = "COURRIER_REQUEST_FINISH"
+
 
 // courrier actions
 export const addCourrier = courrier => async dispatch =>{
@@ -38,6 +40,7 @@ export const getCourrier = id => async dispatch =>{
     }
 }
 
+export const courrierFinish = () => ({ type:COURRIER_REQUEST_FINISH })
 
 // courrier reducer
 export const courrierReducer = (state={}, action) =>{
@@ -59,6 +62,9 @@ export const courrierReducer = (state={}, action) =>{
         
         case GET_COURRIER_REQUEST_FAILED:
             return { loading:false, error:action.payload}
+        
+        case COURRIER_REQUEST_FINISH:
+            return {}
 
         default:return { ...state }
     }
